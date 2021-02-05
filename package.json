@@ -1,0 +1,8 @@
+{
+  "name": "two-dot-task-js",
+  "version": "0.0.1",
+  "type": "module",
+  "devDependencies": {
+    "jasmine": "^3.6.4"
+  }
+}
