@@ -38,6 +38,7 @@ class TaskModelObserverStub {
   constructor() {
     this.notifiedThatFirstChoiceHasStartedPlaying_ = false;
     this.notifiedThatFirstChoiceHasStoppedPlaying_ = false;
+    this.notifiedThatSecondChoiceHasStartedPlaying_ = false;
     this.timesNotifiedThatFirstChoiceHasStartedPlaying_ = 0;
   }
 
@@ -60,6 +61,14 @@ class TaskModelObserverStub {
 
   timesNotifiedThatFirstChoiceHasStartedPlaying() {
     return this.timesNotifiedThatFirstChoiceHasStartedPlaying_;
+  }
+
+  notifiedThatSecondChoiceHasStartedPlaying() {
+    return this.notifiedThatSecondChoiceHasStartedPlaying_;
+  }
+
+  notifyThatSecondChoiceHasStartedPlaying() {
+    this.notifiedThatSecondChoiceHasStartedPlaying_ = true;
   }
 }
 
@@ -123,5 +132,13 @@ describe("TaskModel", () => {
     expect(
       this.observer.timesNotifiedThatFirstChoiceHasStartedPlaying()
     ).toEqual(1);
+  });
+
+  it("should notify that second choice has started playing when time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.57);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStartedPlaying()
+    ).toBeTrue();
   });
 });
