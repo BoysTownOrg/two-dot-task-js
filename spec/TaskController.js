@@ -26,19 +26,19 @@ class TaskModel {
 }
 
 describe("Controller", () => {
+  beforeEach(function () {
+    this.control = new TaskControlStub();
+    this.model = new TaskModel();
+    this.controller = new TaskController(this.control, this.model);
+  });
+
   it("should submit first choice when first dot is touched", function () {
-    const control = new TaskControlStub();
-    const model = new TaskModel();
-    const controller = new TaskController(control, model);
-    control.touchFirstDot();
-    expect(model.submission().choice).toBe(Choice.first);
+    this.control.touchFirstDot();
+    expect(this.model.submission().choice).toBe(Choice.first);
   });
 
   it("should submit second choice when second dot is touched", function () {
-    const control = new TaskControlStub();
-    const model = new TaskModel();
-    const controller = new TaskController(control, model);
-    control.touchSecondDot();
-    expect(model.submission().choice).toBe(Choice.second);
+    this.control.touchSecondDot();
+    expect(this.model.submission().choice).toBe(Choice.second);
   });
 });
