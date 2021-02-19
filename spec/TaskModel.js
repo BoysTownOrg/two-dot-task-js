@@ -20,12 +20,39 @@ class AudioPlayerStub {
   attach(observer) {
     this.observer = observer;
   }
+
+  setCurrentTimeSeconds(x) {
+    this.currentTimeSeconds_ = x;
+  }
+
+  currentTimeSeconds() {
+    return this.currentTimeSeconds_;
+  }
+
+  updateTime() {
+    this.observer.notifyThatPlaybackTimeHasUpdated();
+  }
+}
+
+class TaskModelObserverStub {
+  constructor() {
+    this.notifiedThatFirstChoiceHasStartedPlaying_ = false;
+  }
+
+  notifiedThatFirstChoiceHasStartedPlaying() {
+    return this.notifiedThatFirstChoiceHasStartedPlaying_;
+  }
+
+  notifyThatFirstChoiceHasStartedPlaying() {
+    this.notifiedThatFirstChoiceHasStartedPlaying_ = true;
+  }
 }
 
 describe("TaskModel", () => {
   beforeEach(function () {
     this.audioPlayer = new AudioPlayerStub();
-    this.model = new TaskModel(this.audioPlayer);
+    this.observer = new TaskModelObserverStub();
+    this.model = new TaskModel(this.audioPlayer, this.observer, 0.12);
   });
 
   it("should play feedback after choice is submitted and stimulus has finished", function () {
@@ -37,5 +64,11 @@ describe("TaskModel", () => {
   it("should not play feedback after choice is submitted when stimulus has not finished", function () {
     this.model.submit({ choice: Choice.first });
     expect(this.audioPlayer.feedbackPlayed()).toBeFalse();
+  });
+
+  it("should notify that first choice has started playing", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.13);
+    this.audioPlayer.updateTime();
+    expect(this.observer.notifiedThatFirstChoiceHasStartedPlaying()).toBeTrue();
   });
 });
