@@ -4,6 +4,8 @@ class TaskViewStub {
   constructor() {
     this.firstDotColoredRed_ = false;
     this.firstDotColoredBlack_ = false;
+    this.secondDotColoredRed_ = false;
+    this.secondDotColoredBlack_ = false;
   }
 
   firstDotColoredRed() {
@@ -14,12 +16,28 @@ class TaskViewStub {
     return this.firstDotColoredBlack_;
   }
 
+  secondDotColoredRed() {
+    return this.secondDotColoredRed_;
+  }
+
+  secondDotColoredBlack() {
+    return this.secondDotColoredBlack_;
+  }
+
   colorFirstDotRed() {
     this.firstDotColoredRed_ = true;
   }
 
   colorFirstDotBlack() {
     this.firstDotColoredBlack_ = true;
+  }
+
+  colorSecondDotRed() {
+    this.secondDotColoredRed_ = true;
+  }
+
+  colorSecondDotBlack() {
+    this.secondDotColoredBlack_ = true;
   }
 }
 
@@ -37,5 +55,15 @@ describe("TaskPresenter", () => {
   it("should color first dot black when first choice stops playing", function () {
     this.presenter.notifyThatFirstChoiceHasStoppedPlaying();
     expect(this.view.firstDotColoredBlack()).toBeTrue();
+  });
+
+  it("should color second dot red when second choice starts playing", function () {
+    this.presenter.notifyThatSecondChoiceHasStartedPlaying();
+    expect(this.view.secondDotColoredRed()).toBeTrue();
+  });
+
+  it("should color second dot black when second choice stops playing", function () {
+    this.presenter.notifyThatSecondChoiceHasStoppedPlaying();
+    expect(this.view.secondDotColoredBlack()).toBeTrue();
   });
 });
