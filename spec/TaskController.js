@@ -15,7 +15,7 @@ class TaskControlStub {
   }
 }
 
-class TaskModel {
+class TaskModelStub {
   submission() {
     return this.submission_;
   }
@@ -25,10 +25,10 @@ class TaskModel {
   }
 }
 
-describe("Controller", () => {
+describe("TaskController", () => {
   beforeEach(function () {
     this.control = new TaskControlStub();
-    this.model = new TaskModel();
+    this.model = new TaskModelStub();
     this.controller = new TaskController(this.control, this.model);
   });
 
