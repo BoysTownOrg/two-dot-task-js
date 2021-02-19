@@ -101,4 +101,12 @@ describe("TaskModel", () => {
     this.audioPlayer.updateTime();
     expect(this.observer.notifiedThatFirstChoiceHasStoppedPlaying()).toBeTrue();
   });
+
+  it("should not notify that first choice has stopped playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.33);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatFirstChoiceHasStoppedPlaying()
+    ).toBeFalse();
+  });
 });
