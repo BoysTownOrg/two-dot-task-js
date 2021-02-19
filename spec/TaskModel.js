@@ -39,6 +39,7 @@ class TaskModelObserverStub {
     this.notifiedThatFirstChoiceHasStartedPlaying_ = false;
     this.notifiedThatFirstChoiceHasStoppedPlaying_ = false;
     this.notifiedThatSecondChoiceHasStartedPlaying_ = false;
+    this.notifiedThatSecondChoiceHasStoppedPlaying_ = false;
     this.timesNotifiedThatFirstChoiceHasStartedPlaying_ = 0;
   }
 
@@ -69,6 +70,14 @@ class TaskModelObserverStub {
 
   notifyThatSecondChoiceHasStartedPlaying() {
     this.notifiedThatSecondChoiceHasStartedPlaying_ = true;
+  }
+
+  notifiedThatSecondChoiceHasStoppedPlaying() {
+    return this.notifiedThatSecondChoiceHasStoppedPlaying_;
+  }
+
+  notifyThatSecondChoiceHasStoppedPlaying() {
+    this.notifiedThatSecondChoiceHasStoppedPlaying_ = true;
   }
 }
 
@@ -147,6 +156,22 @@ describe("TaskModel", () => {
     this.audioPlayer.updateTime();
     expect(
       this.observer.notifiedThatSecondChoiceHasStartedPlaying()
+    ).toBeFalse();
+  });
+
+  it("should notify that second choice has stopped playing when time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.78);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
+    ).toBeTrue();
+  });
+
+  it("should not notify that second choice has stopped playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.77);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
     ).toBeFalse();
   });
 });
