@@ -121,15 +121,27 @@ export function plugin() {
   return {
     trial(display_element, trial) {
       clear(display_element);
-      const audioPlayer = new TBDAudioPlayer("stimulus.wav");
+      const audioPlayer = new TBDAudioPlayer(trial.stimulusUrl);
       new TaskController(
         new TaskUI(display_element),
         new TaskModel(
           audioPlayer,
           new TaskPresenter(),
           new Map([
-            [Choice.first, { onset: 0.12, offset: 0.34 }],
-            [Choice.second, { onset: 0.56, offset: 0.78 }],
+            [
+              Choice.first,
+              {
+                onset: trial.firstChoiceOnsetTimeSeconds,
+                offset: trial.firstChoiceOffsetTimeSeconds,
+              },
+            ],
+            [
+              Choice.second,
+              {
+                onset: trial.secondChoiceOnsetTimeSeconds,
+                offset: trial.secondChoiceOffsetTimeSeconds,
+              },
+            ],
           ])
         )
       );
