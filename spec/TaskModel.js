@@ -66,9 +66,17 @@ describe("TaskModel", () => {
     expect(this.audioPlayer.feedbackPlayed()).toBeFalse();
   });
 
-  it("should notify that first choice has started playing", function () {
+  it("should notify that first choice has started playing when time", function () {
     this.audioPlayer.setCurrentTimeSeconds(0.13);
     this.audioPlayer.updateTime();
     expect(this.observer.notifiedThatFirstChoiceHasStartedPlaying()).toBeTrue();
+  });
+
+  it("should not notify that first choice has started playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.11);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatFirstChoiceHasStartedPlaying()
+    ).toBeFalse();
   });
 });
