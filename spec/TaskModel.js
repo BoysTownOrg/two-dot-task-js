@@ -141,4 +141,12 @@ describe("TaskModel", () => {
       this.observer.notifiedThatSecondChoiceHasStartedPlaying()
     ).toBeTrue();
   });
+
+  it("should not notify that second choice has started playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.55);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStartedPlaying()
+    ).toBeFalse();
+  });
 });
