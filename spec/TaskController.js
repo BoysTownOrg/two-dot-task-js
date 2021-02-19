@@ -6,6 +6,10 @@ class TaskControlStub {
     this.observer.notifyThatFirstDotHasBeenTouched();
   }
 
+  touchSecondDot() {
+    this.observer.notifyThatSecondDotHasBeenTouched();
+  }
+
   attach(observer) {
     this.observer = observer;
   }
@@ -28,5 +32,13 @@ describe("Controller", () => {
     const controller = new TaskController(control, model);
     control.touchFirstDot();
     expect(model.submission().choice).toBe(Choice.first);
+  });
+
+  it("should submit second choice when second dot is touched", function () {
+    const control = new TaskControlStub();
+    const model = new TaskModel();
+    const controller = new TaskController(control, model);
+    control.touchSecondDot();
+    expect(model.submission().choice).toBe(Choice.second);
   });
 });
