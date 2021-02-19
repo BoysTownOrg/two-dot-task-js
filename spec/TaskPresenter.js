@@ -24,17 +24,18 @@ class TaskViewStub {
 }
 
 describe("TaskPresenter", () => {
+  beforeEach(function () {
+    this.view = new TaskViewStub();
+    this.presenter = new TaskPresenter(this.view);
+  });
+
   it("should color first dot red when first choice starts playing", function () {
-    const view = new TaskViewStub();
-    const presenter = new TaskPresenter(view);
-    presenter.notifyThatFirstChoiceHasStartedPlaying();
-    expect(view.firstDotColoredRed()).toBeTrue();
+    this.presenter.notifyThatFirstChoiceHasStartedPlaying();
+    expect(this.view.firstDotColoredRed()).toBeTrue();
   });
 
   it("should color first dot black when first choice stops playing", function () {
-    const view = new TaskViewStub();
-    const presenter = new TaskPresenter(view);
-    presenter.notifyThatFirstChoiceHasStoppedPlaying();
-    expect(view.firstDotColoredBlack()).toBeTrue();
+    this.presenter.notifyThatFirstChoiceHasStoppedPlaying();
+    expect(this.view.firstDotColoredBlack()).toBeTrue();
   });
 });
