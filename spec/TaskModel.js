@@ -23,18 +23,19 @@ class AudioPlayerStub {
 }
 
 describe("TaskModel", () => {
+  beforeEach(function () {
+    this.audioPlayer = new AudioPlayerStub();
+    this.model = new TaskModel(this.audioPlayer);
+  });
+
   it("should play feedback after choice is submitted and stimulus has finished", function () {
-    const audioPlayer = new AudioPlayerStub();
-    const model = new TaskModel(audioPlayer);
-    audioPlayer.endStimulusPlayback();
-    model.submit({ choice: Choice.first });
-    expect(audioPlayer.feedbackPlayed()).toBeTrue();
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.first });
+    expect(this.audioPlayer.feedbackPlayed()).toBeTrue();
   });
 
   it("should not play feedback after choice is submitted when stimulus has not finished", function () {
-    const audioPlayer = new AudioPlayerStub();
-    const model = new TaskModel(audioPlayer);
-    model.submit({ choice: Choice.first });
-    expect(audioPlayer.feedbackPlayed()).toBeFalse();
+    this.model.submit({ choice: Choice.first });
+    expect(this.audioPlayer.feedbackPlayed()).toBeFalse();
   });
 });
