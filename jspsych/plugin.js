@@ -92,6 +92,8 @@ class TaskUI {
 
 class TBDAudioPlayer {
   constructor(stimulusUrl) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioContext = new AudioContext();
     this.player = document.createElement("audio");
     this.player.src = stimulusUrl;
     this.player.ontimeupdate = (event) => {
@@ -100,6 +102,8 @@ class TBDAudioPlayer {
     this.player.onended = (event) => {
       this.observer.notifyThatStimulusPlaybackHasEnded();
     };
+    const track = audioContext.createMediaElementSource(this.player);
+    track.connect(audioContext.destination);
   }
 
   playFeedback() {}
