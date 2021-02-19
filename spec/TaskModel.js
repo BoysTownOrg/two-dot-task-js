@@ -37,6 +37,7 @@ class AudioPlayerStub {
 class TaskModelObserverStub {
   constructor() {
     this.notifiedThatFirstChoiceHasStartedPlaying_ = false;
+    this.notifiedThatFirstChoiceHasStoppedPlaying_ = false;
   }
 
   notifiedThatFirstChoiceHasStartedPlaying() {
@@ -46,13 +47,28 @@ class TaskModelObserverStub {
   notifyThatFirstChoiceHasStartedPlaying() {
     this.notifiedThatFirstChoiceHasStartedPlaying_ = true;
   }
+
+  notifiedThatFirstChoiceHasStoppedPlaying() {
+    return this.notifiedThatFirstChoiceHasStoppedPlaying_;
+  }
+
+  notifyThatFirstChoiceHasStoppedPlaying() {
+    this.notifiedThatFirstChoiceHasStoppedPlaying_ = true;
+  }
 }
 
 describe("TaskModel", () => {
   beforeEach(function () {
     this.audioPlayer = new AudioPlayerStub();
     this.observer = new TaskModelObserverStub();
-    this.model = new TaskModel(this.audioPlayer, this.observer, 0.12);
+    this.model = new TaskModel(
+      this.audioPlayer,
+      this.observer,
+      new Map([
+        [Choice.first, { onset: 0.12, offset: 0.34 }],
+        [Choice.second, { onset: 0.56, offset: 0.78 }],
+      ])
+    );
   });
 
   it("should play feedback after choice is submitted and stimulus has finished", function () {
@@ -78,5 +94,11 @@ describe("TaskModel", () => {
     expect(
       this.observer.notifiedThatFirstChoiceHasStartedPlaying()
     ).toBeFalse();
+  });
+
+  it("should notify that first choice has stopped playing when time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.34);
+    this.audioPlayer.updateTime();
+    expect(this.observer.notifiedThatFirstChoiceHasStoppedPlaying()).toBeTrue();
   });
 });
