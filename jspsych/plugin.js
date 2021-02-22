@@ -49,8 +49,8 @@ class TaskUI {
     this.parent = parent;
     const grid = documentElement();
     grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "repeat(2, 1fr)";
-    grid.style.gridTemplateRows = "repeat(2, 1fr)";
+    grid.style.gridTemplateColumns = "repeat(3, 1fr)";
+    grid.style.gridTemplateRows = "repeat(3, 1fr)";
     grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
     adopt(parent, grid);
     const image = new Image();
@@ -60,7 +60,7 @@ class TaskUI {
       image.width = image.naturalWidth / 4;
     };
     image.style.gridRow = 1;
-    image.style.gridColumn = "1 / 3";
+    image.style.gridColumn = 2;
     adopt(grid, image);
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.gridRow = 2;
@@ -71,10 +71,24 @@ class TaskUI {
     });
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.gridRow = 2;
-    this.secondDot.style.gridColumn = 2;
+    this.secondDot.style.gridColumn = 3;
     adopt(grid, this.secondDot);
     addClickEventListener(this.secondDot, (e) => {
       this.observer.notifyThatSecondDotHasBeenTouched();
+    });
+    const buttonContainer = documentElement();
+    buttonContainer.className = "jspsych-image-button-response-button";
+    buttonContainer.style.display = "inline-block";
+    buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
+    adopt(grid, buttonContainer);
+    buttonContainer.style.gridRow = 3;
+    buttonContainer.style.gridColumn = 2;
+    const button = document.createElement("button");
+    button.className = "jspsych-btn";
+    button.textContent = "Continue";
+    adopt(buttonContainer, button);
+    addClickEventListener(button, (e) => {
+      jsPsych.finishTrial();
     });
   }
 

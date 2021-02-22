@@ -41,12 +41,17 @@ jsPsych.plugins["image-audio-button-response"] = {
     image.style.gridRow = 1;
     image.style.gridColumn = 1;
     adopt(grid, image);
+    const buttonContainer = documentElement();
+    buttonContainer.className = "jspsych-image-button-response-button";
+    buttonContainer.style.display = "inline-block";
+    buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
+    adopt(grid, buttonContainer);
+    buttonContainer.style.gridRow = 2;
+    buttonContainer.style.gridColumn = 1;
     const button = document.createElement("button");
     button.className = "jspsych-btn";
     button.textContent = "Continue";
-    button.style.gridRow = 2;
-    button.style.gridColumn = 1;
-    adopt(grid, button);
+    adopt(buttonContainer, button);
     addClickEventListener(button, (e) => {
       jsPsych.finishTrial();
     });
@@ -71,6 +76,7 @@ jsPsych.init({
     {
       type: "image-button-response",
       stimulus: "cat.png",
+      stimulus_width: 500,
       choices: ["Continue"],
       prompt: "",
     },
@@ -88,6 +94,13 @@ jsPsych.init({
       firstChoiceOffsetTimeSeconds: 3.65,
       secondChoiceOnsetTimeSeconds: 4.4,
       secondChoiceOffsetTimeSeconds: 5.15,
+    },
+    {
+      type: "image-button-response",
+      stimulus: "dog1.png",
+      stimulus_width: 500,
+      choices: ["Continue"],
+      prompt: "",
     },
   ],
 });
