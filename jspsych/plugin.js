@@ -108,7 +108,7 @@ class WebAudioPlayer {
       this.observer.notifyThatPlaybackTimeHasUpdated();
     };
     this.player.onended = (event) => {
-      this.observer.notifyThatStimulusPlaybackHasEnded();
+      this.observer.notifyThatPlaybackHasEnded();
     };
     const track = audioContext.createMediaElementSource(this.player);
     track.connect(audioContext.destination);

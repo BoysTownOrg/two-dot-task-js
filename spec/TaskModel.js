@@ -14,7 +14,7 @@ class AudioPlayerStub {
   }
 
   endStimulusPlayback() {
-    this.observer.notifyThatStimulusPlaybackHasEnded();
+    this.observer.notifyThatPlaybackHasEnded();
   }
 
   attach(observer) {
