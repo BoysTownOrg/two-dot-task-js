@@ -8,6 +8,7 @@ jsPsych.init({
     {
       type: twoDotPluginId,
       stimulusUrl: "bird.wav",
+      feedbackUrl: "2A spoiled child is a brat.wav",
       imageUrl: "bird.png",
       firstChoiceOnsetTimeSeconds: 2.9,
       firstChoiceOffsetTimeSeconds: 3.65,

@@ -99,12 +99,11 @@ class TaskUI {
   }
 }
 
-class TBDAudioPlayer {
-  constructor(stimulusUrl) {
+class WebAudioPlayer {
+  constructor(stimulusUrl, feedbackUrl) {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioContext = new AudioContext();
     this.player = document.createElement("audio");
-    this.player.src = stimulusUrl;
     this.player.ontimeupdate = (event) => {
       this.observer.notifyThatPlaybackTimeHasUpdated();
     };
@@ -113,11 +112,17 @@ class TBDAudioPlayer {
     };
     const track = audioContext.createMediaElementSource(this.player);
     track.connect(audioContext.destination);
+    this.stimulusUrl = stimulusUrl;
+    this.feedbackUrl = feedbackUrl;
   }
 
-  playFeedback() {}
+  playFeedback() {
+    this.player.src = this.feedbackUrl;
+    this.player.play();
+  }
 
   playStimulus() {
+    this.player.src = this.stimulusUrl;
     this.player.play();
   }
 
@@ -135,7 +140,10 @@ export function plugin() {
     trial(display_element, trial) {
       clear(display_element);
       const taskUI = new TaskUI(display_element, trial.imageUrl);
-      const audioPlayer = new TBDAudioPlayer(trial.stimulusUrl);
+      const audioPlayer = new WebAudioPlayer(
+        trial.stimulusUrl,
+        trial.feedbackUrl
+      );
       new TaskController(
         taskUI,
         new TaskModel(
