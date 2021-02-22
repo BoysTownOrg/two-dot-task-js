@@ -3,6 +3,7 @@ import { TaskModel, Choice } from "../lib/TaskModel.js";
 class AudioPlayerStub {
   constructor() {
     this.feedbackPlayed_ = false;
+    this.timesFeedbackPlayed_ = 0;
   }
 
   feedbackPlayed() {
@@ -11,6 +12,7 @@ class AudioPlayerStub {
 
   playFeedback() {
     this.feedbackPlayed_ = true;
+    this.timesFeedbackPlayed_ += 1;
   }
 
   endStimulusPlayback() {
@@ -31,6 +33,10 @@ class AudioPlayerStub {
 
   updateTime() {
     this.observer.notifyThatPlaybackTimeHasUpdated();
+  }
+
+  timesFeedbackPlayed() {
+    return this.timesFeedbackPlayed_;
   }
 }
 
@@ -104,6 +110,13 @@ describe("TaskModel", () => {
   it("should not play feedback after choice is submitted when stimulus has not finished", function () {
     this.model.submit({ choice: Choice.first });
     expect(this.audioPlayer.feedbackPlayed()).toBeFalse();
+  });
+
+  it("should not play feedback twice after choice is submitted when stimulus has finished", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.first });
+    this.model.submit({ choice: Choice.first });
+    expect(this.audioPlayer.timesFeedbackPlayed()).toBe(1);
   });
 
   it("should notify that first choice has started playing when time", function () {
