@@ -3,6 +3,7 @@ import { TaskModel, Choice } from "../lib/TaskModel.js";
 class AudioPlayerStub {
   constructor() {
     this.feedbackPlayed_ = false;
+    this.stimulusPlayed_ = false;
     this.timesFeedbackPlayed_ = 0;
   }
 
@@ -13,6 +14,10 @@ class AudioPlayerStub {
   playFeedback() {
     this.feedbackPlayed_ = true;
     this.timesFeedbackPlayed_ += 1;
+  }
+
+  playStimulus() {
+    this.stimulusPlayed_ = true;
   }
 
   endStimulusPlayback() {
@@ -37,6 +42,10 @@ class AudioPlayerStub {
 
   timesFeedbackPlayed() {
     return this.timesFeedbackPlayed_;
+  }
+
+  stimulusPlayed() {
+    return this.stimulusPlayed_;
   }
 }
 
@@ -99,6 +108,11 @@ describe("TaskModel", () => {
         [Choice.second, { onset: 0.56, offset: 0.78 }],
       ])
     );
+  });
+
+  it("should play stimulus on start", function () {
+    this.model.start();
+    expect(this.audioPlayer.stimulusPlayed()).toBeTrue();
   });
 
   it("should play feedback after choice is submitted and stimulus has finished", function () {
