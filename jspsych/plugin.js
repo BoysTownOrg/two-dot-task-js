@@ -55,10 +55,10 @@ class TaskUI {
     adopt(parent, grid);
     const image = new Image();
     image.src = imageUrl;
-    window.addEventListener("load", (event) => {
+    image.onload = () => {
       image.height = image.naturalHeight / 4;
       image.width = image.naturalWidth / 4;
-    });
+    };
     image.style.gridRow = 1;
     image.style.gridColumn = "1 / 3";
     adopt(grid, image);
