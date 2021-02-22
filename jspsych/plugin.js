@@ -45,7 +45,7 @@ function clear(parent) {
 }
 
 class TaskUI {
-  constructor(parent) {
+  constructor(parent, imageUrl) {
     this.parent = parent;
     const grid = documentElement();
     grid.style.display = "grid";
@@ -53,16 +53,25 @@ class TaskUI {
     grid.style.gridTemplateRows = "repeat(2, 1fr)";
     grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
     adopt(parent, grid);
+    const image = new Image();
+    image.src = imageUrl;
+    window.addEventListener("load", (event) => {
+      image.height = image.naturalHeight / 4;
+      image.width = image.naturalWidth / 4;
+    });
+    image.style.gridRow = 1;
+    image.style.gridColumn = "1 / 3";
+    adopt(grid, image);
     this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridRow = 1;
-    this.firstDot.style.gridColumn = 0;
+    this.firstDot.style.gridRow = 2;
+    this.firstDot.style.gridColumn = 1;
     adopt(grid, this.firstDot);
     addClickEventListener(this.firstDot, (e) => {
       this.observer.notifyThatFirstDotHasBeenTouched();
     });
     this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridRow = 1;
-    this.secondDot.style.gridColumn = 0;
+    this.secondDot.style.gridRow = 2;
+    this.secondDot.style.gridColumn = 2;
     adopt(grid, this.secondDot);
     addClickEventListener(this.secondDot, (e) => {
       this.observer.notifyThatSecondDotHasBeenTouched();
@@ -125,12 +134,13 @@ export function plugin() {
   return {
     trial(display_element, trial) {
       clear(display_element);
+      const taskUI = new TaskUI(display_element, trial.imageUrl);
       const audioPlayer = new TBDAudioPlayer(trial.stimulusUrl);
       new TaskController(
-        new TaskUI(display_element),
+        taskUI,
         new TaskModel(
           audioPlayer,
-          new TaskPresenter(),
+          new TaskPresenter(taskUI),
           new Map([
             [
               Choice.first,
