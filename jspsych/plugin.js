@@ -140,34 +140,28 @@ export function plugin() {
     trial(display_element, trial) {
       clear(display_element);
       const taskUI = new TaskUI(display_element, trial.imageUrl);
-      const audioPlayer = new WebAudioPlayer(
-        trial.stimulusUrl,
-        trial.feedbackUrl
+      const model = new TaskModel(
+        new WebAudioPlayer(trial.stimulusUrl, trial.feedbackUrl),
+        new TaskPresenter(taskUI),
+        new Map([
+          [
+            Choice.first,
+            {
+              onset: trial.firstChoiceOnsetTimeSeconds,
+              offset: trial.firstChoiceOffsetTimeSeconds,
+            },
+          ],
+          [
+            Choice.second,
+            {
+              onset: trial.secondChoiceOnsetTimeSeconds,
+              offset: trial.secondChoiceOffsetTimeSeconds,
+            },
+          ],
+        ])
       );
-      new TaskController(
-        taskUI,
-        new TaskModel(
-          audioPlayer,
-          new TaskPresenter(taskUI),
-          new Map([
-            [
-              Choice.first,
-              {
-                onset: trial.firstChoiceOnsetTimeSeconds,
-                offset: trial.firstChoiceOffsetTimeSeconds,
-              },
-            ],
-            [
-              Choice.second,
-              {
-                onset: trial.secondChoiceOnsetTimeSeconds,
-                offset: trial.secondChoiceOffsetTimeSeconds,
-              },
-            ],
-          ])
-        )
-      );
-      audioPlayer.playStimulus();
+      new TaskController(taskUI, model);
+      model.start();
     },
     info: {
       parameters: {},
