@@ -95,6 +95,71 @@ jsPsych.plugins["image-audio-button-response"] = {
   },
 };
 
+jsPsych.plugins["image-audio-with-feedback-button-response"] = {
+  trial(display_element, trial) {
+    clear(display_element);
+    const grid = documentElement();
+    grid.style.display = "grid";
+    grid.style.gridTemplateColumns = "repeat(1, 1fr)";
+    grid.style.gridTemplateRows = "repeat(3, 1fr)";
+    grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
+    adopt(display_element, grid);
+    const image = new Image();
+    image.src = trial.imageUrl;
+    image.style.gridRow = 1;
+    image.style.gridColumn = 1;
+    adopt(grid, image);
+    const continueButtonContainer = documentElement();
+    continueButtonContainer.className = "jspsych-image-button-response-button";
+    continueButtonContainer.style.display = "inline-block";
+    continueButtonContainer.style.margin = `${pixelsString(8)} ${pixelsString(
+      0
+    )}`;
+    adopt(grid, continueButtonContainer);
+    continueButtonContainer.style.gridRow = 3;
+    continueButtonContainer.style.gridColumn = 1;
+    const feedbackButtonContainer = documentElement();
+    feedbackButtonContainer.className = "jspsych-image-button-response-button";
+    feedbackButtonContainer.style.display = "inline-block";
+    feedbackButtonContainer.style.margin = `${pixelsString(8)} ${pixelsString(
+      0
+    )}`;
+    adopt(grid, feedbackButtonContainer);
+    feedbackButtonContainer.style.gridRow = 2;
+    feedbackButtonContainer.style.gridColumn = 1;
+    const continueButton = document.createElement("button");
+    continueButton.className = "jspsych-btn";
+    continueButton.textContent = "Continue";
+    adopt(continueButtonContainer, continueButton);
+    addClickEventListener(continueButton, (e) => {
+      jsPsych.finishTrial();
+    });
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioContext = new AudioContext();
+    const player = document.createElement("audio");
+    const track = audioContext.createMediaElementSource(player);
+    track.connect(audioContext.destination);
+    player.src = trial.stimulusUrl;
+    player.play();
+    const feedbackPlayer = document.createElement("audio");
+    const feedbackTrack = audioContext.createMediaElementSource(feedbackPlayer);
+    feedbackTrack.connect(audioContext.destination);
+    feedbackPlayer.src = trial.feedbackUrl;
+    const feedbackButton = document.createElement("button");
+    feedbackButton.className = "jspsych-btn";
+    feedbackButton.textContent = "Feedback";
+    adopt(feedbackButtonContainer, feedbackButton);
+    continueButton.style.gridRow = 1;
+    continueButton.style.gridColumn = 1;
+    addClickEventListener(feedbackButton, (e) => {
+      feedbackPlayer.play();
+    });
+  },
+  info: {
+    parameters: {},
+  },
+};
+
 const twoDotPluginId = "two-dot";
 jsPsych.plugins[twoDotPluginId] = plugin();
 
@@ -133,6 +198,12 @@ jsPsych.init({
       stimulus_width: 500,
       choices: ["Continue"],
       prompt: "",
+    },
+    {
+      type: "image-audio-with-feedback-button-response",
+      stimulusUrl: "clock.wav",
+      feedbackUrl: "2A spoiled child is a brat.wav",
+      imageUrl: "clock.png",
     },
   ],
 });
