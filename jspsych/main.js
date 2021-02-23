@@ -27,41 +27,68 @@ function clear(parent) {
   }
 }
 
-jsPsych.plugins["image-audio-button-response"] = {
-  trial(display_element, trial) {
-    clear(display_element);
-    const grid = documentElement();
-    grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "repeat(1, 1fr)";
-    grid.style.gridTemplateRows = "repeat(2, 1fr)";
-    grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
-    adopt(display_element, grid);
-    const image = new Image();
-    image.src = trial.imageUrl;
-    image.style.gridRow = 1;
-    image.style.gridColumn = 1;
-    adopt(grid, image);
-    const buttonContainer = documentElement();
-    buttonContainer.className = "jspsych-image-button-response-button";
-    buttonContainer.style.display = "inline-block";
-    buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
-    adopt(grid, buttonContainer);
-    buttonContainer.style.gridRow = 2;
-    buttonContainer.style.gridColumn = 1;
-    const button = document.createElement("button");
-    button.className = "jspsych-btn";
-    button.textContent = "Continue";
-    adopt(buttonContainer, button);
-    addClickEventListener(button, (e) => {
-      jsPsych.finishTrial();
-    });
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioContext = new AudioContext();
+function startImageMultiAudioButtonResponseTrial(display_element, trial) {
+  clear(display_element);
+  const grid = documentElement();
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = "repeat(1, 1fr)";
+  grid.style.gridTemplateRows = "repeat(2, 1fr)";
+  grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
+  adopt(display_element, grid);
+  const image = new Image();
+  image.src = trial.imageUrl;
+  image.style.gridRow = 1;
+  image.style.gridColumn = 1;
+  adopt(grid, image);
+  const buttonContainer = documentElement();
+  buttonContainer.className = "jspsych-image-button-response-button";
+  buttonContainer.style.display = "inline-block";
+  buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
+  adopt(grid, buttonContainer);
+  buttonContainer.style.gridRow = 2;
+  buttonContainer.style.gridColumn = 1;
+  const button = document.createElement("button");
+  button.className = "jspsych-btn";
+  button.textContent = "Continue";
+  adopt(buttonContainer, button);
+  addClickEventListener(button, (e) => {
+    jsPsych.finishTrial();
+  });
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioContext = new AudioContext();
+  const players = [];
+  let playersReadyToPlay = 0;
+  trial.stimulusUrl.forEach((url) => {
     const player = document.createElement("audio");
     const track = audioContext.createMediaElementSource(player);
     track.connect(audioContext.destination);
-    player.src = trial.stimulusUrl;
-    player.play();
+    player.src = url;
+    players.push(player);
+    player.oncanplay = (e) => {
+      playersReadyToPlay += 1;
+      if (playersReadyToPlay === trial.stimulusUrl.length)
+        players.forEach((p) => {
+          p.play();
+        });
+    };
+  });
+}
+
+jsPsych.plugins["image-multi-audio-button-response"] = {
+  trial(display_element, trial) {
+    startImageMultiAudioButtonResponseTrial(display_element, trial);
+  },
+  info: {
+    parameters: {},
+  },
+};
+
+jsPsych.plugins["image-audio-button-response"] = {
+  trial(display_element, trial) {
+    startImageMultiAudioButtonResponseTrial(display_element, {
+      stimulusUrl: [trial.stimulusUrl],
+      imageUrl: trial.imageUrl,
+    });
   },
   info: {
     parameters: {},
@@ -84,6 +111,11 @@ jsPsych.init({
       type: "image-audio-button-response",
       stimulusUrl: "clock.wav",
       imageUrl: "clock.png",
+    },
+    {
+      type: "image-multi-audio-button-response",
+      stimulusUrl: ["binnip.wav", "clock.wav"],
+      imageUrl: "binnip.png",
     },
     {
       type: twoDotPluginId,
