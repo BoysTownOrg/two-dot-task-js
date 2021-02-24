@@ -52,8 +52,7 @@ class TaskUI {
     utility.adopt(grid, buttonContainer);
     buttonContainer.style.gridRow = 3;
     buttonContainer.style.gridColumn = 2;
-    const button = document.createElement("button");
-    button.className = "jspsych-btn";
+    const button = utility.buttonElement();
     button.textContent = "Continue";
     utility.adopt(buttonContainer, button);
     utility.addClickEventListener(button, (e) => {

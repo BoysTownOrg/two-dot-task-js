@@ -19,8 +19,7 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   utility.adopt(grid, buttonContainer);
   buttonContainer.style.gridRow = 2;
   buttonContainer.style.gridColumn = 1;
-  const button = document.createElement("button");
-  button.className = "jspsych-btn";
+  const button = utility.buttonElement();
   button.textContent = "Continue";
   utility.adopt(buttonContainer, button);
   utility.addClickEventListener(button, (e) => {
@@ -85,8 +84,7 @@ jsPsych.plugins["image-audio-with-feedback-button-response"] = {
     utility.adopt(grid, feedbackButtonContainer);
     feedbackButtonContainer.style.gridRow = 2;
     feedbackButtonContainer.style.gridColumn = 1;
-    const continueButton = document.createElement("button");
-    continueButton.className = "jspsych-btn";
+    const continueButton = utility.buttonElement();
     continueButton.textContent = "Continue";
     utility.adopt(continueButtonContainer, continueButton);
     utility.addClickEventListener(continueButton, (e) => {
@@ -103,8 +101,7 @@ jsPsych.plugins["image-audio-with-feedback-button-response"] = {
     const feedbackTrack = audioContext.createMediaElementSource(feedbackPlayer);
     feedbackTrack.connect(audioContext.destination);
     feedbackPlayer.src = trial.feedbackUrl;
-    const feedbackButton = document.createElement("button");
-    feedbackButton.className = "jspsych-btn";
+    const feedbackButton = utility.buttonElement();
     feedbackButton.textContent = "Feedback";
     utility.adopt(feedbackButtonContainer, feedbackButton);
     continueButton.style.gridRow = 1;

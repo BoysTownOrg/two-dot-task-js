@@ -45,3 +45,9 @@ export function buttonContainerElement() {
   buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
   return buttonContainer;
 }
+
+export function buttonElement() {
+  const button = document.createElement("button");
+  button.className = "jspsych-btn";
+  return button;
+}
