@@ -7,6 +7,11 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   utility.adopt(display_element, grid);
   const image = new Image();
   image.src = trial.imageUrl;
+  image.onload = () => {
+    image.width = trial.imageWidth;
+    image.height =
+      (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
+  };
   image.style.gridRow = 1;
   image.style.gridColumn = 1;
   utility.adopt(grid, image);
@@ -49,6 +54,7 @@ jsPsych.plugins["image-audio-button-response"] = {
     startImageMultiAudioButtonResponseTrial(display_element, {
       stimulusUrl: [trial.stimulusUrl],
       imageUrl: trial.imageUrl,
+      imageWidth: trial.imageWidth,
     });
   },
   info: {
@@ -113,11 +119,13 @@ jsPsych.init({
       type: "image-audio-button-response",
       stimulusUrl: "clock.wav",
       imageUrl: "clock.png",
+      imageWidth: 500,
     },
     {
       type: "image-multi-audio-button-response",
       stimulusUrl: ["binnip.wav", "clock.wav"],
       imageUrl: "binnip.png",
+      imageWidth: 500,
     },
     {
       type: twoDotPluginId,
