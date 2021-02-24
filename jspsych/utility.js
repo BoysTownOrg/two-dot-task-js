@@ -6,8 +6,12 @@ export function addClickEventListener(element, f) {
   addEventListener(element, "click", f);
 }
 
+function createElement(what) {
+  return document.createElement(what);
+}
+
 export function divElement() {
-  return document.createElement("div");
+  return createElement("div");
 }
 
 export function pixelsString(a) {
@@ -47,7 +51,7 @@ export function buttonContainerElement() {
 }
 
 export function buttonElement() {
-  const button = document.createElement("button");
+  const button = createElement("button");
   button.className = "jspsych-btn";
   return button;
 }
@@ -55,7 +59,7 @@ export function buttonElement() {
 export function audioPlayer(url) {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   const audioContext = new AudioContext();
-  const player = document.createElement("audio");
+  const player = createElement("audio");
   const track = audioContext.createMediaElementSource(player);
   track.connect(audioContext.destination);
   player.src = url;
