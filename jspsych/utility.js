@@ -51,3 +51,12 @@ export function buttonElement() {
   button.className = "jspsych-btn";
   return button;
 }
+
+export function audioPlayer() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioContext = new AudioContext();
+  const player = document.createElement("audio");
+  const track = audioContext.createMediaElementSource(player);
+  track.connect(audioContext.destination);
+  return player;
+}

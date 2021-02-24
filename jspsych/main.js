@@ -25,14 +25,10 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   utility.addClickEventListener(button, (e) => {
     jsPsych.finishTrial();
   });
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  const audioContext = new AudioContext();
   const players = [];
   let playersReadyToPlay = 0;
   trial.stimulusUrl.forEach((url) => {
-    const player = document.createElement("audio");
-    const track = audioContext.createMediaElementSource(player);
-    track.connect(audioContext.destination);
+    const player = utility.audioPlayer();
     player.src = url;
     players.push(player);
     player.oncanplay = (e) => {
@@ -90,16 +86,10 @@ jsPsych.plugins["image-audio-with-feedback-button-response"] = {
     utility.addClickEventListener(continueButton, (e) => {
       jsPsych.finishTrial();
     });
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioContext = new AudioContext();
-    const player = document.createElement("audio");
-    const track = audioContext.createMediaElementSource(player);
-    track.connect(audioContext.destination);
+    const player = utility.audioPlayer();
     player.src = trial.stimulusUrl;
     player.play();
-    const feedbackPlayer = document.createElement("audio");
-    const feedbackTrack = audioContext.createMediaElementSource(feedbackPlayer);
-    feedbackTrack.connect(audioContext.destination);
+    const feedbackPlayer = utility.audioPlayer();
     feedbackPlayer.src = trial.feedbackUrl;
     const feedbackButton = utility.buttonElement();
     feedbackButton.textContent = "Feedback";

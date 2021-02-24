@@ -83,17 +83,13 @@ class TaskUI {
 
 class WebAudioPlayer {
   constructor(stimulusUrl, feedbackUrl) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioContext = new AudioContext();
-    this.player = document.createElement("audio");
+    this.player = utility.audioPlayer();
     this.player.ontimeupdate = (event) => {
       this.observer.notifyThatPlaybackTimeHasUpdated();
     };
     this.player.onended = (event) => {
       this.observer.notifyThatPlaybackHasEnded();
     };
-    const track = audioContext.createMediaElementSource(this.player);
-    track.connect(audioContext.destination);
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
   }
