@@ -83,7 +83,7 @@ class TaskUI {
 
 class WebAudioPlayer {
   constructor(stimulusUrl, feedbackUrl) {
-    this.player = utility.audioPlayer();
+    this.player = utility.audioPlayer(stimulusUrl);
     this.player.ontimeupdate = (event) => {
       this.observer.notifyThatPlaybackTimeHasUpdated();
     };

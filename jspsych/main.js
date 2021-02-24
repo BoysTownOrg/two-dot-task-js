@@ -28,8 +28,7 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   const players = [];
   let playersReadyToPlay = 0;
   trial.stimulusUrl.forEach((url) => {
-    const player = utility.audioPlayer();
-    player.src = url;
+    const player = utility.audioPlayer(url);
     players.push(player);
     player.oncanplay = (e) => {
       playersReadyToPlay += 1;
@@ -86,11 +85,9 @@ jsPsych.plugins["image-audio-with-feedback-button-response"] = {
     utility.addClickEventListener(continueButton, (e) => {
       jsPsych.finishTrial();
     });
-    const player = utility.audioPlayer();
-    player.src = trial.stimulusUrl;
+    const player = utility.audioPlayer(trial.stimulusUrl);
     player.play();
-    const feedbackPlayer = utility.audioPlayer();
-    feedbackPlayer.src = trial.feedbackUrl;
+    const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
     const feedbackButton = utility.buttonElement();
     feedbackButton.textContent = "Feedback";
     utility.adopt(feedbackButtonContainer, feedbackButton);

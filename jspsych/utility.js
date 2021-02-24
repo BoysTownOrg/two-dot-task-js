@@ -52,11 +52,12 @@ export function buttonElement() {
   return button;
 }
 
-export function audioPlayer() {
+export function audioPlayer(url) {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   const audioContext = new AudioContext();
   const player = document.createElement("audio");
   const track = audioContext.createMediaElementSource(player);
   track.connect(audioContext.destination);
+  player.src = url;
   return player;
 }
