@@ -25,6 +25,15 @@ export function clear(parent) {
   }
 }
 
-export function gridTemplate(n) {
+function gridTemplate(n) {
   return `repeat(${n}, 1fr)`;
+}
+
+export function grid(rows, columns) {
+  const grid_ = divElement();
+  grid_.style.display = "grid";
+  grid_.style.gridTemplateRows = gridTemplate(rows);
+  grid_.style.gridTemplateColumns = gridTemplate(columns);
+  grid_.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
+  return grid_;
 }

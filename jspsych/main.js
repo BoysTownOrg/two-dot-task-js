@@ -3,13 +3,7 @@ import * as utility from "./utility.js";
 
 function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   utility.clear(display_element);
-  const grid = utility.divElement();
-  grid.style.display = "grid";
-  grid.style.gridTemplateColumns = utility.gridTemplate(1);
-  grid.style.gridTemplateRows = utility.gridTemplate(2);
-  grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
-    20
-  )}`;
+  const grid = utility.grid(2, 1);
   utility.adopt(display_element, grid);
   const image = new Image();
   image.src = trial.imageUrl;
@@ -76,13 +70,7 @@ jsPsych.plugins["image-audio-button-response"] = {
 jsPsych.plugins["image-audio-with-feedback-button-response"] = {
   trial(display_element, trial) {
     utility.clear(display_element);
-    const grid = utility.divElement();
-    grid.style.display = "grid";
-    grid.style.gridTemplateColumns = utility.gridTemplate(1);
-    grid.style.gridTemplateRows = utility.gridTemplate(3);
-    grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
-      20
-    )}`;
+    const grid = utility.grid(3, 1);
     utility.adopt(display_element, grid);
     const image = new Image();
     image.src = trial.imageUrl;

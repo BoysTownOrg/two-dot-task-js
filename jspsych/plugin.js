@@ -23,13 +23,7 @@ function circleElementWithColor(color) {
 class TaskUI {
   constructor(parent, imageUrl) {
     this.parent = parent;
-    const grid = utility.divElement();
-    grid.style.display = "grid";
-    grid.style.gridTemplateColumns = utility.gridTemplate(3);
-    grid.style.gridTemplateRows = utility.gridTemplate(3);
-    grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
-      20
-    )}`;
+    const grid = utility.grid(3, 3);
     utility.adopt(parent, grid);
     const image = new Image();
     image.src = imageUrl;
