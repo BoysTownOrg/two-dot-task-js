@@ -25,8 +25,8 @@ class TaskUI {
     this.parent = parent;
     const grid = utility.divElement();
     grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "repeat(3, 1fr)";
-    grid.style.gridTemplateRows = "repeat(3, 1fr)";
+    grid.style.gridTemplateColumns = utility.gridTemplate(3);
+    grid.style.gridTemplateRows = utility.gridTemplate(3);
     grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
       20
     )}`;
@@ -38,7 +38,7 @@ class TaskUI {
       image.width = image.naturalWidth / 4;
     };
     image.style.gridRow = 1;
-    image.style.gridColumn = 2;
+    image.style.gridColumn = "1 / 4";
     utility.adopt(grid, image);
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.gridRow = 2;

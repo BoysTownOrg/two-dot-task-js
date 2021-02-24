@@ -5,8 +5,8 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   utility.clear(display_element);
   const grid = utility.divElement();
   grid.style.display = "grid";
-  grid.style.gridTemplateColumns = "repeat(1, 1fr)";
-  grid.style.gridTemplateRows = "repeat(2, 1fr)";
+  grid.style.gridTemplateColumns = utility.gridTemplate(1);
+  grid.style.gridTemplateRows = utility.gridTemplate(2);
   grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
     20
   )}`;
@@ -78,8 +78,8 @@ jsPsych.plugins["image-audio-with-feedback-button-response"] = {
     utility.clear(display_element);
     const grid = utility.divElement();
     grid.style.display = "grid";
-    grid.style.gridTemplateColumns = "repeat(1, 1fr)";
-    grid.style.gridTemplateRows = "repeat(3, 1fr)";
+    grid.style.gridTemplateColumns = utility.gridTemplate(1);
+    grid.style.gridTemplateRows = utility.gridTemplate(3);
     grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
       20
     )}`;

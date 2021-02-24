@@ -24,3 +24,7 @@ export function clear(parent) {
     parent.removeChild(parent.lastChild);
   }
 }
+
+export function gridTemplate(n) {
+  return `repeat(${n}, 1fr)`;
+}
