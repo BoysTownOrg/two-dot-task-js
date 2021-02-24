@@ -1,57 +1,35 @@
 import { plugin } from "./plugin.js";
-
-function addEventListener(element, event, f) {
-  element.addEventListener(event, f);
-}
-
-function addClickEventListener(element, f) {
-  addEventListener(element, "click", f);
-}
-
-function documentElement() {
-  return document.createElement("div");
-}
-
-function pixelsString(a) {
-  return `${a}px`;
-}
-
-function adopt(parent, child) {
-  parent.append(child);
-}
-
-function clear(parent) {
-  // https://stackoverflow.com/a/3955238
-  while (parent.firstChild) {
-    parent.removeChild(parent.lastChild);
-  }
-}
+import * as utility from "./utility.js";
 
 function startImageMultiAudioButtonResponseTrial(display_element, trial) {
-  clear(display_element);
-  const grid = documentElement();
+  utility.clear(display_element);
+  const grid = utility.divElement();
   grid.style.display = "grid";
   grid.style.gridTemplateColumns = "repeat(1, 1fr)";
   grid.style.gridTemplateRows = "repeat(2, 1fr)";
-  grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
-  adopt(display_element, grid);
+  grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
+    20
+  )}`;
+  utility.adopt(display_element, grid);
   const image = new Image();
   image.src = trial.imageUrl;
   image.style.gridRow = 1;
   image.style.gridColumn = 1;
-  adopt(grid, image);
-  const buttonContainer = documentElement();
+  utility.adopt(grid, image);
+  const buttonContainer = utility.divElement();
   buttonContainer.className = "jspsych-image-button-response-button";
   buttonContainer.style.display = "inline-block";
-  buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
-  adopt(grid, buttonContainer);
+  buttonContainer.style.margin = `${utility.pixelsString(
+    8
+  )} ${utility.pixelsString(0)}`;
+  utility.adopt(grid, buttonContainer);
   buttonContainer.style.gridRow = 2;
   buttonContainer.style.gridColumn = 1;
   const button = document.createElement("button");
   button.className = "jspsych-btn";
   button.textContent = "Continue";
-  adopt(buttonContainer, button);
-  addClickEventListener(button, (e) => {
+  utility.adopt(buttonContainer, button);
+  utility.addClickEventListener(button, (e) => {
     jsPsych.finishTrial();
   });
   const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -97,41 +75,43 @@ jsPsych.plugins["image-audio-button-response"] = {
 
 jsPsych.plugins["image-audio-with-feedback-button-response"] = {
   trial(display_element, trial) {
-    clear(display_element);
-    const grid = documentElement();
+    utility.clear(display_element);
+    const grid = utility.divElement();
     grid.style.display = "grid";
     grid.style.gridTemplateColumns = "repeat(1, 1fr)";
     grid.style.gridTemplateRows = "repeat(3, 1fr)";
-    grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
-    adopt(display_element, grid);
+    grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
+      20
+    )}`;
+    utility.adopt(display_element, grid);
     const image = new Image();
     image.src = trial.imageUrl;
     image.style.gridRow = 1;
     image.style.gridColumn = 1;
-    adopt(grid, image);
-    const continueButtonContainer = documentElement();
+    utility.adopt(grid, image);
+    const continueButtonContainer = utility.divElement();
     continueButtonContainer.className = "jspsych-image-button-response-button";
     continueButtonContainer.style.display = "inline-block";
-    continueButtonContainer.style.margin = `${pixelsString(8)} ${pixelsString(
-      0
-    )}`;
-    adopt(grid, continueButtonContainer);
+    continueButtonContainer.style.margin = `${utility.pixelsString(
+      8
+    )} ${utility.pixelsString(0)}`;
+    utility.adopt(grid, continueButtonContainer);
     continueButtonContainer.style.gridRow = 3;
     continueButtonContainer.style.gridColumn = 1;
-    const feedbackButtonContainer = documentElement();
+    const feedbackButtonContainer = utility.divElement();
     feedbackButtonContainer.className = "jspsych-image-button-response-button";
     feedbackButtonContainer.style.display = "inline-block";
-    feedbackButtonContainer.style.margin = `${pixelsString(8)} ${pixelsString(
-      0
-    )}`;
-    adopt(grid, feedbackButtonContainer);
+    feedbackButtonContainer.style.margin = `${utility.pixelsString(
+      8
+    )} ${utility.pixelsString(0)}`;
+    utility.adopt(grid, feedbackButtonContainer);
     feedbackButtonContainer.style.gridRow = 2;
     feedbackButtonContainer.style.gridColumn = 1;
     const continueButton = document.createElement("button");
     continueButton.className = "jspsych-btn";
     continueButton.textContent = "Continue";
-    adopt(continueButtonContainer, continueButton);
-    addClickEventListener(continueButton, (e) => {
+    utility.adopt(continueButtonContainer, continueButton);
+    utility.addClickEventListener(continueButton, (e) => {
       jsPsych.finishTrial();
     });
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -148,10 +128,10 @@ jsPsych.plugins["image-audio-with-feedback-button-response"] = {
     const feedbackButton = document.createElement("button");
     feedbackButton.className = "jspsych-btn";
     feedbackButton.textContent = "Feedback";
-    adopt(feedbackButtonContainer, feedbackButton);
+    utility.adopt(feedbackButtonContainer, feedbackButton);
     continueButton.style.gridRow = 1;
     continueButton.style.gridColumn = 1;
-    addClickEventListener(feedbackButton, (e) => {
+    utility.addClickEventListener(feedbackButton, (e) => {
       feedbackPlayer.play();
     });
   },

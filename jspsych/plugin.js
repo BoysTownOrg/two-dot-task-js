@@ -1,58 +1,36 @@
 import { TaskModel, Choice } from "../lib/TaskModel.js";
 import { TaskController } from "../lib/TaskController.js";
 import { TaskPresenter } from "../lib/TaskPresenter.js";
-
-function addEventListener(element, event, f) {
-  element.addEventListener(event, f);
-}
-
-function addClickEventListener(element, f) {
-  addEventListener(element, "click", f);
-}
-
-function documentElement() {
-  return document.createElement("div");
-}
-
-function pixelsString(a) {
-  return `${a}px`;
-}
+import * as utility from "./utility.js";
 
 function circleElementWithColor(color) {
-  const circle = documentElement();
+  const circle = utility.divElement();
   const diameterPixels = 100;
-  circle.style.height = pixelsString(diameterPixels);
-  circle.style.width = pixelsString(diameterPixels);
+  circle.style.height = utility.pixelsString(diameterPixels);
+  circle.style.width = utility.pixelsString(diameterPixels);
   const borderWidthPixels = 2;
-  circle.style.borderRadius = pixelsString(
+  circle.style.borderRadius = utility.pixelsString(
     diameterPixels / 2 + borderWidthPixels
   );
-  circle.style.border = `${pixelsString(borderWidthPixels)} solid black`;
+  circle.style.border = `${utility.pixelsString(
+    borderWidthPixels
+  )} solid black`;
   circle.style.margin = "auto";
   circle.style.backgroundColor = color;
   return circle;
 }
 
-function adopt(parent, child) {
-  parent.append(child);
-}
-
-function clear(parent) {
-  // https://stackoverflow.com/a/3955238
-  while (parent.firstChild) {
-    parent.removeChild(parent.lastChild);
-  }
-}
-
 class TaskUI {
   constructor(parent, imageUrl) {
     this.parent = parent;
-    const grid = documentElement();
+    const grid = utility.divElement();
     grid.style.display = "grid";
     grid.style.gridTemplateColumns = "repeat(3, 1fr)";
     grid.style.gridTemplateRows = "repeat(3, 1fr)";
-    grid.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
-    adopt(parent, grid);
+    grid.style.gridGap = `${utility.pixelsString(20)} ${utility.pixelsString(
+      20
+    )}`;
+    utility.adopt(parent, grid);
     const image = new Image();
     image.src = imageUrl;
     image.onload = () => {
@@ -61,33 +39,35 @@ class TaskUI {
     };
     image.style.gridRow = 1;
     image.style.gridColumn = 2;
-    adopt(grid, image);
+    utility.adopt(grid, image);
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.gridRow = 2;
     this.firstDot.style.gridColumn = 1;
-    adopt(grid, this.firstDot);
-    addClickEventListener(this.firstDot, (e) => {
+    utility.adopt(grid, this.firstDot);
+    utility.addClickEventListener(this.firstDot, (e) => {
       this.observer.notifyThatFirstDotHasBeenTouched();
     });
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.gridRow = 2;
     this.secondDot.style.gridColumn = 3;
-    adopt(grid, this.secondDot);
-    addClickEventListener(this.secondDot, (e) => {
+    utility.adopt(grid, this.secondDot);
+    utility.addClickEventListener(this.secondDot, (e) => {
       this.observer.notifyThatSecondDotHasBeenTouched();
     });
-    const buttonContainer = documentElement();
+    const buttonContainer = utility.divElement();
     buttonContainer.className = "jspsych-image-button-response-button";
     buttonContainer.style.display = "inline-block";
-    buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
-    adopt(grid, buttonContainer);
+    buttonContainer.style.margin = `${utility.pixelsString(
+      8
+    )} ${utility.pixelsString(0)}`;
+    utility.adopt(grid, buttonContainer);
     buttonContainer.style.gridRow = 3;
     buttonContainer.style.gridColumn = 2;
     const button = document.createElement("button");
     button.className = "jspsych-btn";
     button.textContent = "Continue";
-    adopt(buttonContainer, button);
-    addClickEventListener(button, (e) => {
+    utility.adopt(buttonContainer, button);
+    utility.addClickEventListener(button, (e) => {
       jsPsych.finishTrial();
     });
   }
@@ -152,7 +132,7 @@ class WebAudioPlayer {
 export function plugin() {
   return {
     trial(display_element, trial) {
-      clear(display_element);
+      utility.clear(display_element);
       const taskUI = new TaskUI(display_element, trial.imageUrl);
       const model = new TaskModel(
         new WebAudioPlayer(trial.stimulusUrl, trial.feedbackUrl),
