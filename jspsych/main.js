@@ -10,12 +10,7 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   image.style.gridRow = 1;
   image.style.gridColumn = 1;
   utility.adopt(grid, image);
-  const buttonContainer = utility.divElement();
-  buttonContainer.className = "jspsych-image-button-response-button";
-  buttonContainer.style.display = "inline-block";
-  buttonContainer.style.margin = `${utility.pixelsString(
-    8
-  )} ${utility.pixelsString(0)}`;
+  const buttonContainer = utility.buttonContainerElement();
   utility.adopt(grid, buttonContainer);
   buttonContainer.style.gridRow = 2;
   buttonContainer.style.gridColumn = 1;
