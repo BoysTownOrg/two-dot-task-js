@@ -23,7 +23,7 @@ function circleElementWithColor(color) {
 class TaskUI {
   constructor(parent, imageUrl) {
     this.parent = parent;
-    const grid = utility.grid(3, 3);
+    const grid = utility.gridElement(3, 3);
     utility.adopt(parent, grid);
     const image = new Image();
     image.src = imageUrl;
@@ -48,12 +48,7 @@ class TaskUI {
     utility.addClickEventListener(this.secondDot, (e) => {
       this.observer.notifyThatSecondDotHasBeenTouched();
     });
-    const buttonContainer = utility.divElement();
-    buttonContainer.className = "jspsych-image-button-response-button";
-    buttonContainer.style.display = "inline-block";
-    buttonContainer.style.margin = `${utility.pixelsString(
-      8
-    )} ${utility.pixelsString(0)}`;
+    const buttonContainer = utility.buttonContainerElement();
     utility.adopt(grid, buttonContainer);
     buttonContainer.style.gridRow = 3;
     buttonContainer.style.gridColumn = 2;

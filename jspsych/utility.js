@@ -29,11 +29,19 @@ function gridTemplate(n) {
   return `repeat(${n}, 1fr)`;
 }
 
-export function grid(rows, columns) {
+export function gridElement(rows, columns) {
   const grid_ = divElement();
   grid_.style.display = "grid";
   grid_.style.gridTemplateRows = gridTemplate(rows);
   grid_.style.gridTemplateColumns = gridTemplate(columns);
   grid_.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
   return grid_;
+}
+
+export function buttonContainerElement() {
+  const buttonContainer = divElement();
+  buttonContainer.className = "jspsych-image-button-response-button";
+  buttonContainer.style.display = "inline-block";
+  buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
+  return buttonContainer;
 }

@@ -3,7 +3,7 @@ import * as utility from "./utility.js";
 
 function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   utility.clear(display_element);
-  const grid = utility.grid(2, 1);
+  const grid = utility.gridElement(2, 1);
   utility.adopt(display_element, grid);
   const image = new Image();
   image.src = trial.imageUrl;
@@ -70,28 +70,18 @@ jsPsych.plugins["image-audio-button-response"] = {
 jsPsych.plugins["image-audio-with-feedback-button-response"] = {
   trial(display_element, trial) {
     utility.clear(display_element);
-    const grid = utility.grid(3, 1);
+    const grid = utility.gridElement(3, 1);
     utility.adopt(display_element, grid);
     const image = new Image();
     image.src = trial.imageUrl;
     image.style.gridRow = 1;
     image.style.gridColumn = 1;
     utility.adopt(grid, image);
-    const continueButtonContainer = utility.divElement();
-    continueButtonContainer.className = "jspsych-image-button-response-button";
-    continueButtonContainer.style.display = "inline-block";
-    continueButtonContainer.style.margin = `${utility.pixelsString(
-      8
-    )} ${utility.pixelsString(0)}`;
+    const continueButtonContainer = utility.buttonContainerElement();
     utility.adopt(grid, continueButtonContainer);
     continueButtonContainer.style.gridRow = 3;
     continueButtonContainer.style.gridColumn = 1;
-    const feedbackButtonContainer = utility.divElement();
-    feedbackButtonContainer.className = "jspsych-image-button-response-button";
-    feedbackButtonContainer.style.display = "inline-block";
-    feedbackButtonContainer.style.margin = `${utility.pixelsString(
-      8
-    )} ${utility.pixelsString(0)}`;
+    const feedbackButtonContainer = utility.buttonContainerElement();
     utility.adopt(grid, feedbackButtonContainer);
     feedbackButtonContainer.style.gridRow = 2;
     feedbackButtonContainer.style.gridColumn = 1;
