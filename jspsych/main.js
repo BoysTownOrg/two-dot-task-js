@@ -21,21 +21,24 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   buttonContainer.style.gridColumn = 1;
   const button = utility.buttonElement();
   button.textContent = "Continue";
+  button.style.visibility = "hidden";
   utility.adopt(buttonContainer, button);
   utility.addClickEventListener(button, (e) => {
     jsPsych.finishTrial();
   });
-  const players = [];
+  const players = trial.stimulusUrl.map((url) => utility.audioPlayer(url));
   let playersReadyToPlay = 0;
-  trial.stimulusUrl.forEach((url) => {
-    const player = utility.audioPlayer(url);
-    players.push(player);
-    player.oncanplay = (e) => {
+  let playersFinished = 0;
+  players.forEach((player) => {
+    player.onended = () => {
+      playersFinished += 1;
+      if (playersFinished === trial.stimulusUrl.length)
+        button.style.visibility = "visible";
+    };
+    player.oncanplay = () => {
       playersReadyToPlay += 1;
       if (playersReadyToPlay === trial.stimulusUrl.length)
-        players.forEach((p) => {
-          p.play();
-        });
+        players.forEach((p) => p.play());
     };
   });
 }
