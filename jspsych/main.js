@@ -1,7 +1,7 @@
 import { plugin } from "./plugin.js";
 import * as utility from "./utility.js";
 
-function startImageMultiAudioButtonResponseTrial(display_element, trial) {
+function startImageAudioWithNoiseButtonResponseTrial(display_element, trial) {
   utility.clear(display_element);
   const grid = utility.gridElement(2, 1);
   utility.adopt(display_element, grid);
@@ -26,26 +26,60 @@ function startImageMultiAudioButtonResponseTrial(display_element, trial) {
   utility.addClickEventListener(button, (e) => {
     jsPsych.finishTrial();
   });
-  const players = trial.stimulusUrl.map((url) => utility.audioPlayer(url));
+  const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
+  const noisePlayer = utility.audioPlayer(trial.noiseUrl);
+  noisePlayer.volume = 0.3;
   let playersReadyToPlay = 0;
-  let playersFinished = 0;
-  players.forEach((player) => {
-    player.onended = () => {
-      playersFinished += 1;
-      if (playersFinished === trial.stimulusUrl.length)
-        button.style.visibility = "visible";
-    };
-    player.oncanplay = () => {
-      playersReadyToPlay += 1;
-      if (playersReadyToPlay === trial.stimulusUrl.length)
-        players.forEach((p) => p.play());
-    };
+  stimulusPlayer.onended = () => {
+    noisePlayer.pause();
+    button.style.visibility = "visible";
+  };
+  const players = [stimulusPlayer, noisePlayer];
+  players.forEach(
+    (player) =>
+      (player.oncanplay = () => {
+        playersReadyToPlay += 1;
+        if (playersReadyToPlay === players.length)
+          players.forEach((p) => p.play());
+      })
+  );
+}
+
+function startImageAudioButtonResponseTrial(display_element, trial) {
+  utility.clear(display_element);
+  const grid = utility.gridElement(2, 1);
+  utility.adopt(display_element, grid);
+  const image = new Image();
+  image.src = trial.imageUrl;
+  image.onload = () => {
+    image.width = trial.imageWidth;
+    image.height =
+      (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
+  };
+  image.style.gridRow = 1;
+  image.style.gridColumn = 1;
+  utility.adopt(grid, image);
+  const buttonContainer = utility.buttonContainerElement();
+  utility.adopt(grid, buttonContainer);
+  buttonContainer.style.gridRow = 2;
+  buttonContainer.style.gridColumn = 1;
+  const button = utility.buttonElement();
+  button.textContent = "Continue";
+  button.style.visibility = "hidden";
+  utility.adopt(buttonContainer, button);
+  utility.addClickEventListener(button, (e) => {
+    jsPsych.finishTrial();
   });
+  const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
+  stimulusPlayer.onended = () => {
+    button.style.visibility = "visible";
+  };
+  stimulusPlayer.play();
 }
 
 jsPsych.plugins["image-multi-audio-button-response"] = {
   trial(display_element, trial) {
-    startImageMultiAudioButtonResponseTrial(display_element, trial);
+    startImageAudioWithNoiseButtonResponseTrial(display_element, trial);
   },
   info: {
     parameters: {},
@@ -54,11 +88,7 @@ jsPsych.plugins["image-multi-audio-button-response"] = {
 
 jsPsych.plugins["image-audio-button-response"] = {
   trial(display_element, trial) {
-    startImageMultiAudioButtonResponseTrial(display_element, {
-      stimulusUrl: [trial.stimulusUrl],
-      imageUrl: trial.imageUrl,
-      imageWidth: trial.imageWidth,
-    });
+    startImageAudioButtonResponseTrial(display_element, trial);
   },
   info: {
     parameters: {},
@@ -126,7 +156,8 @@ jsPsych.init({
     },
     {
       type: "image-multi-audio-button-response",
-      stimulusUrl: ["binnip.wav", "clock.wav"],
+      stimulusUrl: "binnip.wav",
+      noiseUrl: "SSN_longB.wav",
       imageUrl: "binnip.png",
       imageWidth: 500,
     },
