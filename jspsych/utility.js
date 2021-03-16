@@ -60,6 +60,7 @@ export function audioPlayer(url) {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   const audioContext = new AudioContext();
   const player = createElement("audio");
+  player.crossOrigin = "anonymous";
   const track = audioContext.createMediaElementSource(player);
   track.connect(audioContext.destination);
   player.src = url;
