@@ -29,20 +29,12 @@ function startImageAudioWithNoiseButtonResponseTrial(display_element, trial) {
   const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
   const noisePlayer = utility.audioPlayer(trial.noiseUrl);
   noisePlayer.volume = 0.3;
-  let playersReadyToPlay = 0;
   stimulusPlayer.onended = () => {
     noisePlayer.pause();
     button.style.visibility = "visible";
   };
-  const players = [stimulusPlayer, noisePlayer];
-  players.forEach(
-    (player) =>
-      (player.oncanplay = () => {
-        playersReadyToPlay += 1;
-        if (playersReadyToPlay === players.length)
-          players.forEach((p) => p.play());
-      })
-  );
+  noisePlayer.onplaying = () => stimulusPlayer.play();
+  noisePlayer.play();
 }
 
 function startImageAudioButtonResponseTrial(display_element, trial) {
@@ -67,9 +59,7 @@ function startImageAudioButtonResponseTrial(display_element, trial) {
   button.textContent = "Continue";
   button.style.visibility = "hidden";
   utility.adopt(buttonContainer, button);
-  utility.addClickEventListener(button, (e) => {
-    jsPsych.finishTrial();
-  });
+  utility.addClickEventListener(button, () => jsPsych.finishTrial());
   const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
   stimulusPlayer.onended = () => {
     button.style.visibility = "visible";
@@ -115,21 +105,23 @@ jsPsych.plugins["image-audio-with-feedback-button-response"] = {
     feedbackButtonContainer.style.gridColumn = 1;
     const continueButton = utility.buttonElement();
     continueButton.textContent = "Continue";
+    continueButton.style.visibility = "hidden";
     utility.adopt(continueButtonContainer, continueButton);
-    utility.addClickEventListener(continueButton, (e) => {
-      jsPsych.finishTrial();
-    });
+    utility.addClickEventListener(continueButton, () => jsPsych.finishTrial());
     const player = utility.audioPlayer(trial.stimulusUrl);
     player.play();
     const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
     const feedbackButton = utility.buttonElement();
     feedbackButton.textContent = "Feedback";
+    feedbackButton.style.visibility = "hidden";
     utility.adopt(feedbackButtonContainer, feedbackButton);
     continueButton.style.gridRow = 1;
     continueButton.style.gridColumn = 1;
-    utility.addClickEventListener(feedbackButton, (e) => {
-      feedbackPlayer.play();
-    });
+    utility.addClickEventListener(feedbackButton, () => feedbackPlayer.play());
+    player.onended = () => {
+      continueButton.style.visibility = "visible";
+      feedbackButton.style.visibility = "visible";
+    };
   },
   info: {
     parameters: {},
@@ -152,7 +144,7 @@ jsPsych.init({
       type: "image-audio-button-response",
       stimulusUrl: "clock.wav",
       imageUrl: "clock.png",
-      imageWidth: 500,
+      imageWidth: 300,
     },
     {
       type: "image-multi-audio-button-response",
