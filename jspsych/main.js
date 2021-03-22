@@ -31,98 +31,130 @@ function startImageAudioButtonResponseTrial(display_element, trial) {
   stimulusPlayer.play();
 }
 
-jsPsych.plugins["image-audio-button-response"] = {
-  trial(display_element, trial) {
-    startImageAudioButtonResponseTrial(display_element, trial);
-  },
-  info: {
-    parameters: {},
-  },
-};
+function main() {
+  const twoDotPluginId = "two-dot";
+  jsPsych.plugins[twoDotPluginId] = plugin();
 
-jsPsych.plugins["image-audio-with-feedback-button-response"] = {
-  trial(display_element, trial) {
-    utility.clear(display_element);
-    const grid = utility.gridElement(3, 1);
-    utility.adopt(display_element, grid);
-    const image = new Image();
-    image.src = trial.imageUrl;
-    image.style.gridRow = 1;
-    image.style.gridColumn = 1;
-    utility.adopt(grid, image);
-    const continueButtonContainer = utility.buttonContainerElement();
-    utility.adopt(grid, continueButtonContainer);
-    continueButtonContainer.style.gridRow = 3;
-    continueButtonContainer.style.gridColumn = 1;
-    const feedbackButtonContainer = utility.buttonContainerElement();
-    utility.adopt(grid, feedbackButtonContainer);
-    feedbackButtonContainer.style.gridRow = 2;
-    feedbackButtonContainer.style.gridColumn = 1;
-    const continueButton = utility.buttonElement();
-    continueButton.textContent = "Continue";
-    continueButton.style.visibility = "hidden";
-    utility.adopt(continueButtonContainer, continueButton);
-    utility.addClickEventListener(continueButton, () => jsPsych.finishTrial());
-    const player = utility.audioPlayer(trial.stimulusUrl);
-    player.play();
-    const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
-    const feedbackButton = utility.buttonElement();
-    feedbackButton.textContent = "Feedback";
-    feedbackButton.style.visibility = "hidden";
-    utility.adopt(feedbackButtonContainer, feedbackButton);
-    continueButton.style.gridRow = 1;
-    continueButton.style.gridColumn = 1;
-    utility.addClickEventListener(feedbackButton, () => feedbackPlayer.play());
-    player.onended = () => {
-      continueButton.style.visibility = "visible";
-      feedbackButton.style.visibility = "visible";
-    };
-  },
-  info: {
-    parameters: {},
-  },
-};
+  jsPsych.plugins["image-audio-button-response"] = {
+    trial(display_element, trial) {
+      startImageAudioButtonResponseTrial(display_element, trial);
+    },
+    info: {
+      parameters: {},
+    },
+  };
 
-const twoDotPluginId = "two-dot";
-jsPsych.plugins[twoDotPluginId] = plugin();
+  jsPsych.plugins["image-audio-with-feedback-button-response"] = {
+    trial(display_element, trial) {
+      utility.clear(display_element);
+      const grid = utility.gridElement(3, 1);
+      utility.adopt(display_element, grid);
+      const image = new Image();
+      image.src = trial.imageUrl;
+      image.style.gridRow = 1;
+      image.style.gridColumn = 1;
+      utility.adopt(grid, image);
+      const continueButtonContainer = utility.buttonContainerElement();
+      utility.adopt(grid, continueButtonContainer);
+      continueButtonContainer.style.gridRow = 3;
+      continueButtonContainer.style.gridColumn = 1;
+      const feedbackButtonContainer = utility.buttonContainerElement();
+      utility.adopt(grid, feedbackButtonContainer);
+      feedbackButtonContainer.style.gridRow = 2;
+      feedbackButtonContainer.style.gridColumn = 1;
+      const continueButton = utility.buttonElement();
+      continueButton.textContent = "Continue";
+      continueButton.style.visibility = "hidden";
+      utility.adopt(continueButtonContainer, continueButton);
+      utility.addClickEventListener(continueButton, () =>
+        jsPsych.finishTrial()
+      );
+      const player = utility.audioPlayer(trial.stimulusUrl);
+      player.play();
+      const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
+      const feedbackButton = utility.buttonElement();
+      feedbackButton.textContent = "Feedback";
+      feedbackButton.style.visibility = "hidden";
+      utility.adopt(feedbackButtonContainer, feedbackButton);
+      continueButton.style.gridRow = 1;
+      continueButton.style.gridColumn = 1;
+      utility.addClickEventListener(feedbackButton, () =>
+        feedbackPlayer.play()
+      );
+      player.onended = () => {
+        continueButton.style.visibility = "visible";
+        feedbackButton.style.visibility = "visible";
+      };
+    },
+    info: {
+      parameters: {},
+    },
+  };
 
-jsPsych.init({
-  timeline: [
-    {
-      type: "image-button-response",
-      stimulus: "cat.png",
-      stimulus_width: 500,
-      choices: ["Continue"],
-      prompt: "",
-    },
-    {
-      type: "image-audio-button-response",
-      stimulusUrl: "clock.wav",
-      imageUrl: "clock.png",
-      imageWidth: 300,
-    },
-    {
-      type: twoDotPluginId,
-      stimulusUrl: "bird.wav",
-      feedbackUrl: "2A spoiled child is a brat.wav",
-      imageUrl: "bird.png",
-      firstChoiceOnsetTimeSeconds: 2.9,
-      firstChoiceOffsetTimeSeconds: 3.65,
-      secondChoiceOnsetTimeSeconds: 4.4,
-      secondChoiceOffsetTimeSeconds: 5.15,
-    },
-    {
-      type: "image-button-response",
-      stimulus: "dog1.png",
-      stimulus_width: 500,
-      choices: ["Continue"],
-      prompt: "",
-    },
-    {
-      type: "image-audio-with-feedback-button-response",
-      stimulusUrl: "clock.wav",
-      feedbackUrl: "2A spoiled child is a brat.wav",
-      imageUrl: "clock.png",
-    },
-  ],
-});
+  const page = document.createElement("div");
+  const condition = document.createElement("div");
+  const conditionLabel = document.createElement("label");
+  conditionLabel.textContent = "Condition: ";
+  const conditionSelect = document.createElement("select");
+  const conditionA = document.createElement("option");
+  conditionA.textContent = "A";
+  const conditionB = document.createElement("option");
+  conditionB.textContent = "B";
+  const conditionC = document.createElement("option");
+  conditionC.textContent = "C";
+  conditionSelect.append(conditionA);
+  conditionSelect.append(conditionB);
+  conditionSelect.append(conditionC);
+  condition.append(conditionLabel);
+  condition.append(conditionSelect);
+  const startButton = document.createElement("button");
+  startButton.textContent = "Start";
+  startButton.addEventListener("click", () => {
+    document.body.removeChild(page);
+    jsPsych.init({
+      timeline: [
+        {
+          type: "image-button-response",
+          stimulus: "cat.png",
+          stimulus_width: 500,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-audio-button-response",
+          stimulusUrl: "clock.wav",
+          imageUrl: "clock.png",
+          imageWidth: 300,
+        },
+        {
+          type: twoDotPluginId,
+          stimulusUrl: "bird.wav",
+          feedbackUrl: "2A spoiled child is a brat.wav",
+          imageUrl: "bird.png",
+          firstChoiceOnsetTimeSeconds: 2.9,
+          firstChoiceOffsetTimeSeconds: 3.65,
+          secondChoiceOnsetTimeSeconds: 4.4,
+          secondChoiceOffsetTimeSeconds: 5.15,
+        },
+        {
+          type: "image-button-response",
+          stimulus: "dog1.png",
+          stimulus_width: 500,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "clock.wav",
+          feedbackUrl: "2A spoiled child is a brat.wav",
+          imageUrl: "clock.png",
+        },
+      ],
+    });
+  });
+  page.append(condition);
+  page.append(startButton);
+  document.body.append(page);
+}
+
+main();
