@@ -1,42 +1,6 @@
 import { plugin } from "./plugin.js";
 import * as utility from "./utility.js";
 
-function startImageAudioWithNoiseButtonResponseTrial(display_element, trial) {
-  utility.clear(display_element);
-  const grid = utility.gridElement(2, 1);
-  utility.adopt(display_element, grid);
-  const image = new Image();
-  image.src = trial.imageUrl;
-  image.onload = () => {
-    image.width = trial.imageWidth;
-    image.height =
-      (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
-  };
-  image.style.gridRow = 1;
-  image.style.gridColumn = 1;
-  utility.adopt(grid, image);
-  const buttonContainer = utility.buttonContainerElement();
-  utility.adopt(grid, buttonContainer);
-  buttonContainer.style.gridRow = 2;
-  buttonContainer.style.gridColumn = 1;
-  const button = utility.buttonElement();
-  button.textContent = "Continue";
-  button.style.visibility = "hidden";
-  utility.adopt(buttonContainer, button);
-  utility.addClickEventListener(button, (e) => {
-    jsPsych.finishTrial();
-  });
-  const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
-  const noisePlayer = utility.audioPlayer(trial.noiseUrl);
-  noisePlayer.volume = 0.3;
-  stimulusPlayer.onended = () => {
-    noisePlayer.pause();
-    button.style.visibility = "visible";
-  };
-  noisePlayer.onplaying = () => stimulusPlayer.play();
-  noisePlayer.play();
-}
-
 function startImageAudioButtonResponseTrial(display_element, trial) {
   utility.clear(display_element);
   const grid = utility.gridElement(2, 1);
@@ -66,15 +30,6 @@ function startImageAudioButtonResponseTrial(display_element, trial) {
   };
   stimulusPlayer.play();
 }
-
-jsPsych.plugins["image-multi-audio-button-response"] = {
-  trial(display_element, trial) {
-    startImageAudioWithNoiseButtonResponseTrial(display_element, trial);
-  },
-  info: {
-    parameters: {},
-  },
-};
 
 jsPsych.plugins["image-audio-button-response"] = {
   trial(display_element, trial) {
@@ -145,13 +100,6 @@ jsPsych.init({
       stimulusUrl: "clock.wav",
       imageUrl: "clock.png",
       imageWidth: 300,
-    },
-    {
-      type: "image-multi-audio-button-response",
-      stimulusUrl: "binnip.wav",
-      noiseUrl: "SSN_longB.wav",
-      imageUrl: "binnip.png",
-      imageWidth: 500,
     },
     {
       type: twoDotPluginId,
