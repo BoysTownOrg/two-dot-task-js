@@ -113,8 +113,60 @@ class WebAudioPlayer {
   }
 }
 
-export function plugin() {
+export function plugin(name) {
+  jsPsych.pluginAPI.registerPreload(name, "stimulusUrl", "audio");
+  jsPsych.pluginAPI.registerPreload(name, "feedbackUrl", "audio");
+  jsPsych.pluginAPI.registerPreload(name, "imageUrl", "image");
+
   return {
+    name,
+    description: "",
+    info: {
+      parameters: {
+        stimulusUrl: {
+          type: jsPsych.plugins.parameterType.AUDIO,
+          pretty_name: "Stimulus URL",
+          default: "",
+          description: "The stimulus audio",
+        },
+        feedbackUrl: {
+          type: jsPsych.plugins.parameterType.AUDIO,
+          pretty_name: "Feedback URL",
+          default: "",
+          description: "The feedback audio",
+        },
+        imageUrl: {
+          type: jsPsych.plugins.parameterType.IMAGE,
+          pretty_name: "Image URL",
+          default: "",
+          description: "The image",
+        },
+        firstChoiceOnsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "First choice onset time",
+          default: 0,
+          description: "The first choice onset time in seconds",
+        },
+        firstChoiceOffsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "First choice offset time",
+          default: 0,
+          description: "The first choice offset time in seconds",
+        },
+        secondChoiceOnsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "Second choice onset time",
+          default: 0,
+          description: "The second choice onset time in seconds",
+        },
+        secondChoiceOffsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "Second choice offset time",
+          default: 0,
+          description: "The second choice offset time in seconds",
+        },
+      },
+    },
     trial(display_element, trial) {
       utility.clear(display_element);
       const taskUI = new TaskUI(display_element, trial.imageUrl);
@@ -140,9 +192,6 @@ export function plugin() {
       );
       new TaskController(taskUI, model);
       model.start();
-    },
-    info: {
-      parameters: {},
     },
   };
 }

@@ -3,7 +3,7 @@ import * as utility from "./utility.js";
 
 function main() {
   const twoDotPluginId = "two-dot";
-  jsPsych.plugins[twoDotPluginId] = twoDotPlugin();
+  jsPsych.plugins[twoDotPluginId] = twoDotPlugin(twoDotPluginId);
 
   jsPsych.plugins["image-audio-button-response"] = (() => {
     jsPsych.pluginAPI.registerPreload(
