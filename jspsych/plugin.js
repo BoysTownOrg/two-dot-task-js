@@ -21,13 +21,13 @@ function circleElementWithColor(color) {
 }
 
 class TaskUI {
-  constructor(parent, imageUrl, imageWidth) {
+  constructor(parent, imageUrl, imageHeight) {
     this.parent = parent;
     const image = new Image();
     image.src = imageUrl;
     image.onload = () => {
-      image.width = imageWidth;
-      image.height = (image.naturalHeight * imageWidth) / image.naturalWidth;
+      image.height = imageHeight;
+      image.width = (image.naturalWidth * imageHeight) / image.naturalHeight;
     };
     utility.adopt(parent, image);
     const grid = utility.gridElement(2, 3);
@@ -148,11 +148,11 @@ export function plugin(name) {
           default: "",
           description: "The image",
         },
-        imageWidth: {
+        imageHeight: {
           type: jsPsych.plugins.parameterType.INT,
-          pretty_name: "Image width",
+          pretty_name: "Image height",
           default: null,
-          description: "The image width in pixels",
+          description: "The image height in pixels",
         },
         firstChoiceOnsetTimeSeconds: {
           type: jsPsych.plugins.parameterType.FLOAT,
@@ -185,7 +185,7 @@ export function plugin(name) {
       const taskUI = new TaskUI(
         display_element,
         trial.imageUrl,
-        trial.imageWidth
+        trial.imageHeight
       );
       const model = new TaskModel(
         new WebAudioPlayer(trial.stimulusUrl, trial.feedbackUrl),

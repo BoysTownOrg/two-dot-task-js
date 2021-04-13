@@ -32,11 +32,11 @@ function main() {
             default: "",
             description: "The image",
           },
-          imageWidth: {
+          imageHeight: {
             type: jsPsych.plugins.parameterType.INT,
-            pretty_name: "Image width",
+            pretty_name: "Image height",
             default: null,
-            description: "The image width in pixels",
+            description: "The image height in pixels",
           },
         },
       },
@@ -47,9 +47,9 @@ function main() {
         const image = new Image();
         image.src = trial.imageUrl;
         image.onload = () => {
-          image.width = trial.imageWidth;
-          image.height =
-            (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
+          image.height = trial.imageHeight;
+          image.width =
+            (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
         };
         image.style.gridRow = 1;
         image.style.gridColumn = 1;
@@ -112,11 +112,11 @@ function main() {
             default: "",
             description: "The image",
           },
-          imageWidth: {
+          imageHeight: {
             type: jsPsych.plugins.parameterType.INT,
-            pretty_name: "Image width",
+            pretty_name: "Image height",
             default: null,
-            description: "The image width in pixels",
+            description: "The image height in pixels",
           },
         },
       },
@@ -125,9 +125,9 @@ function main() {
         const image = new Image();
         image.src = trial.imageUrl;
         image.onload = () => {
-          image.width = trial.imageWidth;
-          image.height =
-            (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
+          image.height = trial.imageHeight;
+          image.width =
+            (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
         };
         utility.adopt(display_element, image);
         const belowImage = utility.divElement();
@@ -197,49 +197,49 @@ function main() {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Day1_Repetition_BUTTON.wav",
           imageUrl: "resources/Button.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Day1_Repetition_BABY.wav",
           imageUrl: "resources/Baby.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Day1_Repetition_ROOSTER.wav",
           imageUrl: "resources/Rooster.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Repetition_TOPIN.wav",
           imageUrl: "resources/Topin.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Repetition_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Repetition_KINIT.wav",
           imageUrl: "resources/Kinit.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog1.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog2.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
@@ -248,7 +248,7 @@ function main() {
           stimulusUrl: "resources/Day1_TwoDot_BABY_CHEETAH.wav",
           feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
           imageUrl: "resources/Baby.png",
-          imageWidth: 300,
+          imageHeight: 500,
           firstChoiceOnsetTimeSeconds: 2.53,
           firstChoiceOffsetTimeSeconds: 3,
           secondChoiceOnsetTimeSeconds: 3.96,
@@ -260,7 +260,7 @@ function main() {
           feedbackUrl:
             "resources/Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav",
           imageUrl: "resources/Rooster.png",
-          imageWidth: 300,
+          imageHeight: 500,
           firstChoiceOnsetTimeSeconds: 2.73,
           firstChoiceOffsetTimeSeconds: 3.25,
           secondChoiceOnsetTimeSeconds: 4.47,
@@ -271,7 +271,7 @@ function main() {
           stimulusUrl: "resources/TwoDot_TOPIN_KINIT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
           imageUrl: "resources/Topin.png",
-          imageWidth: 300,
+          imageHeight: 500,
           firstChoiceOnsetTimeSeconds: 2.9,
           firstChoiceOffsetTimeSeconds: 3.41,
           secondChoiceOnsetTimeSeconds: 5.45,
@@ -282,7 +282,7 @@ function main() {
           stimulusUrl: "resources/TwoDot_KINIT_NEDIG.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_KINIT.wav",
           imageUrl: "resources/Kinit.png",
-          imageWidth: 300,
+          imageHeight: 500,
           firstChoiceOnsetTimeSeconds: 3.16,
           firstChoiceOffsetTimeSeconds: 3.75,
           secondChoiceOnsetTimeSeconds: 5.58,
@@ -291,14 +291,14 @@ function main() {
         {
           type: "image-button-response",
           stimulus: "resources/dog2.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog3.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
@@ -306,31 +306,31 @@ function main() {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Repetition_TOPIN.wav",
           imageUrl: "resources/Topin.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Repetition_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Repetition_KINIT.wav",
           imageUrl: "resources/Kinit.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog3.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog4.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
@@ -339,7 +339,7 @@ function main() {
           stimulusUrl: "resources/TwoDot_TOPIN_NEDIG.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
           imageUrl: "resources/Topin.png",
-          imageWidth: 300,
+          imageHeight: 500,
           firstChoiceOnsetTimeSeconds: 3.47,
           firstChoiceOffsetTimeSeconds: 4,
           secondChoiceOnsetTimeSeconds: 5.96,
@@ -350,7 +350,7 @@ function main() {
           stimulusUrl: "resources/TwoDot_NEDIG_KINIT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
-          imageWidth: 300,
+          imageHeight: 500,
           firstChoiceOnsetTimeSeconds: 3.04,
           firstChoiceOffsetTimeSeconds: 3.64,
           secondChoiceOnsetTimeSeconds: 5.34,
@@ -359,14 +359,14 @@ function main() {
         {
           type: "image-button-response",
           stimulus: "resources/dog4.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog5.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
@@ -375,7 +375,7 @@ function main() {
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
           imageUrl: "resources/Baby.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
@@ -383,40 +383,40 @@ function main() {
           feedbackUrl:
             "resources/Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav",
           imageUrl: "resources/Rooster.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
           imageUrl: "resources/Topin.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_KINIT.wav",
           imageUrl: "resources/Kinit.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog5.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog6.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
@@ -425,7 +425,7 @@ function main() {
           stimulusUrl: "resources/Day1_CuedRecall_BAY.wav",
           feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
           imageUrl: "resources/Baby.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
@@ -433,40 +433,40 @@ function main() {
           feedbackUrl:
             "resources/Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav",
           imageUrl: "resources/Rooster.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
           stimulusUrl: "resources/CuedRecall_TO.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
           imageUrl: "resources/Topin.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
           stimulusUrl: "resources/CuedRecall_NE.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-audio-with-feedback-button-response",
           stimulusUrl: "resources/CuedRecall_KI.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_KINIT.wav",
           imageUrl: "resources/Kinit.png",
-          imageWidth: 300,
+          imageHeight: 500,
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog6.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
           stimulus: "resources/dog7.png",
-          stimulus_width: 800,
+          stimulus_height: 500,
           choices: ["Continue"],
           prompt: "",
         },
