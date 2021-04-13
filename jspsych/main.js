@@ -112,6 +112,12 @@ function main() {
             default: "",
             description: "The image",
           },
+          imageWidth: {
+            type: jsPsych.plugins.parameterType.INT,
+            pretty_name: "Image width",
+            default: null,
+            description: "The image width in pixels",
+          },
         },
       },
       trial(display_element, trial) {
@@ -120,6 +126,11 @@ function main() {
         utility.adopt(display_element, grid);
         const image = new Image();
         image.src = trial.imageUrl;
+        image.onload = () => {
+          image.width = trial.imageWidth;
+          image.height =
+            (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
+        };
         image.style.gridRow = 1;
         image.style.gridColumn = 1;
         utility.adopt(grid, image);
@@ -221,6 +232,20 @@ function main() {
           imageWidth: 300,
         },
         {
+          type: "image-button-response",
+          stimulus: "resources/dog1.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog2.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
           type: twoDotPluginId,
           stimulusUrl: "resources/Day1_TwoDot_BABY_CHEETAH.wav",
           feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
@@ -266,6 +291,20 @@ function main() {
           secondChoiceOffsetTimeSeconds: 6.17,
         },
         {
+          type: "image-button-response",
+          stimulus: "resources/dog2.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog3.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
           type: "image-audio-button-response",
           stimulusUrl: "resources/Repetition_TOPIN.wav",
           imageUrl: "resources/Topin.png",
@@ -282,6 +321,20 @@ function main() {
           stimulusUrl: "resources/Repetition_KINIT.wav",
           imageUrl: "resources/Kinit.png",
           imageWidth: 300,
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog3.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog4.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
         },
         {
           type: twoDotPluginId,
@@ -305,35 +358,120 @@ function main() {
           secondChoiceOnsetTimeSeconds: 5.34,
           secondChoiceOffsetTimeSeconds: 5.89,
         },
-        // {
-        //   type: "image-audio-button-response",
-        //   stimulusUrl: "clock.wav",
-        //   imageUrl: "clock.png",
-        //   imageWidth: 300,
-        // },
-        // {
-        //   type: twoDotPluginId,
-        //   stimulusUrl: "bird.wav",
-        //   feedbackUrl: "2A spoiled child is a brat.wav",
-        //   imageUrl: "bird.png",
-        //   firstChoiceOnsetTimeSeconds: 2.9,
-        //   firstChoiceOffsetTimeSeconds: 3.65,
-        //   secondChoiceOnsetTimeSeconds: 4.4,
-        //   secondChoiceOffsetTimeSeconds: 5.15,
-        // },
-        // {
-        //   type: "image-button-response",
-        //   stimulus: "dog1.png",
-        //   stimulus_width: 500,
-        //   choices: ["Continue"],
-        //   prompt: "",
-        // },
-        // {
-        //   type: "image-audio-with-feedback-button-response",
-        //   stimulusUrl: "clock.wav",
-        //   feedbackUrl: "2A spoiled child is a brat.wav",
-        //   imageUrl: "clock.png",
-        // },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog4.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog5.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/FreeRecall_WHAT.wav",
+          feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
+          imageUrl: "resources/Baby.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/FreeRecall_WHAT.wav",
+          feedbackUrl:
+            "resources/Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav",
+          imageUrl: "resources/Rooster.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/FreeRecall_WHAT.wav",
+          feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
+          imageUrl: "resources/Topin.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/FreeRecall_WHAT.wav",
+          feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_NEDIG.wav",
+          imageUrl: "resources/Nedig.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/FreeRecall_WHAT.wav",
+          feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_KINIT.wav",
+          imageUrl: "resources/Kinit.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog5.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog6.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/Day1_CuedRecall_BAY.wav",
+          feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
+          imageUrl: "resources/Baby.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/Day1_CuedRecall_ROO.wav",
+          feedbackUrl:
+            "resources/Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav",
+          imageUrl: "resources/Rooster.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/CuedRecall_TO.wav",
+          feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
+          imageUrl: "resources/Topin.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/CuedRecall_NE.wav",
+          feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_NEDIG.wav",
+          imageUrl: "resources/Nedig.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-audio-with-feedback-button-response",
+          stimulusUrl: "resources/CuedRecall_KI.wav",
+          feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_KINIT.wav",
+          imageUrl: "resources/Kinit.png",
+          imageWidth: 300,
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog6.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
+        {
+          type: "image-button-response",
+          stimulus: "resources/dog7.png",
+          stimulus_width: 300,
+          choices: ["Continue"],
+          prompt: "",
+        },
       ],
     });
   });
