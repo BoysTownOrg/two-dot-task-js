@@ -122,8 +122,6 @@ function main() {
       },
       trial(display_element, trial) {
         utility.clear(display_element);
-        const grid = utility.gridElement(3, 1);
-        utility.adopt(display_element, grid);
         const image = new Image();
         image.src = trial.imageUrl;
         image.onload = () => {
@@ -131,39 +129,37 @@ function main() {
           image.height =
             (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
         };
-        image.style.gridRow = 1;
-        image.style.gridColumn = 1;
-        utility.adopt(grid, image);
-        const continueButtonContainer = utility.buttonContainerElement();
-        utility.adopt(grid, continueButtonContainer);
-        continueButtonContainer.style.gridRow = 3;
-        continueButtonContainer.style.gridColumn = 1;
-        const feedbackButtonContainer = utility.buttonContainerElement();
-        utility.adopt(grid, feedbackButtonContainer);
-        feedbackButtonContainer.style.gridRow = 2;
-        feedbackButtonContainer.style.gridColumn = 1;
+        utility.adopt(display_element, image);
+        const buttonContainer = utility.buttonContainerElement();
+        const grid = utility.gridElement(2, 1);
         const continueButton = utility.buttonElement();
+        continueButton.style.gridRow = 2;
+        continueButton.style.gridColumn = 1;
+        utility.adopt(grid, continueButton);
+        const feedbackButton = utility.buttonElement();
+        feedbackButton.style.gridRow = 1;
+        feedbackButton.style.gridColumn = 1;
+        utility.adopt(grid, feedbackButton);
+        utility.adopt(buttonContainer, grid);
+        utility.adopt(display_element, buttonContainer);
         continueButton.textContent = "Continue";
         continueButton.style.visibility = "hidden";
-        utility.adopt(continueButtonContainer, continueButton);
         utility.addClickEventListener(continueButton, () =>
           jsPsych.finishTrial()
         );
         const player = utility.audioPlayer(trial.stimulusUrl);
         player.play();
         const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
-        const feedbackButton = utility.buttonElement();
         feedbackButton.textContent = "Feedback";
         feedbackButton.style.visibility = "hidden";
-        utility.adopt(feedbackButtonContainer, feedbackButton);
-        continueButton.style.gridRow = 1;
-        continueButton.style.gridColumn = 1;
         utility.addClickEventListener(feedbackButton, () =>
           feedbackPlayer.play()
         );
         player.onended = () => {
-          continueButton.style.visibility = "visible";
           feedbackButton.style.visibility = "visible";
+        };
+        feedbackPlayer.onended = () => {
+          continueButton.style.visibility = "visible";
         };
       },
     };
