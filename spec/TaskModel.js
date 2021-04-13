@@ -24,6 +24,10 @@ class AudioPlayerStub {
     this.observer.notifyThatPlaybackHasEnded();
   }
 
+  endFeedback() {
+    this.observer.notifyThatFeedbackHasEnded();
+  }
+
   attach(observer) {
     this.observer = observer;
   }
@@ -55,6 +59,7 @@ class TaskModelObserverStub {
     this.notifiedThatFirstChoiceHasStoppedPlaying_ = false;
     this.notifiedThatSecondChoiceHasStartedPlaying_ = false;
     this.notifiedThatSecondChoiceHasStoppedPlaying_ = false;
+    this.notifiedThatTaskIsComplete_ = false;
     this.timesNotifiedThatFirstChoiceHasStartedPlaying_ = 0;
   }
 
@@ -93,6 +98,14 @@ class TaskModelObserverStub {
 
   notifyThatSecondChoiceHasStoppedPlaying() {
     this.notifiedThatSecondChoiceHasStoppedPlaying_ = true;
+  }
+
+  notifiedThatTaskIsComplete() {
+    return this.notifiedThatTaskIsComplete_;
+  }
+
+  notifyThatTaskIsComplete() {
+    this.notifiedThatTaskIsComplete_ = true;
   }
 }
 
@@ -200,5 +213,10 @@ describe("TaskModel", () => {
     expect(
       this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
     ).toBeFalse();
+  });
+
+  it("should notify task completion after feedback ends", function () {
+    this.audioPlayer.endFeedback();
+    expect(this.observer.notifiedThatTaskIsComplete()).toBeTrue();
   });
 });

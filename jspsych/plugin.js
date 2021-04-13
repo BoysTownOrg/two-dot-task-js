@@ -198,7 +198,7 @@ export function plugin(name) {
           ],
         ])
       );
-      new TaskController(taskUI, model);
+      const controller = new TaskController(taskUI, model);
       model.start();
     },
   };
