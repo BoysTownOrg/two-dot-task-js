@@ -30,33 +30,42 @@ class TaskUI {
       image.width = (image.naturalWidth * imageHeight) / image.naturalHeight;
     };
     utility.adopt(parent, image);
-    const grid = utility.gridElement(2, 3);
-    utility.adopt(parent, grid);
+    const twoDotGrid = utility.divElement();
+    twoDotGrid.style.display = "grid";
+    twoDotGrid.style.gridTemplateColumns = `1fr ${utility.pixelsString(
+      125
+    )} ${utility.pixelsString(125)} 1fr`;
+    twoDotGrid.style.gridGap = `${utility.pixelsString(
+      20
+    )} ${utility.pixelsString(20)}`;
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.gridRow = 1;
-    this.firstDot.style.gridColumn = 1;
-    utility.adopt(grid, this.firstDot);
+    this.firstDot.style.gridColumn = 2;
+    utility.adopt(twoDotGrid, this.firstDot);
     utility.addClickEventListener(this.firstDot, () => {
       this.observer.notifyThatFirstDotHasBeenTouched();
     });
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.gridRow = 1;
     this.secondDot.style.gridColumn = 3;
-    utility.adopt(grid, this.secondDot);
     utility.addClickEventListener(this.secondDot, () => {
       this.observer.notifyThatSecondDotHasBeenTouched();
     });
+    utility.adopt(twoDotGrid, this.secondDot);
+    utility.adopt(parent, twoDotGrid);
+    const belowTwoDots = utility.divElement();
     const buttonContainer = utility.buttonContainerElement();
-    utility.adopt(grid, buttonContainer);
     buttonContainer.style.gridRow = 2;
     buttonContainer.style.gridColumn = 2;
     this.continueButton = utility.buttonElement();
     this.continueButton.textContent = "Continue";
     this.continueButton.style.visibility = "hidden";
-    utility.adopt(buttonContainer, this.continueButton);
     utility.addClickEventListener(this.continueButton, () => {
       jsPsych.finishTrial();
     });
+    utility.adopt(buttonContainer, this.continueButton);
+    utility.adopt(belowTwoDots, buttonContainer);
+    utility.adopt(parent, belowTwoDots);
   }
 
   colorFirstDotRed() {
