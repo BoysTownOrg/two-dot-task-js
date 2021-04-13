@@ -6,6 +6,7 @@ class TaskViewStub {
     this.firstDotColoredBlack_ = false;
     this.secondDotColoredRed_ = false;
     this.secondDotColoredBlack_ = false;
+    this.continueButtonShown_ = false;
   }
 
   firstDotColoredRed() {
@@ -39,6 +40,14 @@ class TaskViewStub {
   colorSecondDotBlack() {
     this.secondDotColoredBlack_ = true;
   }
+
+  continueButtonShown() {
+    return this.continueButtonShown_;
+  }
+
+  showContinueButton() {
+    this.continueButtonShown_ = true;
+  }
 }
 
 describe("TaskPresenter", () => {
@@ -65,5 +74,10 @@ describe("TaskPresenter", () => {
   it("should color second dot black when second choice stops playing", function () {
     this.presenter.notifyThatSecondChoiceHasStoppedPlaying();
     expect(this.view.secondDotColoredBlack()).toBeTrue();
+  });
+
+  it("should show continue button when task completes", function () {
+    this.presenter.notifyThatTaskIsComplete();
+    expect(this.view.continueButtonShown()).toBeTrue();
   });
 });
