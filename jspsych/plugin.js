@@ -23,26 +23,24 @@ function circleElementWithColor(color) {
 class TaskUI {
   constructor(parent, imageUrl, imageWidth) {
     this.parent = parent;
-    const grid = utility.gridElement(3, 3);
-    utility.adopt(parent, grid);
     const image = new Image();
     image.src = imageUrl;
     image.onload = () => {
       image.width = imageWidth;
       image.height = (image.naturalHeight * imageWidth) / image.naturalWidth;
     };
-    image.style.gridRow = 1;
-    image.style.gridColumn = "1 / 4";
-    utility.adopt(grid, image);
+    utility.adopt(parent, image);
+    const grid = utility.gridElement(2, 3);
+    utility.adopt(parent, grid);
     this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridRow = 2;
+    this.firstDot.style.gridRow = 1;
     this.firstDot.style.gridColumn = 1;
     utility.adopt(grid, this.firstDot);
     utility.addClickEventListener(this.firstDot, (e) => {
       this.observer.notifyThatFirstDotHasBeenTouched();
     });
     this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridRow = 2;
+    this.secondDot.style.gridRow = 1;
     this.secondDot.style.gridColumn = 3;
     utility.adopt(grid, this.secondDot);
     utility.addClickEventListener(this.secondDot, (e) => {
@@ -50,7 +48,7 @@ class TaskUI {
     });
     const buttonContainer = utility.buttonContainerElement();
     utility.adopt(grid, buttonContainer);
-    buttonContainer.style.gridRow = 3;
+    buttonContainer.style.gridRow = 2;
     buttonContainer.style.gridColumn = 2;
     const button = utility.buttonElement();
     button.textContent = "Continue";
