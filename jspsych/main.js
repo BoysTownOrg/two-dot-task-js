@@ -130,6 +130,7 @@ function main() {
             (image.naturalHeight * trial.imageWidth) / image.naturalWidth;
         };
         utility.adopt(display_element, image);
+        const belowImage = utility.divElement();
         const buttonContainer = utility.buttonContainerElement();
         const grid = utility.gridElement(2, 1);
         const continueButton = utility.buttonElement();
@@ -141,7 +142,8 @@ function main() {
         feedbackButton.style.gridColumn = 1;
         utility.adopt(grid, feedbackButton);
         utility.adopt(buttonContainer, grid);
-        utility.adopt(display_element, buttonContainer);
+        utility.adopt(belowImage, buttonContainer);
+        utility.adopt(display_element, belowImage);
         continueButton.textContent = "Continue";
         continueButton.style.visibility = "hidden";
         utility.addClickEventListener(continueButton, () =>
