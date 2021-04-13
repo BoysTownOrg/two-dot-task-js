@@ -36,24 +36,25 @@ class TaskUI {
     this.firstDot.style.gridRow = 1;
     this.firstDot.style.gridColumn = 1;
     utility.adopt(grid, this.firstDot);
-    utility.addClickEventListener(this.firstDot, (e) => {
+    utility.addClickEventListener(this.firstDot, () => {
       this.observer.notifyThatFirstDotHasBeenTouched();
     });
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.gridRow = 1;
     this.secondDot.style.gridColumn = 3;
     utility.adopt(grid, this.secondDot);
-    utility.addClickEventListener(this.secondDot, (e) => {
+    utility.addClickEventListener(this.secondDot, () => {
       this.observer.notifyThatSecondDotHasBeenTouched();
     });
     const buttonContainer = utility.buttonContainerElement();
     utility.adopt(grid, buttonContainer);
     buttonContainer.style.gridRow = 2;
     buttonContainer.style.gridColumn = 2;
-    const button = utility.buttonElement();
-    button.textContent = "Continue";
-    utility.adopt(buttonContainer, button);
-    utility.addClickEventListener(button, (e) => {
+    this.continueButton = utility.buttonElement();
+    this.continueButton.textContent = "Continue";
+    this.continueButton.style.visibility = "hidden";
+    utility.adopt(buttonContainer, this.continueButton);
+    utility.addClickEventListener(this.continueButton, () => {
       jsPsych.finishTrial();
     });
   }
@@ -74,6 +75,10 @@ class TaskUI {
     this.secondDot.style.backgroundColor = "black";
   }
 
+  showContinueButton() {
+    this.continueButton.style.visibility = "visible";
+  }
+
   attach(observer) {
     this.observer = observer;
   }
@@ -82,23 +87,27 @@ class TaskUI {
 class WebAudioPlayer {
   constructor(stimulusUrl, feedbackUrl) {
     this.player = utility.audioPlayer(stimulusUrl);
-    this.player.ontimeupdate = (event) => {
-      this.observer.notifyThatPlaybackTimeHasUpdated();
-    };
-    this.player.onended = (event) => {
-      this.observer.notifyThatPlaybackHasEnded();
-    };
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
   }
 
   playFeedback() {
     this.player.src = this.feedbackUrl;
+    this.player.ontimeupdate = () => {};
+    this.player.onended = () => {
+      this.observer.notifyThatFeedbackHasEnded();
+    };
     this.player.play();
   }
 
   playStimulus() {
     this.player.src = this.stimulusUrl;
+    this.player.ontimeupdate = () => {
+      this.observer.notifyThatPlaybackTimeHasUpdated();
+    };
+    this.player.onended = () => {
+      this.observer.notifyThatPlaybackHasEnded();
+    };
     this.player.play();
   }
 
