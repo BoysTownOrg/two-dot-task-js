@@ -4,8 +4,8 @@ import * as utility from "./utility.js";
 function main() {
   const twoDotPluginId = "two-dot";
   jsPsych.plugins[twoDotPluginId] = twoDotPlugin(twoDotPluginId);
-  const imageAudioButtonResponsePluginId = "image-audio-button-response";
 
+  const imageAudioButtonResponsePluginId = "image-audio-button-response";
   jsPsych.plugins[imageAudioButtonResponsePluginId] = (() => {
     jsPsych.pluginAPI.registerPreload(
       imageAudioButtonResponsePluginId,
@@ -41,10 +41,10 @@ function main() {
           },
         },
       },
-      trial(display_element, trial) {
-        utility.clear(display_element);
+      trial(displayElement, trial) {
+        utility.clear(displayElement);
         const grid = utility.gridElement(2, 1);
-        utility.adopt(display_element, grid);
+        utility.adopt(displayElement, grid);
         const image = new Image();
         image.src = trial.imageUrl;
         image.onload = () => {
@@ -59,40 +59,44 @@ function main() {
         utility.adopt(grid, buttonContainer);
         buttonContainer.style.gridRow = 2;
         buttonContainer.style.gridColumn = 1;
-        const button = utility.buttonElement();
-        button.textContent = "Continue";
-        button.style.visibility = "hidden";
-        utility.adopt(buttonContainer, button);
-        utility.addClickEventListener(button, () => jsPsych.finishTrial());
+        const continueButton = utility.buttonElement();
+        continueButton.textContent = "Continue";
+        continueButton.style.visibility = "hidden";
+        utility.adopt(buttonContainer, continueButton);
+        utility.addClickEventListener(continueButton, () =>
+          jsPsych.finishTrial()
+        );
         const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
         stimulusPlayer.onended = () => {
-          button.style.visibility = "visible";
+          continueButton.style.visibility = "visible";
         };
         stimulusPlayer.play();
       },
     };
   })();
 
-  jsPsych.plugins["image-audio-with-feedback-button-response"] = (() => {
+  const imageAudioWithFeedbackPluginId =
+    "image-audio-with-feedback-button-response";
+  jsPsych.plugins[imageAudioWithFeedbackPluginId] = (() => {
     jsPsych.pluginAPI.registerPreload(
-      "image-audio-with-feedback-button-response",
+      imageAudioWithFeedbackPluginId,
       "stimulusUrl",
       "audio"
     );
     jsPsych.pluginAPI.registerPreload(
-      "image-audio-with-feedback-button-response",
+      imageAudioWithFeedbackPluginId,
       "feedbackUrl",
       "audio"
     );
     jsPsych.pluginAPI.registerPreload(
-      "image-audio-with-feedback-button-response",
+      imageAudioWithFeedbackPluginId,
       "imageUrl",
       "image"
     );
 
     return {
       info: {
-        name: "image-audio-with-feedback-button-response",
+        name: imageAudioWithFeedbackPluginId,
         description: "",
         parameters: {
           stimulusUrl: {
@@ -121,8 +125,8 @@ function main() {
           },
         },
       },
-      trial(display_element, trial) {
-        utility.clear(display_element);
+      trial(displayElement, trial) {
+        utility.clear(displayElement);
         const image = new Image();
         image.src = trial.imageUrl;
         image.onload = () => {
@@ -130,7 +134,7 @@ function main() {
           image.width =
             (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
         };
-        utility.adopt(display_element, image);
+        utility.adopt(displayElement, image);
         const belowImage = utility.divElement();
         const buttonContainer = utility.buttonContainerElement();
         const grid = utility.gridElement(2, 1);
@@ -144,26 +148,26 @@ function main() {
         utility.adopt(grid, feedbackButton);
         utility.adopt(buttonContainer, grid);
         utility.adopt(belowImage, buttonContainer);
-        utility.adopt(display_element, belowImage);
+        utility.adopt(displayElement, belowImage);
         continueButton.textContent = "Continue";
         continueButton.style.visibility = "hidden";
         utility.addClickEventListener(continueButton, () =>
           jsPsych.finishTrial()
         );
-        const player = utility.audioPlayer(trial.stimulusUrl);
-        player.play();
+        const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
         const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
         feedbackButton.textContent = "Feedback";
         feedbackButton.style.visibility = "hidden";
         utility.addClickEventListener(feedbackButton, () =>
           feedbackPlayer.play()
         );
-        player.onended = () => {
+        stimulusPlayer.onended = () => {
           feedbackButton.style.visibility = "visible";
         };
         feedbackPlayer.onended = () => {
           continueButton.style.visibility = "visible";
         };
+        stimulusPlayer.play();
       },
     };
   })();
@@ -372,14 +376,14 @@ function main() {
           prompt: "",
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
           imageUrl: "resources/Baby.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl:
             "resources/Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav",
@@ -387,21 +391,21 @@ function main() {
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
           imageUrl: "resources/Topin.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/FreeRecall_WHAT.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_KINIT.wav",
           imageUrl: "resources/Kinit.png",
@@ -422,14 +426,14 @@ function main() {
           prompt: "",
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/Day1_CuedRecall_BAY.wav",
           feedbackUrl: "resources/Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav",
           imageUrl: "resources/Baby.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/Day1_CuedRecall_ROO.wav",
           feedbackUrl:
             "resources/Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav",
@@ -437,21 +441,21 @@ function main() {
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/CuedRecall_TO.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_TOPIN.wav",
           imageUrl: "resources/Topin.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/CuedRecall_NE.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-with-feedback-button-response",
+          type: imageAudioWithFeedbackPluginId,
           stimulusUrl: "resources/CuedRecall_KI.wav",
           feedbackUrl: "resources/TwoDot_FreeRecall_CuedRecall_KINIT.wav",
           imageUrl: "resources/Kinit.png",
