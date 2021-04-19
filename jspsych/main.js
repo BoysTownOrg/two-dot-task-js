@@ -4,15 +4,16 @@ import * as utility from "./utility.js";
 function main() {
   const twoDotPluginId = "two-dot";
   jsPsych.plugins[twoDotPluginId] = twoDotPlugin(twoDotPluginId);
+  const imageAudioButtonResponsePluginId = "image-audio-button-response";
 
-  jsPsych.plugins["image-audio-button-response"] = (() => {
+  jsPsych.plugins[imageAudioButtonResponsePluginId] = (() => {
     jsPsych.pluginAPI.registerPreload(
-      "image-audio-button-response",
+      imageAudioButtonResponsePluginId,
       "stimulusUrl",
       "audio"
     );
     jsPsych.pluginAPI.registerPreload(
-      "image-audio-button-response",
+      imageAudioButtonResponsePluginId,
       "imageUrl",
       "image"
     );
@@ -194,37 +195,37 @@ function main() {
           auto_preload: true,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Day1_Repetition_BUTTON.wav",
           imageUrl: "resources/Button.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Day1_Repetition_BABY.wav",
           imageUrl: "resources/Baby.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Day1_Repetition_ROOSTER.wav",
           imageUrl: "resources/Rooster.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Repetition_TOPIN.wav",
           imageUrl: "resources/Topin.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Repetition_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Repetition_KINIT.wav",
           imageUrl: "resources/Kinit.png",
           imageHeight: 500,
@@ -303,19 +304,19 @@ function main() {
           prompt: "",
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Repetition_TOPIN.wav",
           imageUrl: "resources/Topin.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Repetition_NEDIG.wav",
           imageUrl: "resources/Nedig.png",
           imageHeight: 500,
         },
         {
-          type: "image-audio-button-response",
+          type: imageAudioButtonResponsePluginId,
           stimulusUrl: "resources/Repetition_KINIT.wav",
           imageUrl: "resources/Kinit.png",
           imageHeight: 500,
