@@ -2,7 +2,7 @@ import { plugin as twoDotPlugin } from "./plugin.js";
 import * as utility from "./utility.js";
 
 function concatenatePaths(a, b) {
-  return `${a}/${b}`;
+  return `${a}${b}`;
 }
 
 const standardImageHeightPixels = 500;
