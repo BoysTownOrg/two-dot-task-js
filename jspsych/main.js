@@ -1,8 +1,8 @@
 import { plugin as twoDotPlugin } from "./plugin.js";
 import * as utility from "./utility.js";
 
-function resourcePath(fileName) {
-  return `resources/${fileName}`;
+function concatenatePaths(a, b) {
+  return `${a}/${b}`;
 }
 
 const standardImageHeightPixels = 500;
@@ -206,61 +206,110 @@ function main() {
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Day1_Repetition_BUTTON.wav"),
-          imageUrl: resourcePath("Button.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Day1_Repetition_BUTTON.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Button.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Day1_Repetition_BABY.wav"),
-          imageUrl: resourcePath("Baby.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Day1_Repetition_BABY.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Baby.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Day1_Repetition_ROOSTER.wav"),
-          imageUrl: resourcePath("Rooster.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Day1_Repetition_ROOSTER.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Rooster.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Repetition_TOPIN.wav"),
-          imageUrl: resourcePath("Topin.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Repetition_TOPIN.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Topin.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Repetition_NEDIG.wav"),
-          imageUrl: resourcePath("Nedig.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Repetition_NEDIG.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Nedig.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Repetition_KINIT.wav"),
-          imageUrl: resourcePath("Kinit.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Repetition_KINIT.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Kinit.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog1.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog1.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog2.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog2.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: twoDotPluginId,
-          stimulusUrl: resourcePath("Day1_TwoDot_BABY_CHEETAH.wav"),
-          feedbackUrl: resourcePath(
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Day1_TwoDot_BABY_CHEETAH.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
             "Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav"
           ),
-          imageUrl: resourcePath("Baby.png"),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Baby.png"
+          ),
           imageHeight: standardImageHeightPixels,
           firstChoiceOnsetTimeSeconds: 2.53,
           firstChoiceOffsetTimeSeconds: 3,
@@ -269,11 +318,18 @@ function main() {
         },
         {
           type: twoDotPluginId,
-          stimulusUrl: resourcePath("Day1_TwoDot_PIZZA_ROOSTER.wav"),
-          feedbackUrl: resourcePath(
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Day1_TwoDot_PIZZA_ROOSTER.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
             "Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav"
           ),
-          imageUrl: resourcePath("Rooster.png"),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Rooster.png"
+          ),
           imageHeight: standardImageHeightPixels,
           firstChoiceOnsetTimeSeconds: 2.73,
           firstChoiceOffsetTimeSeconds: 3.25,
@@ -282,9 +338,18 @@ function main() {
         },
         {
           type: twoDotPluginId,
-          stimulusUrl: resourcePath("TwoDot_TOPIN_KINIT.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_TOPIN.wav"),
-          imageUrl: resourcePath("Topin.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_TOPIN_KINIT.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_TOPIN.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Topin.png"
+          ),
           imageHeight: standardImageHeightPixels,
           firstChoiceOnsetTimeSeconds: 2.9,
           firstChoiceOffsetTimeSeconds: 3.41,
@@ -293,9 +358,18 @@ function main() {
         },
         {
           type: twoDotPluginId,
-          stimulusUrl: resourcePath("TwoDot_KINIT_NEDIG.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_KINIT.wav"),
-          imageUrl: resourcePath("Kinit.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_KINIT_NEDIG.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_KINIT.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Kinit.png"
+          ),
           imageHeight: standardImageHeightPixels,
           firstChoiceOnsetTimeSeconds: 3.16,
           firstChoiceOffsetTimeSeconds: 3.75,
@@ -304,55 +378,94 @@ function main() {
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog2.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog2.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog3.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog3.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Repetition_TOPIN.wav"),
-          imageUrl: resourcePath("Topin.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Repetition_TOPIN.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Topin.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Repetition_NEDIG.wav"),
-          imageUrl: resourcePath("Nedig.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Repetition_NEDIG.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Nedig.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath("Repetition_KINIT.wav"),
-          imageUrl: resourcePath("Kinit.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Repetition_KINIT.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Kinit.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog3.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog3.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog4.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog4.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: twoDotPluginId,
-          stimulusUrl: resourcePath("TwoDot_TOPIN_NEDIG.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_TOPIN.wav"),
-          imageUrl: resourcePath("Topin.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_TOPIN_NEDIG.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_TOPIN.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Topin.png"
+          ),
           imageHeight: standardImageHeightPixels,
           firstChoiceOnsetTimeSeconds: 3.47,
           firstChoiceOffsetTimeSeconds: 4,
@@ -361,9 +474,18 @@ function main() {
         },
         {
           type: twoDotPluginId,
-          stimulusUrl: resourcePath("TwoDot_NEDIG_KINIT.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_NEDIG.wav"),
-          imageUrl: resourcePath("Nedig.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_NEDIG_KINIT.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_NEDIG.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Nedig.png"
+          ),
           imageHeight: standardImageHeightPixels,
           firstChoiceOnsetTimeSeconds: 3.04,
           firstChoiceOffsetTimeSeconds: 3.64,
@@ -372,120 +494,220 @@ function main() {
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog4.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog4.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog5.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog5.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("FreeRecall_WHAT.wav"),
-          feedbackUrl: resourcePath(
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "FreeRecall_WHAT.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
             "Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav"
           ),
-          imageUrl: resourcePath("Baby.png"),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Baby.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("FreeRecall_WHAT.wav"),
-          feedbackUrl: resourcePath(
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "FreeRecall_WHAT.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
             "Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav"
           ),
-          imageUrl: resourcePath("Rooster.png"),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Rooster.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("FreeRecall_WHAT.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_TOPIN.wav"),
-          imageUrl: resourcePath("Topin.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "FreeRecall_WHAT.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_TOPIN.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Topin.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("FreeRecall_WHAT.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_NEDIG.wav"),
-          imageUrl: resourcePath("Nedig.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "FreeRecall_WHAT.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_NEDIG.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Nedig.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("FreeRecall_WHAT.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_KINIT.wav"),
-          imageUrl: resourcePath("Kinit.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "FreeRecall_WHAT.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_KINIT.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Kinit.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog5.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog5.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog6.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog6.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("Day1_CuedRecall_BAY.wav"),
-          feedbackUrl: resourcePath(
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Day1_CuedRecall_BAY.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
             "Day1_TwoDot_FreeRecall_CuedRecall_BABY.wav"
           ),
-          imageUrl: resourcePath("Baby.png"),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Baby.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("Day1_CuedRecall_ROO.wav"),
-          feedbackUrl: resourcePath(
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Day1_CuedRecall_ROO.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
             "Day1_TwoDot_FreeRecall_CuedRecall_ROOSTER.wav"
           ),
-          imageUrl: resourcePath("Rooster.png"),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Rooster.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("CuedRecall_TO.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_TOPIN.wav"),
-          imageUrl: resourcePath("Topin.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "CuedRecall_TO.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_TOPIN.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Topin.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("CuedRecall_NE.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_NEDIG.wav"),
-          imageUrl: resourcePath("Nedig.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "CuedRecall_NE.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_NEDIG.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Nedig.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: imageAudioWithFeedbackPluginId,
-          stimulusUrl: resourcePath("CuedRecall_KI.wav"),
-          feedbackUrl: resourcePath("TwoDot_FreeRecall_CuedRecall_KINIT.wav"),
-          imageUrl: resourcePath("Kinit.png"),
+          stimulusUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "CuedRecall_KI.wav"
+          ),
+          feedbackUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "TwoDot_FreeRecall_CuedRecall_KINIT.wav"
+          ),
+          imageUrl: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "Kinit.png"
+          ),
           imageHeight: standardImageHeightPixels,
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog6.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog6.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
         },
         {
           type: "image-button-response",
-          stimulus: resourcePath("dog7.png"),
+          stimulus: concatenatePaths(
+            wordLearningInNoiseResourcePath,
+            "dog7.png"
+          ),
           stimulus_height: standardImageHeightPixels,
           choices: ["Continue"],
           prompt: "",
