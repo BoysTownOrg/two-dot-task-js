@@ -35,9 +35,7 @@ class TaskUI {
     twoDotGrid.style.gridTemplateColumns = `1fr ${utility.pixelsString(
       125
     )} ${utility.pixelsString(125)} 1fr`;
-    twoDotGrid.style.gridGap = `${utility.pixelsString(
-      20
-    )} ${utility.pixelsString(20)}`;
+    twoDotGrid.style.gridGap = `${utility.pixelsString(120)}`;
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.gridRow = 1;
     this.firstDot.style.gridColumn = 2;
