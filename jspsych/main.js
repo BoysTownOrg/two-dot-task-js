@@ -244,6 +244,7 @@ function main() {
                 });
               break;
             case "2 dot test":
+            case "2 dot test ":
               if (!stimulusHasBeenRead) {
                 stimulusFileNameOnDeck = audioFileName;
                 stimulusHasBeenRead = true;
