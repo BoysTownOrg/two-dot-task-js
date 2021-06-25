@@ -177,140 +177,140 @@ function main() {
       },
     };
   })();
+  // {
+  //   type: "image-button-response",
+  //   stimulus: concatenatePaths(
+  //     wordLearningInNoiseResourcePath,
+  //     "dog5.png"
+  //   ),
+  //   stimulus_height: standardImageHeightPixels,
+  //   choices: ["Continue"],
+  //   prompt: "",
+  // },
+  // {
+  //   type: "image-button-response",
+  //   stimulus: concatenatePaths(
+  //     wordLearningInNoiseResourcePath,
+  //     "dog6.png"
+  //   ),
+  //   stimulus_height: standardImageHeightPixels,
+  //   choices: ["Continue"],
+  //   prompt: "",
+  // },
+  const page = document.createElement("div");
+  const condition = document.createElement("div");
+  const conditionLabel = document.createElement("label");
+  conditionLabel.textContent = "Condition: ";
+  const conditionSelect = document.createElement("select");
+  const conditionA = document.createElement("option");
+  conditionA.textContent = "A";
+  const conditionB = document.createElement("option");
+  conditionB.textContent = "B";
+  conditionSelect.append(conditionA);
+  conditionSelect.append(conditionB);
+  condition.append(conditionLabel);
+  condition.append(conditionSelect);
+  const startButton = document.createElement("button");
+  startButton.textContent = "Start";
+  startButton.addEventListener("click", () => {
+    const trialsFileName = conditionSelect.options.item(conditionSelect.selectedIndex).textContent === "A" ? "set-a.csv" : "set-b.csv";
+    document.body.removeChild(page);
 
-  const trials = [];
-  fetch("set-a.csv")
-    .then((p) => p.text())
-    .then((text) => {
-      let stimulusUrlOnDeck = "";
-      let stimulusHasBeenRead = false;
-      for (const line of text.split("\n")) {
-        const entries = line.split(",");
-        switch (entries[0]) {
-          case "Repetition":
-            trials.push(
-              {
-                type: imageAudioButtonResponsePluginId,
-                stimulusUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  entries[4]
-                ),
-                imageUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  entries[6]
-                ),
-                imageHeight: standardImageHeightPixels,
-              });
-            break;
-          case "2 dot test":
-            if (!stimulusHasBeenRead) {
-              stimulusUrlOnDeck = entries[4];
-              stimulusHasBeenRead = true;
-            } else {
+    const trials = [];
+    fetch(trialsFileName)
+      .then((p) => p.text())
+      .then((text) => {
+        let stimulusFileNameOnDeck = "";
+        let stimulusHasBeenRead = false;
+        for (const line of text.split("\n")) {
+          const entries = line.split(",");
+          const taskName = entries[0];
+          const audioFileName = entries[4];
+          const imageFileName = entries[6];
+          switch (taskName) {
+            case "Repetition":
               trials.push(
                 {
-                  type: twoDotPluginId,
+                  type: imageAudioButtonResponsePluginId,
                   stimulusUrl: concatenatePaths(
                     wordLearningInNoiseResourcePath,
-                    stimulusUrlOnDeck
-                  ),
-                  feedbackUrl: concatenatePaths(
-                    wordLearningInNoiseResourcePath,
-                    entries[4]
+                    audioFileName
                   ),
                   imageUrl: concatenatePaths(
                     wordLearningInNoiseResourcePath,
-                    entries[6]
+                    imageFileName
                   ),
                   imageHeight: standardImageHeightPixels,
-                  firstChoiceOnsetTimeSeconds: 2.53,
-                  firstChoiceOffsetTimeSeconds: 3,
-                  secondChoiceOnsetTimeSeconds: 3.96,
-                  secondChoiceOffsetTimeSeconds: 4.41,
                 });
-              stimulusHasBeenRead = false;
-            }
-            break;
-          case "Free Recall Test":
-            trials.push({
-              type: imageAudioWithFeedbackPluginId,
-              stimulusUrl: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                entries[4]
-              ),
-              feedbackUrl: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                "Feedback_BABY_Final.wav"
-              ),
-              imageUrl: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                entries[6]
-              ),
-              imageHeight: standardImageHeightPixels,
-            });
-            break;
-          case "Cued Recall Test":
-            trials.push({
-              type: imageAudioWithFeedbackPluginId,
-              stimulusUrl: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                entries[4]
-              ),
-              feedbackUrl: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                "Feedback_BABY_Final.wav"
-              ),
-              imageUrl: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                entries[6]
-              ),
-              imageHeight: standardImageHeightPixels,
-            });
-            break;
-          default:
+              break;
+            case "2 dot test":
+              if (!stimulusHasBeenRead) {
+                stimulusFileNameOnDeck = audioFileName;
+                stimulusHasBeenRead = true;
+              } else {
+                trials.push(
+                  {
+                    type: twoDotPluginId,
+                    stimulusUrl: concatenatePaths(
+                      wordLearningInNoiseResourcePath,
+                      stimulusFileNameOnDeck
+                    ),
+                    feedbackUrl: concatenatePaths(
+                      wordLearningInNoiseResourcePath,
+                      audioFileName
+                    ),
+                    imageUrl: concatenatePaths(
+                      wordLearningInNoiseResourcePath,
+                      imageFileName
+                    ),
+                    imageHeight: standardImageHeightPixels,
+                    firstChoiceOnsetTimeSeconds: 2.53,
+                    firstChoiceOffsetTimeSeconds: 3,
+                    secondChoiceOnsetTimeSeconds: 3.96,
+                    secondChoiceOffsetTimeSeconds: 4.41,
+                  });
+                stimulusHasBeenRead = false;
+              }
+              break;
+            case "Free Recall Test":
+              trials.push({
+                type: imageAudioWithFeedbackPluginId,
+                stimulusUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  audioFileName
+                ),
+                feedbackUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  "Feedback_BABY_Final.wav"
+                ),
+                imageUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  imageFileName
+                ),
+                imageHeight: standardImageHeightPixels,
+              });
+              break;
+            case "Cued Recall Test":
+              trials.push({
+                type: imageAudioWithFeedbackPluginId,
+                stimulusUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  audioFileName
+                ),
+                feedbackUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  "Feedback_BABY_Final.wav"
+                ),
+                imageUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  imageFileName
+                ),
+                imageHeight: standardImageHeightPixels,
+              });
+              break;
+            default:
+          }
         }
-
-      }
-      // {
-      //   type: "image-button-response",
-      //   stimulus: concatenatePaths(
-      //     wordLearningInNoiseResourcePath,
-      //     "dog5.png"
-      //   ),
-      //   stimulus_height: standardImageHeightPixels,
-      //   choices: ["Continue"],
-      //   prompt: "",
-      // },
-      // {
-      //   type: "image-button-response",
-      //   stimulus: concatenatePaths(
-      //     wordLearningInNoiseResourcePath,
-      //     "dog6.png"
-      //   ),
-      //   stimulus_height: standardImageHeightPixels,
-      //   choices: ["Continue"],
-      //   prompt: "",
-      // },
-      const page = document.createElement("div");
-      const condition = document.createElement("div");
-      const conditionLabel = document.createElement("label");
-      conditionLabel.textContent = "Condition: ";
-      const conditionSelect = document.createElement("select");
-      const conditionA = document.createElement("option");
-      conditionA.textContent = "A";
-      const conditionB = document.createElement("option");
-      conditionB.textContent = "B";
-      const conditionC = document.createElement("option");
-      conditionC.textContent = "C";
-      conditionSelect.append(conditionA);
-      conditionSelect.append(conditionB);
-      conditionSelect.append(conditionC);
-      condition.append(conditionLabel);
-      condition.append(conditionSelect);
-      const startButton = document.createElement("button");
-      startButton.textContent = "Start";
-      startButton.addEventListener("click", () => {
-        document.body.removeChild(page);
         jsPsych.init({
           timeline: [
             {
@@ -321,10 +321,10 @@ function main() {
           ],
         });
       });
-      page.append(condition);
-      page.append(startButton);
-      document.body.append(page);
-    });
+  });
+  page.append(condition);
+  page.append(startButton);
+  document.body.append(page);
 }
 
 main();
