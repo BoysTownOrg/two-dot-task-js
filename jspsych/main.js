@@ -222,11 +222,40 @@ function main() {
       .then((text) => {
         let stimulusFileNameOnDeck = "";
         let stimulusHasBeenRead = false;
-        for (const line of text.split("\n")) {
+        let lastTaskName = "";
+        let taskCount = 0;
+        for (const line of text.split("\n").slice(2)) {
           const entries = line.split(",");
-          const taskName = entries[0];
+          const taskName = entries[0].trim();
           const audioFileName = entries[4];
+          const targetImage = entries[5];
           const imageFileName = entries[6];
+          if (taskName !== lastTaskName && lastTaskName !== "") {
+            trials.push(
+              {
+                type: "image-button-response",
+                stimulus: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  `Slide${taskCount + 1}.PNG`
+                ),
+                stimulus_height: standardImageHeightPixels,
+                choices: ["Continue"],
+                prompt: "",
+              });
+            trials.push(
+              {
+                type: "image-button-response",
+                stimulus: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  `Slide${taskCount + 2}.PNG`
+                ),
+                stimulus_height: standardImageHeightPixels,
+                choices: ["Continue"],
+                prompt: "",
+              });
+            taskCount += 1;
+          }
+          lastTaskName = taskName;
           switch (taskName) {
             case "Repetition":
               trials.push(
@@ -244,7 +273,6 @@ function main() {
                 });
               break;
             case "2 dot test":
-            case "2 dot test ":
               if (!stimulusHasBeenRead) {
                 stimulusFileNameOnDeck = audioFileName;
                 stimulusHasBeenRead = true;
@@ -282,7 +310,7 @@ function main() {
                 ),
                 feedbackUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
-                  "Feedback_BABY_Final.wav"
+                  `Feedback_${targetImage.toUpperCase()}_Final.wav`
                 ),
                 imageUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
@@ -300,7 +328,7 @@ function main() {
                 ),
                 feedbackUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
-                  "Feedback_BABY_Final.wav"
+                  `Feedback_${targetImage.toUpperCase()}_Final.wav`
                 ),
                 imageUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
