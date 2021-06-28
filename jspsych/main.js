@@ -61,12 +61,6 @@ function main() {
           const audioFileName = entries[4];
           const targetImage = entries[5];
           const imageFileName = entries[6];
-          if (taskName === "5-Minute Break") {
-            pastFiveMinuteBreak = true;
-            taskCount += 1;
-            lastTaskName = "";
-            continue;
-          }
           if (taskName !== lastTaskName && lastTaskName !== "") {
             trials.push({
               type: "image-button-response",
@@ -184,6 +178,11 @@ function main() {
                 ),
                 imageHeight: standardImageHeightPixels,
               });
+              break;
+            case "5-Minute Break":
+              pastFiveMinuteBreak = true;
+              taskCount += 1;
+              lastTaskName = "";
               break;
             default:
           }
