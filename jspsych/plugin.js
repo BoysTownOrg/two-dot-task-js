@@ -219,3 +219,147 @@ export function plugin(name) {
     },
   };
 }
+
+export function imageAudioButtonResponse(id) {
+  jsPsych.pluginAPI.registerPreload(id, "stimulusUrl", "audio");
+  jsPsych.pluginAPI.registerPreload(id, "imageUrl", "image");
+
+  return {
+    info: {
+      parameters: {
+        stimulusUrl: {
+          type: jsPsych.plugins.parameterType.AUDIO,
+          pretty_name: "Stimulus URL",
+          default: "",
+          description: "The stimulus audio",
+        },
+        imageUrl: {
+          type: jsPsych.plugins.parameterType.IMAGE,
+          pretty_name: "Image URL",
+          default: "",
+          description: "The image",
+        },
+        imageHeight: {
+          type: jsPsych.plugins.parameterType.INT,
+          pretty_name: "Image height",
+          default: null,
+          description: "The image height in pixels",
+        },
+      },
+    },
+    trial(displayElement, trial) {
+      utility.clear(displayElement);
+      const grid = utility.gridElement(2, 1);
+      utility.adopt(displayElement, grid);
+      const image = new Image();
+      image.src = trial.imageUrl;
+      image.onload = () => {
+        image.height = trial.imageHeight;
+        image.width =
+          (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
+      };
+      image.style.gridRow = 1;
+      image.style.gridColumn = 1;
+      utility.adopt(grid, image);
+      const buttonContainer = utility.buttonContainerElement();
+      utility.adopt(grid, buttonContainer);
+      buttonContainer.style.gridRow = 2;
+      buttonContainer.style.gridColumn = 1;
+      const continueButton = utility.buttonElement();
+      continueButton.textContent = "Continue";
+      continueButton.style.visibility = "hidden";
+      utility.adopt(buttonContainer, continueButton);
+      utility.addClickEventListener(continueButton, () =>
+        jsPsych.finishTrial()
+      );
+      const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
+      stimulusPlayer.onended = () => {
+        continueButton.style.visibility = "visible";
+      };
+      stimulusPlayer.play();
+    },
+  };
+}
+
+export function imageAudioWithFeedback(id) {
+  jsPsych.pluginAPI.registerPreload(id, "stimulusUrl", "audio");
+  jsPsych.pluginAPI.registerPreload(id, "feedbackUrl", "audio");
+  jsPsych.pluginAPI.registerPreload(id, "imageUrl", "image");
+
+  return {
+    info: {
+      name: id,
+      description: "",
+      parameters: {
+        stimulusUrl: {
+          type: jsPsych.plugins.parameterType.AUDIO,
+          pretty_name: "Stimulus URL",
+          default: "",
+          description: "The stimulus audio",
+        },
+        feedbackUrl: {
+          type: jsPsych.plugins.parameterType.AUDIO,
+          pretty_name: "Feedback URL",
+          default: "",
+          description: "The feedback audio",
+        },
+        imageUrl: {
+          type: jsPsych.plugins.parameterType.IMAGE,
+          pretty_name: "Image URL",
+          default: "",
+          description: "The image",
+        },
+        imageHeight: {
+          type: jsPsych.plugins.parameterType.INT,
+          pretty_name: "Image height",
+          default: null,
+          description: "The image height in pixels",
+        },
+      },
+    },
+    trial(displayElement, trial) {
+      utility.clear(displayElement);
+      const image = new Image();
+      image.src = trial.imageUrl;
+      image.onload = () => {
+        image.height = trial.imageHeight;
+        image.width =
+          (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
+      };
+      utility.adopt(displayElement, image);
+      const belowImage = utility.divElement();
+      const buttonContainer = utility.buttonContainerElement();
+      const grid = utility.gridElement(2, 1);
+      const continueButton = utility.buttonElement();
+      continueButton.style.gridRow = 2;
+      continueButton.style.gridColumn = 1;
+      utility.adopt(grid, continueButton);
+      const feedbackButton = utility.buttonElement();
+      feedbackButton.style.gridRow = 1;
+      feedbackButton.style.gridColumn = 1;
+      utility.adopt(grid, feedbackButton);
+      utility.adopt(buttonContainer, grid);
+      utility.adopt(belowImage, buttonContainer);
+      utility.adopt(displayElement, belowImage);
+      continueButton.textContent = "Continue";
+      continueButton.style.visibility = "hidden";
+      utility.addClickEventListener(continueButton, () =>
+        jsPsych.finishTrial()
+      );
+      const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
+      const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
+      feedbackButton.textContent = "Feedback";
+      feedbackButton.style.visibility = "hidden";
+      utility.addClickEventListener(feedbackButton, () =>
+        feedbackPlayer.play()
+      );
+      stimulusPlayer.onended = () => {
+        feedbackButton.style.visibility = "visible";
+      };
+      feedbackPlayer.onended = () => {
+        continueButton.style.visibility = "visible";
+      };
+      stimulusPlayer.play();
+    },
+  };
+}

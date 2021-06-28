@@ -1,5 +1,8 @@
-import { plugin as twoDotPlugin } from "./plugin.js";
-import * as utility from "./utility.js";
+import {
+  plugin as twoDotPlugin,
+  imageAudioButtonResponse as imageAudioButtonResponsePlugin,
+  imageAudioWithFeedback as imageAudioWithFeedbackPlugin,
+} from "./plugin.js";
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
@@ -12,191 +15,14 @@ function main() {
   jsPsych.plugins[twoDotPluginId] = twoDotPlugin(twoDotPluginId);
 
   const imageAudioButtonResponsePluginId = "image-audio-button-response";
-  jsPsych.plugins[imageAudioButtonResponsePluginId] = (() => {
-    jsPsych.pluginAPI.registerPreload(
-      imageAudioButtonResponsePluginId,
-      "stimulusUrl",
-      "audio"
-    );
-    jsPsych.pluginAPI.registerPreload(
-      imageAudioButtonResponsePluginId,
-      "imageUrl",
-      "image"
-    );
-
-    return {
-      info: {
-        parameters: {
-          stimulusUrl: {
-            type: jsPsych.plugins.parameterType.AUDIO,
-            pretty_name: "Stimulus URL",
-            default: "",
-            description: "The stimulus audio",
-          },
-          imageUrl: {
-            type: jsPsych.plugins.parameterType.IMAGE,
-            pretty_name: "Image URL",
-            default: "",
-            description: "The image",
-          },
-          imageHeight: {
-            type: jsPsych.plugins.parameterType.INT,
-            pretty_name: "Image height",
-            default: null,
-            description: "The image height in pixels",
-          },
-        },
-      },
-      trial(displayElement, trial) {
-        utility.clear(displayElement);
-        const grid = utility.gridElement(2, 1);
-        utility.adopt(displayElement, grid);
-        const image = new Image();
-        image.src = trial.imageUrl;
-        image.onload = () => {
-          image.height = trial.imageHeight;
-          image.width =
-            (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
-        };
-        image.style.gridRow = 1;
-        image.style.gridColumn = 1;
-        utility.adopt(grid, image);
-        const buttonContainer = utility.buttonContainerElement();
-        utility.adopt(grid, buttonContainer);
-        buttonContainer.style.gridRow = 2;
-        buttonContainer.style.gridColumn = 1;
-        const continueButton = utility.buttonElement();
-        continueButton.textContent = "Continue";
-        continueButton.style.visibility = "hidden";
-        utility.adopt(buttonContainer, continueButton);
-        utility.addClickEventListener(continueButton, () =>
-          jsPsych.finishTrial()
-        );
-        const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
-        stimulusPlayer.onended = () => {
-          continueButton.style.visibility = "visible";
-        };
-        stimulusPlayer.play();
-      },
-    };
-  })();
+  jsPsych.plugins[imageAudioButtonResponsePluginId] =
+    imageAudioButtonResponsePlugin(imageAudioButtonResponsePluginId);
 
   const imageAudioWithFeedbackPluginId =
     "image-audio-with-feedback-button-response";
-  jsPsych.plugins[imageAudioWithFeedbackPluginId] = (() => {
-    jsPsych.pluginAPI.registerPreload(
-      imageAudioWithFeedbackPluginId,
-      "stimulusUrl",
-      "audio"
-    );
-    jsPsych.pluginAPI.registerPreload(
-      imageAudioWithFeedbackPluginId,
-      "feedbackUrl",
-      "audio"
-    );
-    jsPsych.pluginAPI.registerPreload(
-      imageAudioWithFeedbackPluginId,
-      "imageUrl",
-      "image"
-    );
+  jsPsych.plugins[imageAudioWithFeedbackPluginId] =
+    imageAudioWithFeedbackPlugin(imageAudioWithFeedbackPluginId);
 
-    return {
-      info: {
-        name: imageAudioWithFeedbackPluginId,
-        description: "",
-        parameters: {
-          stimulusUrl: {
-            type: jsPsych.plugins.parameterType.AUDIO,
-            pretty_name: "Stimulus URL",
-            default: "",
-            description: "The stimulus audio",
-          },
-          feedbackUrl: {
-            type: jsPsych.plugins.parameterType.AUDIO,
-            pretty_name: "Feedback URL",
-            default: "",
-            description: "The feedback audio",
-          },
-          imageUrl: {
-            type: jsPsych.plugins.parameterType.IMAGE,
-            pretty_name: "Image URL",
-            default: "",
-            description: "The image",
-          },
-          imageHeight: {
-            type: jsPsych.plugins.parameterType.INT,
-            pretty_name: "Image height",
-            default: null,
-            description: "The image height in pixels",
-          },
-        },
-      },
-      trial(displayElement, trial) {
-        utility.clear(displayElement);
-        const image = new Image();
-        image.src = trial.imageUrl;
-        image.onload = () => {
-          image.height = trial.imageHeight;
-          image.width =
-            (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
-        };
-        utility.adopt(displayElement, image);
-        const belowImage = utility.divElement();
-        const buttonContainer = utility.buttonContainerElement();
-        const grid = utility.gridElement(2, 1);
-        const continueButton = utility.buttonElement();
-        continueButton.style.gridRow = 2;
-        continueButton.style.gridColumn = 1;
-        utility.adopt(grid, continueButton);
-        const feedbackButton = utility.buttonElement();
-        feedbackButton.style.gridRow = 1;
-        feedbackButton.style.gridColumn = 1;
-        utility.adopt(grid, feedbackButton);
-        utility.adopt(buttonContainer, grid);
-        utility.adopt(belowImage, buttonContainer);
-        utility.adopt(displayElement, belowImage);
-        continueButton.textContent = "Continue";
-        continueButton.style.visibility = "hidden";
-        utility.addClickEventListener(continueButton, () =>
-          jsPsych.finishTrial()
-        );
-        const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
-        const feedbackPlayer = utility.audioPlayer(trial.feedbackUrl);
-        feedbackButton.textContent = "Feedback";
-        feedbackButton.style.visibility = "hidden";
-        utility.addClickEventListener(feedbackButton, () =>
-          feedbackPlayer.play()
-        );
-        stimulusPlayer.onended = () => {
-          feedbackButton.style.visibility = "visible";
-        };
-        feedbackPlayer.onended = () => {
-          continueButton.style.visibility = "visible";
-        };
-        stimulusPlayer.play();
-      },
-    };
-  })();
-  // {
-  //   type: "image-button-response",
-  //   stimulus: concatenatePaths(
-  //     wordLearningInNoiseResourcePath,
-  //     "dog5.png"
-  //   ),
-  //   stimulus_height: standardImageHeightPixels,
-  //   choices: ["Continue"],
-  //   prompt: "",
-  // },
-  // {
-  //   type: "image-button-response",
-  //   stimulus: concatenatePaths(
-  //     wordLearningInNoiseResourcePath,
-  //     "dog6.png"
-  //   ),
-  //   stimulus_height: standardImageHeightPixels,
-  //   choices: ["Continue"],
-  //   prompt: "",
-  // },
   const page = document.createElement("div");
   const condition = document.createElement("div");
   const conditionLabel = document.createElement("label");
@@ -213,7 +39,11 @@ function main() {
   const startButton = document.createElement("button");
   startButton.textContent = "Start";
   startButton.addEventListener("click", () => {
-    const trialsFileName = conditionSelect.options.item(conditionSelect.selectedIndex).textContent === "A" ? "set-a.csv" : "set-b.csv";
+    const trialsFileName =
+      conditionSelect.options.item(conditionSelect.selectedIndex)
+        .textContent === "A"
+        ? "set-a.csv"
+        : "set-b.csv";
     document.body.removeChild(page);
 
     const trials = [];
@@ -231,37 +61,56 @@ function main() {
           const targetImage = entries[5];
           const imageFileName = entries[6];
           if (taskName !== lastTaskName && lastTaskName !== "") {
-            trials.push(
-              {
-                type: "image-button-response",
-                stimulus: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  `Slide${taskCount + 1}.PNG`
-                ),
-                stimulus_height: standardImageHeightPixels,
-                choices: ["Continue"],
-                prompt: "",
-              });
-            trials.push(
-              {
-                type: "image-button-response",
-                stimulus: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  `Slide${taskCount + 2}.PNG`
-                ),
-                stimulus_height: standardImageHeightPixels,
-                choices: ["Continue"],
-                prompt: "",
-              });
+            trials.push({
+              type: "image-button-response",
+              stimulus: concatenatePaths(
+                wordLearningInNoiseResourcePath,
+                `Slide${taskCount + 1}.PNG`
+              ),
+              stimulus_height: standardImageHeightPixels,
+              choices: ["Continue"],
+              prompt: "",
+            });
+            trials.push({
+              type: "image-button-response",
+              stimulus: concatenatePaths(
+                wordLearningInNoiseResourcePath,
+                `Slide${taskCount + 2}.PNG`
+              ),
+              stimulus_height: standardImageHeightPixels,
+              choices: ["Continue"],
+              prompt: "",
+            });
             taskCount += 1;
           }
           lastTaskName = taskName;
           switch (taskName) {
             case "Repetition":
-              trials.push(
-                {
-                  type: imageAudioButtonResponsePluginId,
+              trials.push({
+                type: imageAudioButtonResponsePluginId,
+                stimulusUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  audioFileName
+                ),
+                imageUrl: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  imageFileName
+                ),
+                imageHeight: standardImageHeightPixels,
+              });
+              break;
+            case "2 dot test":
+              if (!stimulusHasBeenRead) {
+                stimulusFileNameOnDeck = audioFileName;
+                stimulusHasBeenRead = true;
+              } else {
+                trials.push({
+                  type: twoDotPluginId,
                   stimulusUrl: concatenatePaths(
+                    wordLearningInNoiseResourcePath,
+                    stimulusFileNameOnDeck
+                  ),
+                  feedbackUrl: concatenatePaths(
                     wordLearningInNoiseResourcePath,
                     audioFileName
                   ),
@@ -270,34 +119,11 @@ function main() {
                     imageFileName
                   ),
                   imageHeight: standardImageHeightPixels,
+                  firstChoiceOnsetTimeSeconds: 2.53,
+                  firstChoiceOffsetTimeSeconds: 3,
+                  secondChoiceOnsetTimeSeconds: 3.96,
+                  secondChoiceOffsetTimeSeconds: 4.41,
                 });
-              break;
-            case "2 dot test":
-              if (!stimulusHasBeenRead) {
-                stimulusFileNameOnDeck = audioFileName;
-                stimulusHasBeenRead = true;
-              } else {
-                trials.push(
-                  {
-                    type: twoDotPluginId,
-                    stimulusUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      stimulusFileNameOnDeck
-                    ),
-                    feedbackUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      audioFileName
-                    ),
-                    imageUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      imageFileName
-                    ),
-                    imageHeight: standardImageHeightPixels,
-                    firstChoiceOnsetTimeSeconds: 2.53,
-                    firstChoiceOffsetTimeSeconds: 3,
-                    secondChoiceOnsetTimeSeconds: 3.96,
-                    secondChoiceOffsetTimeSeconds: 4.41,
-                  });
                 stimulusHasBeenRead = false;
               }
               break;
