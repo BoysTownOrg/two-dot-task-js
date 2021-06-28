@@ -52,6 +52,7 @@ function main() {
       .then((text) => {
         let stimulusFileNameOnDeck = "";
         let stimulusHasBeenRead = false;
+        let pastFiveMinuteBreak = false;
         let lastTaskName = "";
         let taskCount = 0;
         for (const line of text.split("\n").slice(2)) {
@@ -60,6 +61,12 @@ function main() {
           const audioFileName = entries[4];
           const targetImage = entries[5];
           const imageFileName = entries[6];
+          if (taskName === "5-Minute Break") {
+            pastFiveMinuteBreak = true;
+            taskCount += 1;
+            lastTaskName = "";
+            continue;
+          }
           if (taskName !== lastTaskName && lastTaskName !== "") {
             trials.push({
               type: "image-button-response",
@@ -103,6 +110,21 @@ function main() {
               if (!stimulusHasBeenRead) {
                 stimulusFileNameOnDeck = audioFileName;
                 stimulusHasBeenRead = true;
+              } else if (pastFiveMinuteBreak) {
+                trials.push({
+                  type: twoDotPluginId,
+                  stimulusUrl: concatenatePaths(
+                    wordLearningInNoiseResourcePath,
+                    audioFileName
+                  ),
+                  feedbackUrl: trials[trials.length - 5].feedbackUrl,
+                  imageUrl: trials[trials.length - 5].imageUrl,
+                  imageHeight: standardImageHeightPixels,
+                  firstChoiceOnsetTimeSeconds: 2.5,
+                  firstChoiceOffsetTimeSeconds: 3,
+                  secondChoiceOnsetTimeSeconds: 4,
+                  secondChoiceOffsetTimeSeconds: 4.5,
+                });
               } else {
                 trials.push({
                   type: twoDotPluginId,
@@ -119,10 +141,10 @@ function main() {
                     imageFileName
                   ),
                   imageHeight: standardImageHeightPixels,
-                  firstChoiceOnsetTimeSeconds: 2.53,
+                  firstChoiceOnsetTimeSeconds: 2.5,
                   firstChoiceOffsetTimeSeconds: 3,
-                  secondChoiceOnsetTimeSeconds: 3.96,
-                  secondChoiceOffsetTimeSeconds: 4.41,
+                  secondChoiceOnsetTimeSeconds: 4,
+                  secondChoiceOffsetTimeSeconds: 4.5,
                 });
                 stimulusHasBeenRead = false;
               }
