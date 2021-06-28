@@ -57,7 +57,7 @@ function main() {
         let taskCount = 0;
         for (const line of text.split("\n").slice(2)) {
           const entries = line.split(",");
-          const taskName = entries[0].trim();
+          const taskName = entries[0].trim().toLowerCase();
           const audioFileName = entries[4];
           const targetImage = entries[5];
           const imageFileName = entries[6];
@@ -86,7 +86,7 @@ function main() {
           }
           lastTaskName = taskName;
           switch (taskName) {
-            case "Repetition":
+            case "repetition":
               trials.push({
                 type: imageAudioButtonResponsePluginId,
                 stimulusUrl: concatenatePaths(
@@ -143,7 +143,7 @@ function main() {
                 stimulusHasBeenRead = false;
               }
               break;
-            case "Free Recall Test":
+            case "free recall test":
               trials.push({
                 type: imageAudioWithFeedbackPluginId,
                 stimulusUrl: concatenatePaths(
@@ -161,7 +161,7 @@ function main() {
                 imageHeight: standardImageHeightPixels,
               });
               break;
-            case "Cued Recall Test":
+            case "cued recall test":
               trials.push({
                 type: imageAudioWithFeedbackPluginId,
                 stimulusUrl: concatenatePaths(
@@ -179,7 +179,7 @@ function main() {
                 imageHeight: standardImageHeightPixels,
               });
               break;
-            case "5-Minute Break":
+            case "5-minute break":
               pastFiveMinuteBreak = true;
               taskCount += 1;
               lastTaskName = "";
