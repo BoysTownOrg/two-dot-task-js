@@ -180,6 +180,12 @@ function main() {
               });
               break;
             case "5-minute break":
+              trials.push({
+                type: "html-button-response",
+                stimulus:
+                  "Take a 5 minute break. Press 'Continue' when finished.",
+                choices: ["Continue"],
+              });
               pastFiveMinuteBreak = true;
               taskCount += 1;
               lastTaskName = "";
