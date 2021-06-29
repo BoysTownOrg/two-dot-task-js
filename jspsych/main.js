@@ -46,10 +46,15 @@ function main() {
         : "set-b.csv";
     document.body.removeChild(page);
 
-    const trials = [];
     fetch(trialsFileName)
       .then((p) => p.text())
       .then((text) => {
+        const trials = [];
+        trials.push({
+          type: "html-button-response",
+          stimulus: "Press 'Start' when ready.",
+          choices: ["Start"],
+        });
         let stimulusFileNameOnDeck = "";
         let stimulusHasBeenRead = false;
         let pastFiveMinuteBreak = false;
@@ -193,6 +198,11 @@ function main() {
             default:
           }
         }
+        trials.push({
+          type: "html-button-response",
+          stimulus: "The test is done. Press 'Finish' to complete. Thank you.",
+          choices: ["Finish"],
+        });
         jsPsych.init({
           timeline: [
             {
