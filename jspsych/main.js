@@ -34,13 +34,17 @@ function main() {
   const confirmButton = document.createElement("button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
-    const trialsFileName =
-      setSelect.options.item(setSelect.selectedIndex).textContent === setAText
-        ? "set-a.csv"
-        : "set-b.csv";
-    document.body.removeChild(page);
-
-    fetch(concatenatePaths(wordLearningInNoiseResourcePath, trialsFileName))
+    fetch(
+      concatenatePaths(
+        wordLearningInNoiseResourcePath,
+        `set-${
+          setSelect.options.item(setSelect.selectedIndex).textContent ===
+          setAText
+            ? "a"
+            : "b"
+        }.csv`
+      )
+    )
       .then((p) => p.text())
       .then((text) => {
         const trials = [];
@@ -61,7 +65,12 @@ function main() {
                 type: "image-button-response",
                 stimulus: concatenatePaths(
                   wordLearningInNoiseResourcePath,
-                  `Slide${taskCount + i + 1}.jpg`
+                  `game-${
+                    setSelect.options.item(setSelect.selectedIndex)
+                      .textContent === setAText
+                      ? "a"
+                      : "b"
+                  }-${taskCount + i + 1}.jpg`
                 ),
                 stimulus_height: standardImageHeightPixels,
                 choices: ["Continue"],
@@ -162,6 +171,7 @@ function main() {
             default:
           }
         }
+        document.body.removeChild(page);
         jsPsych.init({
           timeline: [
             {
