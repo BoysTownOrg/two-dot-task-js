@@ -49,6 +49,7 @@ function main() {
         let pastFiveMinuteBreak = false;
         let lastTaskName = "";
         let taskCount = 0;
+        let first = true;
         for (const line of text.split("\n").slice(1)) {
           const entries = line.split(",");
           const taskName = entries[0].trim().toLowerCase();
@@ -74,18 +75,32 @@ function main() {
             case "repetition":
             case "free recall test":
             case "cued recall test":
-              trials.push({
-                type: imageAudioButtonResponsePluginId,
-                stimulusUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  audioFileName
-                ),
-                imageUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  imageFileName
-                ),
-                imageHeight: standardImageHeightPixels,
-              });
+              if (first) {
+                trials.push({
+                  type: "image-button-response",
+                  stimulus: concatenatePaths(
+                    wordLearningInNoiseResourcePath,
+                    imageFileName
+                  ),
+                  stimulus_height: standardImageHeightPixels,
+                  choices: ["Continue"],
+                  prompt: "",
+                });
+                first = false;
+              } else {
+                trials.push({
+                  type: imageAudioButtonResponsePluginId,
+                  stimulusUrl: concatenatePaths(
+                    wordLearningInNoiseResourcePath,
+                    audioFileName
+                  ),
+                  imageUrl: concatenatePaths(
+                    wordLearningInNoiseResourcePath,
+                    imageFileName
+                  ),
+                  imageHeight: standardImageHeightPixels,
+                });
+              }
               break;
             case "2 dot test":
               if (pastFiveMinuteBreak) {
