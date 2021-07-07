@@ -363,3 +363,64 @@ export function imageAudioWithFeedback(id) {
     },
   };
 }
+
+export function stopwatch(id) {
+  return {
+    info: {
+      name: id,
+      description: "",
+      parameters: {
+        text: {
+          type: jsPsych.plugins.parameterType.STRING,
+          pretty_name: "Displayed Text",
+          default: "",
+          description: "The text that is displayed",
+        },
+      },
+    },
+    trial(displayElement, trial) {
+      utility.clear(displayElement);
+      const text = utility.divElement();
+      text.textContent = trial.text;
+      utility.adopt(displayElement, text);
+      const timeContainer = document.createElement("h1");
+      const time = document.createElement("time");
+      time.textContent = "00:00:00";
+      utility.adopt(timeContainer, time);
+      utility.adopt(displayElement, timeContainer);
+      const buttonContainer = utility.buttonContainerElement();
+      const continueButton = utility.buttonElement();
+      utility.adopt(buttonContainer, continueButton);
+      utility.adopt(displayElement, buttonContainer);
+      continueButton.textContent = "Continue";
+      utility.addClickEventListener(continueButton, () =>
+        jsPsych.finishTrial()
+      );
+
+      // modified from https://jsfiddle.net/Daniel_Hug/pvk6p/
+      let seconds = 0;
+      let minutes = 0;
+      let hours = 0;
+
+      function updateTime() {
+        seconds += 1;
+        if (seconds >= 60) {
+          seconds = 0;
+          minutes += 1;
+          if (minutes >= 60) {
+            minutes = 0;
+            hours += 1;
+          }
+        }
+        time.textContent = `${
+          hours ? (hours > 9 ? hours : `0${hours}`) : "00"
+        }:${minutes ? (minutes > 9 ? minutes : `0${minutes}`) : "00"}:${
+          seconds > 9 ? seconds : `0${seconds}`
+        }`;
+        jsPsych.pluginAPI.setTimeout(updateTime, 1000);
+      }
+
+      jsPsych.pluginAPI.setTimeout(updateTime, 1000);
+    },
+  };
+}

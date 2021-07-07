@@ -1,6 +1,7 @@
 import {
   plugin as twoDotPlugin,
   imageAudioButtonResponse as imageAudioButtonResponsePlugin,
+  stopwatch as stopwatchPlugin,
 } from "./plugin.js";
 
 function concatenatePaths(a, b) {
@@ -16,6 +17,9 @@ function main() {
   const imageAudioButtonResponsePluginId = "image-audio-button-response";
   jsPsych.plugins[imageAudioButtonResponsePluginId] =
     imageAudioButtonResponsePlugin(imageAudioButtonResponsePluginId);
+
+  const stopwatchPluginId = "stopwatch";
+  jsPsych.plugins[stopwatchPluginId] = stopwatchPlugin(stopwatchPluginId);
 
   const page = document.createElement("div");
   const set = document.createElement("div");
@@ -159,10 +163,8 @@ function main() {
               break;
             case "5-minute break":
               trials.push({
-                type: "html-button-response",
-                stimulus:
-                  'Take a 5 minute break. Press "Continue" when finished.',
-                choices: ["Continue"],
+                type: stopwatchPluginId,
+                text: 'Take a 5 minute break. Press "Continue" when finished.',
               });
               pastFiveMinuteBreak = true;
               taskCount += 1;
