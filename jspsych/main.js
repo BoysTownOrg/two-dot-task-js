@@ -113,7 +113,10 @@ function main() {
                     wordLearningInNoiseResourcePath,
                     audioFileName
                   ),
-                  feedbackUrl: trials[trials.length - 6].feedbackUrl,
+                  feedbackUrl: concatenatePaths(
+                    wordLearningInNoiseResourcePath,
+                    "silence.wav"
+                  ),
                   imageUrl: trials[trials.length - 6].imageUrl,
                   imageHeight: standardImageHeightPixels,
                   firstChoiceOnsetTimeSeconds: 2.5,
@@ -150,14 +153,10 @@ function main() {
               break;
             case "free recall test":
               trials.push({
-                type: imageAudioWithFeedbackPluginId,
+                type: imageAudioButtonResponsePluginId,
                 stimulusUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
                   audioFileName
-                ),
-                feedbackUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  `Feedback_${targetImage.toUpperCase()}_Final.wav`
                 ),
                 imageUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
@@ -168,14 +167,10 @@ function main() {
               break;
             case "cued recall test":
               trials.push({
-                type: imageAudioWithFeedbackPluginId,
+                type: imageAudioButtonResponsePluginId,
                 stimulusUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
                   audioFileName
-                ),
-                feedbackUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  `Feedback_${targetImage.toUpperCase()}_Final.wav`
                 ),
                 imageUrl: concatenatePaths(
                   wordLearningInNoiseResourcePath,
