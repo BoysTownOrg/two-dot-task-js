@@ -46,7 +46,7 @@ function main() {
         : "set-b.csv";
     document.body.removeChild(page);
 
-    fetch(trialsFileName)
+    fetch(concatenatePaths(wordLearningInNoiseResourcePath, trialsFileName))
       .then((p) => p.text())
       .then((text) => {
         const trials = [];
@@ -60,7 +60,7 @@ function main() {
         let pastFiveMinuteBreak = false;
         let lastTaskName = "";
         let taskCount = 0;
-        for (const line of text.split("\n").slice(2)) {
+        for (const line of text.split("\n").slice(1)) {
           const entries = line.split(",");
           const taskName = entries[0].trim().toLowerCase();
           const audioFileName = entries[4];
@@ -71,7 +71,7 @@ function main() {
               type: "image-button-response",
               stimulus: concatenatePaths(
                 wordLearningInNoiseResourcePath,
-                `Slide${taskCount + 1}.PNG`
+                `Slide${taskCount + 1}.jpg`
               ),
               stimulus_height: standardImageHeightPixels,
               choices: ["Continue"],
@@ -81,7 +81,7 @@ function main() {
               type: "image-button-response",
               stimulus: concatenatePaths(
                 wordLearningInNoiseResourcePath,
-                `Slide${taskCount + 2}.PNG`
+                `Slide${taskCount + 2}.jpg`
               ),
               stimulus_height: standardImageHeightPixels,
               choices: ["Continue"],
@@ -106,24 +106,24 @@ function main() {
               });
               break;
             case "2 dot test":
-              if (!stimulusHasBeenRead) {
-                stimulusFileNameOnDeck = audioFileName;
-                stimulusHasBeenRead = true;
-              } else if (pastFiveMinuteBreak) {
+              if (pastFiveMinuteBreak) {
                 trials.push({
                   type: twoDotPluginId,
                   stimulusUrl: concatenatePaths(
                     wordLearningInNoiseResourcePath,
                     audioFileName
                   ),
-                  feedbackUrl: trials[trials.length - 5].feedbackUrl,
-                  imageUrl: trials[trials.length - 5].imageUrl,
+                  feedbackUrl: trials[trials.length - 6].feedbackUrl,
+                  imageUrl: trials[trials.length - 6].imageUrl,
                   imageHeight: standardImageHeightPixels,
                   firstChoiceOnsetTimeSeconds: 2.5,
                   firstChoiceOffsetTimeSeconds: 3,
                   secondChoiceOnsetTimeSeconds: 4,
                   secondChoiceOffsetTimeSeconds: 4.5,
                 });
+              } else if (!stimulusHasBeenRead) {
+                stimulusFileNameOnDeck = audioFileName;
+                stimulusHasBeenRead = true;
               } else {
                 trials.push({
                   type: twoDotPluginId,
