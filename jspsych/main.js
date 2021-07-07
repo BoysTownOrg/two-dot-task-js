@@ -64,7 +64,6 @@ function main() {
           const entries = line.split(",");
           const taskName = entries[0].trim().toLowerCase();
           const audioFileName = entries[4];
-          const targetImage = entries[5];
           const imageFileName = entries[6];
           if (taskName !== lastTaskName && lastTaskName !== "") {
             trials.push({
