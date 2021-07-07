@@ -1,7 +1,6 @@
 import {
   plugin as twoDotPlugin,
   imageAudioButtonResponse as imageAudioButtonResponsePlugin,
-  imageAudioWithFeedback as imageAudioWithFeedbackPlugin,
 } from "./plugin.js";
 
 function concatenatePaths(a, b) {
@@ -18,30 +17,25 @@ function main() {
   jsPsych.plugins[imageAudioButtonResponsePluginId] =
     imageAudioButtonResponsePlugin(imageAudioButtonResponsePluginId);
 
-  const imageAudioWithFeedbackPluginId =
-    "image-audio-with-feedback-button-response";
-  jsPsych.plugins[imageAudioWithFeedbackPluginId] =
-    imageAudioWithFeedbackPlugin(imageAudioWithFeedbackPluginId);
-
   const page = document.createElement("div");
-  const condition = document.createElement("div");
-  const conditionLabel = document.createElement("label");
-  conditionLabel.textContent = "Condition: ";
-  const conditionSelect = document.createElement("select");
-  const conditionA = document.createElement("option");
-  conditionA.textContent = "A";
-  const conditionB = document.createElement("option");
-  conditionB.textContent = "B";
-  conditionSelect.append(conditionA);
-  conditionSelect.append(conditionB);
-  condition.append(conditionLabel);
-  condition.append(conditionSelect);
-  const startButton = document.createElement("button");
-  startButton.textContent = "Start";
-  startButton.addEventListener("click", () => {
+  const set = document.createElement("div");
+  const setLabel = document.createElement("label");
+  setLabel.textContent = "Set";
+  const setSelect = document.createElement("select");
+  const setA = document.createElement("option");
+  const setAText = "A";
+  setA.textContent = setAText;
+  const setB = document.createElement("option");
+  setB.textContent = "B";
+  setSelect.append(setA);
+  setSelect.append(setB);
+  setLabel.appendChild(setSelect);
+  set.append(setLabel);
+  const confirmButton = document.createElement("button");
+  confirmButton.textContent = "Confirm";
+  confirmButton.addEventListener("click", () => {
     const trialsFileName =
-      conditionSelect.options.item(conditionSelect.selectedIndex)
-        .textContent === "A"
+      setSelect.options.item(setSelect.selectedIndex).textContent === setAText
         ? "set-a.csv"
         : "set-b.csv";
     document.body.removeChild(page);
@@ -50,11 +44,6 @@ function main() {
       .then((p) => p.text())
       .then((text) => {
         const trials = [];
-        trials.push({
-          type: "html-button-response",
-          stimulus: "Press 'Start' when ready.",
-          choices: ["Start"],
-        });
         let stimulusFileNameOnDeck = "";
         let stimulusHasBeenRead = false;
         let pastFiveMinuteBreak = false;
@@ -66,31 +55,25 @@ function main() {
           const audioFileName = entries[4];
           const imageFileName = entries[6];
           if (taskName !== lastTaskName && lastTaskName !== "") {
-            trials.push({
-              type: "image-button-response",
-              stimulus: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                `Slide${taskCount + 1}.jpg`
-              ),
-              stimulus_height: standardImageHeightPixels,
-              choices: ["Continue"],
-              prompt: "",
-            });
-            trials.push({
-              type: "image-button-response",
-              stimulus: concatenatePaths(
-                wordLearningInNoiseResourcePath,
-                `Slide${taskCount + 2}.jpg`
-              ),
-              stimulus_height: standardImageHeightPixels,
-              choices: ["Continue"],
-              prompt: "",
-            });
+            for (let i = 0; i < 2; i += 1) {
+              trials.push({
+                type: "image-button-response",
+                stimulus: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  `Slide${taskCount + i + 1}.jpg`
+                ),
+                stimulus_height: standardImageHeightPixels,
+                choices: ["Continue"],
+                prompt: "",
+              });
+            }
             taskCount += 1;
           }
           lastTaskName = taskName;
           switch (taskName) {
             case "repetition":
+            case "free recall test":
+            case "cued recall test":
               trials.push({
                 type: imageAudioButtonResponsePluginId,
                 stimulusUrl: concatenatePaths(
@@ -150,39 +133,11 @@ function main() {
                 stimulusHasBeenRead = false;
               }
               break;
-            case "free recall test":
-              trials.push({
-                type: imageAudioButtonResponsePluginId,
-                stimulusUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  audioFileName
-                ),
-                imageUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  imageFileName
-                ),
-                imageHeight: standardImageHeightPixels,
-              });
-              break;
-            case "cued recall test":
-              trials.push({
-                type: imageAudioButtonResponsePluginId,
-                stimulusUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  audioFileName
-                ),
-                imageUrl: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  imageFileName
-                ),
-                imageHeight: standardImageHeightPixels,
-              });
-              break;
             case "5-minute break":
               trials.push({
                 type: "html-button-response",
                 stimulus:
-                  "Take a 5 minute break. Press 'Continue' when finished.",
+                  'Take a 5 minute break. Press "Continue" when finished.',
                 choices: ["Continue"],
               });
               pastFiveMinuteBreak = true;
@@ -192,24 +147,30 @@ function main() {
             default:
           }
         }
-        trials.push({
-          type: "html-button-response",
-          stimulus: "The test is done. Press 'Finish' to complete. Thank you.",
-          choices: ["Finish"],
-        });
         jsPsych.init({
           timeline: [
             {
               type: "preload",
               auto_preload: true,
             },
+            {
+              type: "html-button-response",
+              stimulus: 'Press "Start" when ready.',
+              choices: ["Start"],
+            },
             ...trials,
+            {
+              type: "html-button-response",
+              stimulus:
+                'The test is done. Press "Finish" to complete. Thank you.',
+              choices: ["Finish"],
+            },
           ],
         });
       });
   });
-  page.append(condition);
-  page.append(startButton);
+  page.append(set);
+  page.append(confirmButton);
   document.body.append(page);
 }
 
