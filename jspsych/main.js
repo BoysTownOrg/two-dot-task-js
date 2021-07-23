@@ -11,13 +11,14 @@ function concatenatePaths(a, b) {
 const standardImageHeightPixels = 500;
 const twoDotPluginId = "two-dot";
 
+function resourcePath(fileName) {
+  return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
+}
+
 function pushGameTrial(trials, setText, n) {
   trials.push({
     type: "image-button-response",
-    stimulus: concatenatePaths(
-      wordLearningInNoiseResourcePath,
-      `game-${setText}-${n}.jpg`
-    ),
+    stimulus: resourcePath(`game-${setText}-${n}.jpg`),
     stimulus_height: standardImageHeightPixels,
     choices: ["Continue"],
     prompt: "",
@@ -32,14 +33,8 @@ function pushTwoDotTrial(
 ) {
   trials.push({
     type: twoDotPluginId,
-    stimulusUrl: concatenatePaths(
-      wordLearningInNoiseResourcePath,
-      stimulusFileName
-    ),
-    feedbackUrl: concatenatePaths(
-      wordLearningInNoiseResourcePath,
-      feedbackAudioFileName
-    ),
+    stimulusUrl: resourcePath(stimulusFileName),
+    feedbackUrl: resourcePath(feedbackAudioFileName),
     imageUrl,
     imageHeight: standardImageHeightPixels,
     firstChoiceOnsetTimeSeconds: 2.5,
@@ -97,12 +92,7 @@ function main() {
     document.body.removeChild(page);
 
     const usingSetA = setText === setAText;
-    fetch(
-      concatenatePaths(
-        wordLearningInNoiseResourcePath,
-        `set-${usingSetA ? "a" : "b"}.csv`
-      )
-    )
+    fetch(resourcePath(`set-${usingSetA ? "a" : "b"}.csv`))
       .then((p) => p.text())
       .then((text) => {
         const trials = [];
@@ -127,10 +117,7 @@ function main() {
             if (firstTrial) {
               trials.push({
                 type: "image-button-response",
-                stimulus: concatenatePaths(
-                  wordLearningInNoiseResourcePath,
-                  imageFileName
-                ),
+                stimulus: resourcePath(imageFileName),
                 stimulus_height: standardImageHeightPixels,
                 choices: ["Continue"],
                 prompt: "",
@@ -149,14 +136,8 @@ function main() {
                 case "cued recall test":
                   trials.push({
                     type: imageAudioButtonResponsePluginId,
-                    stimulusUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      audioFileName
-                    ),
-                    imageUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      imageFileName
-                    ),
+                    stimulusUrl: resourcePath(audioFileName),
+                    imageUrl: resourcePath(imageFileName),
                     imageHeight: standardImageHeightPixels,
                   });
                   break;
@@ -176,10 +157,7 @@ function main() {
                       trials,
                       preBreakTwoDotStimulusFileName,
                       audioFileName,
-                      concatenatePaths(
-                        wordLearningInNoiseResourcePath,
-                        imageFileName
-                      )
+                      resourcePath(imageFileName)
                     );
                     readyForSecondLineOfPreBreakTwoDotTrial = false;
                   }
