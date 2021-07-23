@@ -57,6 +57,7 @@ function main() {
       conditionSelect.selectedIndex
     ).textContent;
     document.body.removeChild(page);
+
     fetch(
       concatenatePaths(
         wordLearningInNoiseResourcePath,
@@ -66,24 +67,22 @@ function main() {
       .then((p) => p.text())
       .then((text) => {
         const trials = [];
-        let stimulusFileNameOnDeck = "";
-        let stimulusHasBeenRead = false;
-        let pastFiveMinuteBreak = false;
+        let preBreakTwoDotAudioFileName = "";
+        let readyForSecondLineOfPreBreakTwoDotTrial = false;
+        let postBreak = false;
         let lastTaskName = "";
         let taskCount = 0;
-        let first = true;
+        let firstTrial = true;
         for (const line of text.split("\n").slice(1)) {
           if (line.length !== 0) {
             const entries = line.split(",");
             const taskName = entries[0].trim().toLowerCase();
             const fileOrder = entries[3];
-            let audioFileName = entries[4];
-            if (conditionText === noiseText) {
-              audioFileName = `${fileOrder}_${audioFileName.replace(
-                "Final",
-                "2Talker"
-              )}`;
-            }
+            const audioFileEntry = entries[4];
+            const audioFileName =
+              conditionText === noiseText
+                ? `${fileOrder}_${audioFileEntry.replace("Final", "2Talker")}`
+                : audioFileEntry;
             const imageFileName = entries[6];
             if (taskName !== lastTaskName && lastTaskName !== "") {
               for (let i = 0; i < 2; i += 1) {
@@ -91,12 +90,9 @@ function main() {
                   type: "image-button-response",
                   stimulus: concatenatePaths(
                     wordLearningInNoiseResourcePath,
-                    `game-${
-                      setSelect.options.item(setSelect.selectedIndex)
-                        .textContent === setAText
-                        ? "a"
-                        : "b"
-                    }-${taskCount + i + 1}.jpg`
+                    `game-${setText === setAText ? "a" : "b"}-${
+                      taskCount + i + 1
+                    }.jpg`
                   ),
                   stimulus_height: standardImageHeightPixels,
                   choices: ["Continue"],
@@ -106,23 +102,23 @@ function main() {
               taskCount += 1;
             }
             lastTaskName = taskName;
-            switch (taskName) {
-              case "repetition":
-              case "free recall test":
-              case "cued recall test":
-                if (first) {
-                  trials.push({
-                    type: "image-button-response",
-                    stimulus: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      imageFileName
-                    ),
-                    stimulus_height: standardImageHeightPixels,
-                    choices: ["Continue"],
-                    prompt: "",
-                  });
-                  first = false;
-                } else {
+            if (firstTrial) {
+              trials.push({
+                type: "image-button-response",
+                stimulus: concatenatePaths(
+                  wordLearningInNoiseResourcePath,
+                  imageFileName
+                ),
+                stimulus_height: standardImageHeightPixels,
+                choices: ["Continue"],
+                prompt: "",
+              });
+              firstTrial = false;
+            } else {
+              switch (taskName) {
+                case "repetition":
+                case "free recall test":
+                case "cued recall test":
                   trials.push({
                     type: imageAudioButtonResponsePluginId,
                     stimulusUrl: concatenatePaths(
@@ -135,64 +131,64 @@ function main() {
                     ),
                     imageHeight: standardImageHeightPixels,
                   });
-                }
-                break;
-              case "2 dot test":
-                if (pastFiveMinuteBreak) {
+                  break;
+                case "2 dot test":
+                  if (postBreak) {
+                    trials.push({
+                      type: twoDotPluginId,
+                      stimulusUrl: concatenatePaths(
+                        wordLearningInNoiseResourcePath,
+                        audioFileName
+                      ),
+                      feedbackUrl: concatenatePaths(
+                        wordLearningInNoiseResourcePath,
+                        "silence.wav"
+                      ),
+                      imageUrl: trials[trials.length - 6].imageUrl,
+                      imageHeight: standardImageHeightPixels,
+                      firstChoiceOnsetTimeSeconds: 2.5,
+                      firstChoiceOffsetTimeSeconds: 3,
+                      secondChoiceOnsetTimeSeconds: 4,
+                      secondChoiceOffsetTimeSeconds: 4.5,
+                    });
+                  } else if (!readyForSecondLineOfPreBreakTwoDotTrial) {
+                    preBreakTwoDotAudioFileName = audioFileName;
+                    readyForSecondLineOfPreBreakTwoDotTrial = true;
+                  } else {
+                    trials.push({
+                      type: twoDotPluginId,
+                      stimulusUrl: concatenatePaths(
+                        wordLearningInNoiseResourcePath,
+                        preBreakTwoDotAudioFileName
+                      ),
+                      feedbackUrl: concatenatePaths(
+                        wordLearningInNoiseResourcePath,
+                        audioFileName
+                      ),
+                      imageUrl: concatenatePaths(
+                        wordLearningInNoiseResourcePath,
+                        imageFileName
+                      ),
+                      imageHeight: standardImageHeightPixels,
+                      firstChoiceOnsetTimeSeconds: 2.5,
+                      firstChoiceOffsetTimeSeconds: 3,
+                      secondChoiceOnsetTimeSeconds: 4,
+                      secondChoiceOffsetTimeSeconds: 4.5,
+                    });
+                    readyForSecondLineOfPreBreakTwoDotTrial = false;
+                  }
+                  break;
+                case "5-minute break":
                   trials.push({
-                    type: twoDotPluginId,
-                    stimulusUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      audioFileName
-                    ),
-                    feedbackUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      "silence.wav"
-                    ),
-                    imageUrl: trials[trials.length - 6].imageUrl,
-                    imageHeight: standardImageHeightPixels,
-                    firstChoiceOnsetTimeSeconds: 2.5,
-                    firstChoiceOffsetTimeSeconds: 3,
-                    secondChoiceOnsetTimeSeconds: 4,
-                    secondChoiceOffsetTimeSeconds: 4.5,
+                    type: stopwatchPluginId,
+                    text: 'Take a 5 minute break. Press "Continue" when finished.',
                   });
-                } else if (!stimulusHasBeenRead) {
-                  stimulusFileNameOnDeck = audioFileName;
-                  stimulusHasBeenRead = true;
-                } else {
-                  trials.push({
-                    type: twoDotPluginId,
-                    stimulusUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      stimulusFileNameOnDeck
-                    ),
-                    feedbackUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      audioFileName
-                    ),
-                    imageUrl: concatenatePaths(
-                      wordLearningInNoiseResourcePath,
-                      imageFileName
-                    ),
-                    imageHeight: standardImageHeightPixels,
-                    firstChoiceOnsetTimeSeconds: 2.5,
-                    firstChoiceOffsetTimeSeconds: 3,
-                    secondChoiceOnsetTimeSeconds: 4,
-                    secondChoiceOffsetTimeSeconds: 4.5,
-                  });
-                  stimulusHasBeenRead = false;
-                }
-                break;
-              case "5-minute break":
-                trials.push({
-                  type: stopwatchPluginId,
-                  text: 'Take a 5 minute break. Press "Continue" when finished.',
-                });
-                pastFiveMinuteBreak = true;
-                taskCount += 1;
-                lastTaskName = "";
-                break;
-              default:
+                  postBreak = true;
+                  taskCount += 1;
+                  lastTaskName = "";
+                  break;
+                default:
+              }
             }
           }
           jsPsych.init({
