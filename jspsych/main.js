@@ -35,6 +35,20 @@ function main() {
   setSelect.append(setB);
   setLabel.appendChild(setSelect);
   set.append(setLabel);
+  const condition = document.createElement("div");
+  const conditionLabel = document.createElement("label");
+  conditionLabel.textContent = "Condition";
+  const conditionSelect = document.createElement("select");
+  const quietCondition = document.createElement("option");
+  const conditionAText = "Quiet";
+  quietCondition.textContent = conditionAText;
+  const noiseCondition = document.createElement("option");
+  const noiseText = "Noise";
+  noiseCondition.textContent = noiseText;
+  conditionSelect.append(quietCondition);
+  conditionSelect.append(noiseCondition);
+  conditionLabel.appendChild(conditionSelect);
+  condition.append(conditionLabel);
   const confirmButton = document.createElement("button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
@@ -61,7 +75,17 @@ function main() {
         for (const line of text.split("\n").slice(1)) {
           const entries = line.split(",");
           const taskName = entries[0].trim().toLowerCase();
-          const audioFileName = entries[4];
+          const fileOrder = entries[3];
+          let audioFileName = entries[4];
+          if (
+            conditionSelect.options.item(conditionSelect.selectedIndex)
+              .textContent === noiseText
+          ) {
+            audioFileName = `${fileOrder}_${audioFileName.replace(
+              "Final",
+              "2Talker"
+            )}`;
+          }
           const imageFileName = entries[6];
           if (taskName !== lastTaskName && lastTaskName !== "") {
             for (let i = 0; i < 2; i += 1) {
