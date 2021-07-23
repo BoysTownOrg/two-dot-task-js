@@ -10,6 +10,19 @@ function concatenatePaths(a, b) {
 
 const standardImageHeightPixels = 500;
 
+function pushGameTrial(trials, setText, n) {
+  trials.push({
+    type: "image-button-response",
+    stimulus: concatenatePaths(
+      wordLearningInNoiseResourcePath,
+      `game-${setText}-${n}.jpg`
+    ),
+    stimulus_height: standardImageHeightPixels,
+    choices: ["Continue"],
+    prompt: "",
+  });
+}
+
 function main() {
   const twoDotPluginId = "two-dot";
   jsPsych.plugins[twoDotPluginId] = twoDotPlugin(twoDotPluginId);
@@ -58,10 +71,11 @@ function main() {
     ).textContent;
     document.body.removeChild(page);
 
+    const usingSetA = setText === setAText;
     fetch(
       concatenatePaths(
         wordLearningInNoiseResourcePath,
-        `set-${setText === setAText ? "a" : "b"}.csv`
+        `set-${usingSetA ? "a" : "b"}.csv`
       )
     )
       .then((p) => p.text())
@@ -75,33 +89,16 @@ function main() {
         let firstTrial = true;
         for (const line of text.split("\n").slice(1)) {
           if (line.length !== 0) {
-            const entries = line.split(",");
-            const taskName = entries[0].trim().toLowerCase();
-            const fileOrder = entries[3];
-            const audioFileEntry = entries[4];
-            const audioFileName =
-              conditionText === noiseText
-                ? `${fileOrder}_${audioFileEntry.replace("Final", "2Talker")}`
-                : audioFileEntry;
-            const imageFileName = entries[6];
+            const csvEntries = line.split(",");
+            const taskName = csvEntries[0].trim().toLowerCase();
             if (taskName !== lastTaskName && lastTaskName !== "") {
-              for (let i = 0; i < 2; i += 1) {
-                trials.push({
-                  type: "image-button-response",
-                  stimulus: concatenatePaths(
-                    wordLearningInNoiseResourcePath,
-                    `game-${setText === setAText ? "a" : "b"}-${
-                      taskCount + i + 1
-                    }.jpg`
-                  ),
-                  stimulus_height: standardImageHeightPixels,
-                  choices: ["Continue"],
-                  prompt: "",
-                });
-              }
+              const gameSetText = usingSetA ? "a" : "b";
+              pushGameTrial(trials, gameSetText, taskCount + 1);
+              pushGameTrial(trials, gameSetText, taskCount + 2);
               taskCount += 1;
             }
             lastTaskName = taskName;
+            const imageFileName = csvEntries[6];
             if (firstTrial) {
               trials.push({
                 type: "image-button-response",
@@ -115,6 +112,12 @@ function main() {
               });
               firstTrial = false;
             } else {
+              const fileOrder = csvEntries[3];
+              const audioFileEntry = csvEntries[4];
+              const audioFileName =
+                conditionText === noiseText
+                  ? `${fileOrder}_${audioFileEntry.replace("Final", "2Talker")}`
+                  : audioFileEntry;
               switch (taskName) {
                 case "repetition":
                 case "free recall test":
