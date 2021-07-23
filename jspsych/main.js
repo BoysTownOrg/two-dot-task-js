@@ -9,6 +9,7 @@ function concatenatePaths(a, b) {
 }
 
 const standardImageHeightPixels = 500;
+const twoDotPluginId = "two-dot";
 
 function pushGameTrial(trials, setText, n) {
   trials.push({
@@ -23,8 +24,32 @@ function pushGameTrial(trials, setText, n) {
   });
 }
 
+function pushTwoDotTrial(
+  trials,
+  stimulusFileName,
+  feedbackAudioFileName,
+  imageUrl
+) {
+  trials.push({
+    type: twoDotPluginId,
+    stimulusUrl: concatenatePaths(
+      wordLearningInNoiseResourcePath,
+      stimulusFileName
+    ),
+    feedbackUrl: concatenatePaths(
+      wordLearningInNoiseResourcePath,
+      feedbackAudioFileName
+    ),
+    imageUrl,
+    imageHeight: standardImageHeightPixels,
+    firstChoiceOnsetTimeSeconds: 2.5,
+    firstChoiceOffsetTimeSeconds: 3,
+    secondChoiceOnsetTimeSeconds: 4,
+    secondChoiceOffsetTimeSeconds: 4.5,
+  });
+}
+
 function main() {
-  const twoDotPluginId = "two-dot";
   jsPsych.plugins[twoDotPluginId] = twoDotPlugin(twoDotPluginId);
 
   const imageAudioButtonResponsePluginId = "image-audio-button-response";
@@ -81,7 +106,7 @@ function main() {
       .then((p) => p.text())
       .then((text) => {
         const trials = [];
-        let preBreakTwoDotAudioFileName = "";
+        let preBreakTwoDotStimulusFileName = "";
         let readyForSecondLineOfPreBreakTwoDotTrial = false;
         let postBreak = false;
         let lastTaskName = "";
@@ -137,47 +162,25 @@ function main() {
                   break;
                 case "2 dot test":
                   if (postBreak) {
-                    trials.push({
-                      type: twoDotPluginId,
-                      stimulusUrl: concatenatePaths(
-                        wordLearningInNoiseResourcePath,
-                        audioFileName
-                      ),
-                      feedbackUrl: concatenatePaths(
-                        wordLearningInNoiseResourcePath,
-                        "silence.wav"
-                      ),
-                      imageUrl: trials[trials.length - 6].imageUrl,
-                      imageHeight: standardImageHeightPixels,
-                      firstChoiceOnsetTimeSeconds: 2.5,
-                      firstChoiceOffsetTimeSeconds: 3,
-                      secondChoiceOnsetTimeSeconds: 4,
-                      secondChoiceOffsetTimeSeconds: 4.5,
-                    });
+                    pushTwoDotTrial(
+                      trials,
+                      audioFileName,
+                      "silence.wav",
+                      trials[trials.length - 6].imageUrl
+                    );
                   } else if (!readyForSecondLineOfPreBreakTwoDotTrial) {
-                    preBreakTwoDotAudioFileName = audioFileName;
+                    preBreakTwoDotStimulusFileName = audioFileName;
                     readyForSecondLineOfPreBreakTwoDotTrial = true;
                   } else {
-                    trials.push({
-                      type: twoDotPluginId,
-                      stimulusUrl: concatenatePaths(
-                        wordLearningInNoiseResourcePath,
-                        preBreakTwoDotAudioFileName
-                      ),
-                      feedbackUrl: concatenatePaths(
-                        wordLearningInNoiseResourcePath,
-                        audioFileName
-                      ),
-                      imageUrl: concatenatePaths(
+                    pushTwoDotTrial(
+                      trials,
+                      preBreakTwoDotStimulusFileName,
+                      audioFileName,
+                      concatenatePaths(
                         wordLearningInNoiseResourcePath,
                         imageFileName
-                      ),
-                      imageHeight: standardImageHeightPixels,
-                      firstChoiceOnsetTimeSeconds: 2.5,
-                      firstChoiceOffsetTimeSeconds: 3,
-                      secondChoiceOnsetTimeSeconds: 4,
-                      secondChoiceOffsetTimeSeconds: 4.5,
-                    });
+                      )
+                    );
                     readyForSecondLineOfPreBreakTwoDotTrial = false;
                   }
                   break;
