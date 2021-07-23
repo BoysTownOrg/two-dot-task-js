@@ -221,6 +221,7 @@ function main() {
       });
   });
   page.append(set);
+  page.append(condition);
   page.append(confirmButton);
   document.body.append(page);
 }
