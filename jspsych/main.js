@@ -38,9 +38,9 @@ function pushTwoDotTrial(
     imageUrl,
     imageHeight: standardImageHeightPixels,
     firstChoiceOnsetTimeSeconds: 2.5,
-    firstChoiceOffsetTimeSeconds: 3,
-    secondChoiceOnsetTimeSeconds: 4,
-    secondChoiceOffsetTimeSeconds: 4.5,
+    firstChoiceOffsetTimeSeconds: 3.25,
+    secondChoiceOnsetTimeSeconds: 4.75,
+    secondChoiceOffsetTimeSeconds: 5.5,
   });
 }
 
