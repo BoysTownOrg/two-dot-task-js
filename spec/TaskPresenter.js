@@ -48,6 +48,14 @@ class TaskViewStub {
   showContinueButton() {
     this.continueButtonShown_ = true;
   }
+
+  finishedResult() {
+    return this.finishedResult_;
+  }
+
+  finish(result) {
+    this.finishedResult_ = result;
+  }
 }
 
 describe("TaskPresenter", () => {
@@ -79,5 +87,10 @@ describe("TaskPresenter", () => {
   it("should show continue button when task is ready to end", function () {
     this.presenter.notifyThatTaskIsReadyToEnd();
     expect(this.view.continueButtonShown()).toBeTrue();
+  });
+
+  it("should submit result when task finishes", function () {
+    this.presenter.notifyThatTaskIsFinished({ choice: "second" });
+    expect(this.view.finishedResult()).toEqual({ choice: "second" });
   });
 });
