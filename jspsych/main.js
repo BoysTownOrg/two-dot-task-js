@@ -115,6 +115,8 @@ function main() {
             lastTaskName = taskName;
             const imageFileName = csvEntries[6];
             if (firstTrial) {
+              const gameSetText = usingSetA ? "a" : "b";
+              pushGameTrial(trials, gameSetText, taskCount + 1);
               trials.push({
                 type: "image-button-response",
                 stimulus: resourcePath(imageFileName),
@@ -162,7 +164,7 @@ function main() {
                     readyForSecondLineOfPreBreakTwoDotTrial = false;
                   }
                   break;
-                case "5-minute break":
+                case "5-minute break": {
                   trials.push({
                     type: stopwatchPluginId,
                     text: 'Take a 5 minute break. Press "Continue" when finished.',
@@ -170,7 +172,10 @@ function main() {
                   postBreak = true;
                   taskCount += 1;
                   lastTaskName = "";
+                  const gameSetText = usingSetA ? "a" : "b";
+                  pushGameTrial(trials, gameSetText, taskCount + 1);
                   break;
+                }
                 default:
               }
             }
