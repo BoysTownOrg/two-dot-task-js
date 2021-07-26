@@ -76,8 +76,8 @@ describe("TaskPresenter", () => {
     expect(this.view.secondDotColoredBlack()).toBeTrue();
   });
 
-  it("should show continue button when task completes", function () {
-    this.presenter.notifyThatTaskIsComplete();
+  it("should show continue button when task is ready to end", function () {
+    this.presenter.notifyThatTaskIsReadyToEnd();
     expect(this.view.continueButtonShown()).toBeTrue();
   });
 });
