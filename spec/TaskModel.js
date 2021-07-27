@@ -127,7 +127,12 @@ describe("TaskModel", () => {
       new Map([
         [Choice.first, { onset: 0.12, offset: 0.34 }],
         [Choice.second, { onset: 0.56, offset: 0.78 }],
-      ])
+      ]),
+      new Map([
+        [Choice.first, "foo"],
+        [Choice.second, "bar"],
+      ]),
+      "bar"
     );
   });
 
@@ -234,6 +239,19 @@ describe("TaskModel", () => {
     this.model.finish();
     expect(this.observer.result()).toEqual({
       choice: "first",
+      word: "foo",
+      correct: "no",
+    });
+  });
+
+  it("should notify task correct result when finished", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.second });
+    this.model.finish();
+    expect(this.observer.result()).toEqual({
+      choice: "second",
+      word: "bar",
+      correct: "yes",
     });
   });
 });

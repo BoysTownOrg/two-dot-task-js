@@ -189,6 +189,24 @@ export function plugin(name) {
           default: 0,
           description: "The second choice offset time in seconds",
         },
+        firstWord: {
+          type: jsPsych.plugins.parameterType.STRING,
+          pretty_name: "First word",
+          default: "",
+          description: "The word represented by the first choice",
+        },
+        secondWord: {
+          type: jsPsych.plugins.parameterType.STRING,
+          pretty_name: "Second word",
+          default: "",
+          description: "The word represented by the second choice",
+        },
+        correctWord: {
+          type: jsPsych.plugins.parameterType.STRING,
+          pretty_name: "Correct word",
+          default: "",
+          description: "The correct word",
+        },
       },
     },
     trial(display_element, trial) {
@@ -216,7 +234,12 @@ export function plugin(name) {
               offset: trial.secondChoiceOffsetTimeSeconds,
             },
           ],
-        ])
+        ]),
+        new Map([
+          [Choice.first, trial.firstWord],
+          [Choice.second, trial.secondWord],
+        ]),
+        trial.correctWord
       );
       const controller = new TaskController(taskUI, model);
       model.start();
