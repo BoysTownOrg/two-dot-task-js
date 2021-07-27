@@ -1,0 +1,20 @@
+name: run tests
+
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-latest, ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: run tests
+        run: |
+          yarn install
+          node run-tests.js
