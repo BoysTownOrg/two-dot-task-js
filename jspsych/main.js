@@ -29,7 +29,10 @@ function pushTwoDotTrial(
   trials,
   stimulusFileName,
   feedbackAudioFileName,
-  imageUrl
+  imageUrl,
+  firstWord,
+  secondWord,
+  correctWord
 ) {
   trials.push({
     type: twoDotPluginId,
@@ -41,6 +44,9 @@ function pushTwoDotTrial(
     firstChoiceOffsetTimeSeconds: 3.25,
     secondChoiceOnsetTimeSeconds: 4.75,
     secondChoiceOffsetTimeSeconds: 5.5,
+    firstWord,
+    secondWord,
+    correctWord,
   });
 }
 
@@ -97,6 +103,8 @@ function main() {
       .then((text) => {
         const trials = [];
         let preBreakTwoDotStimulusFileName = "";
+        let preBreakTwoDotFirstTargetWord = "";
+        let preBreakTwoDotSecondTargetWord = "";
         let readyForSecondLineOfPreBreakTwoDotTrial = false;
         let postBreak = false;
         let lastTaskName = "";
@@ -145,13 +153,23 @@ function main() {
                   break;
                 case "2 dot test":
                   if (postBreak) {
+                    const [firstTargetWord, , secondTargetWord] =
+                      csvEntries[2].split(" ");
                     pushTwoDotTrial(
                       trials,
                       audioFileName,
                       "silence.wav",
-                      trials[trials.length - 6].imageUrl
+                      trials[trials.length - 6].imageUrl,
+                      firstTargetWord,
+                      secondTargetWord,
+                      csvEntries[5]
                     );
                   } else if (!readyForSecondLineOfPreBreakTwoDotTrial) {
+                    [
+                      preBreakTwoDotFirstTargetWord,
+                      ,
+                      preBreakTwoDotSecondTargetWord,
+                    ] = csvEntries[2].split(" ");
                     preBreakTwoDotStimulusFileName = audioFileName;
                     readyForSecondLineOfPreBreakTwoDotTrial = true;
                   } else {
@@ -159,7 +177,10 @@ function main() {
                       trials,
                       preBreakTwoDotStimulusFileName,
                       audioFileName,
-                      resourcePath(imageFileName)
+                      resourcePath(imageFileName),
+                      preBreakTwoDotFirstTargetWord,
+                      preBreakTwoDotSecondTargetWord,
+                      csvEntries[2]
                     );
                     readyForSecondLineOfPreBreakTwoDotTrial = false;
                   }
