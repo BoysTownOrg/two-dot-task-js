@@ -93,4 +93,10 @@ describe("TaskPresenter", () => {
     this.presenter.notifyThatTaskIsFinished({ choice: "second" });
     expect(this.view.finishedResult()).toEqual({ choice: "second" });
   });
+
+  it("should color both dots black when stimulus playback ends", function () {
+    this.presenter.notifyThatStimulusPlaybackHasEnded();
+    expect(this.view.firstDotColoredBlack()).toBeTrue();
+    expect(this.view.secondDotColoredBlack()).toBeTrue();
+  });
 });
