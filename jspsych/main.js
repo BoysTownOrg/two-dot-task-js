@@ -1,8 +1,4 @@
-import {
-  plugin as twoDotPlugin,
-  imageAudioButtonResponse as imageAudioButtonResponsePlugin,
-  stopwatch as stopwatchPlugin,
-} from "./plugin.js";
+import * as plugin from "./plugin.js";
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
@@ -51,14 +47,14 @@ function pushTwoDotTrial(
 }
 
 function main() {
-  jsPsych.plugins[twoDotPluginId] = twoDotPlugin(twoDotPluginId);
+  jsPsych.plugins[twoDotPluginId] = plugin.twoDot(twoDotPluginId);
 
   const imageAudioButtonResponsePluginId = "image-audio-button-response";
   jsPsych.plugins[imageAudioButtonResponsePluginId] =
-    imageAudioButtonResponsePlugin(imageAudioButtonResponsePluginId);
+    plugin.imageAudioButtonResponse(imageAudioButtonResponsePluginId);
 
   const stopwatchPluginId = "stopwatch";
-  jsPsych.plugins[stopwatchPluginId] = stopwatchPlugin(stopwatchPluginId);
+  jsPsych.plugins[stopwatchPluginId] = plugin.stopwatch(stopwatchPluginId);
 
   const page = document.createElement("div");
   const set = document.createElement("div");

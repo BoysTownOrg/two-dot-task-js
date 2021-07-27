@@ -131,7 +131,7 @@ class WebAudioPlayer {
   }
 }
 
-export function plugin(name) {
+export function twoDot(name) {
   jsPsych.pluginAPI.registerPreload(name, "stimulusUrl", "audio");
   jsPsych.pluginAPI.registerPreload(name, "feedbackUrl", "audio");
   jsPsych.pluginAPI.registerPreload(name, "imageUrl", "image");
