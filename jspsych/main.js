@@ -14,11 +14,16 @@ function resourcePath(fileName) {
 function pushGameTrial(trials, setText, n) {
   trials.push({
     type: "image-button-response",
-    stimulus: resourcePath(`game-${setText}-${n}.jpg`),
+    stimulus: resourcePath(`game-${setText}-${n + 1}.jpg`),
     stimulus_height: standardImageHeightPixels,
     choices: ["Continue"],
     prompt: "",
   });
+}
+
+function pushTwoConsecutiveGameTrials(trials, setText, taskCount) {
+  pushGameTrial(trials, setText, taskCount);
+  pushGameTrial(trials, setText, taskCount + 1);
 }
 
 function pushTwoDotTrial(
@@ -78,13 +83,10 @@ function main() {
   const confirmButton = createChildElement(page, "button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
-    const setText = setSelect.options.item(setSelect.selectedIndex).textContent;
-    const conditionText = conditionSelect.options.item(
-      conditionSelect.selectedIndex
-    ).textContent;
     document.body.removeChild(page);
 
-    const usingSetA = setText === setAText;
+    const usingSetA =
+      setSelect.options.item(setSelect.selectedIndex).textContent === setAText;
     fetch(resourcePath(`set-${usingSetA ? "a" : "b"}.csv`))
       .then((p) => p.text())
       .then((text) => {
@@ -97,21 +99,19 @@ function main() {
         let lastTaskName = "";
         let taskCount = 0;
         let firstTrial = true;
+        const gameSetText = usingSetA ? "a" : "b";
         for (const line of text.split("\n").slice(1)) {
           if (line.length !== 0) {
             const csvEntries = line.split(",");
             const taskName = csvEntries[0].trim().toLowerCase();
             if (taskName !== lastTaskName && lastTaskName !== "") {
-              const gameSetText = usingSetA ? "a" : "b";
-              pushGameTrial(trials, gameSetText, taskCount + 1);
-              pushGameTrial(trials, gameSetText, taskCount + 2);
+              pushTwoConsecutiveGameTrials(trials, gameSetText, taskCount);
               taskCount += 1;
             }
             lastTaskName = taskName;
             const imageFileName = csvEntries[6];
             if (firstTrial) {
-              const gameSetText = usingSetA ? "a" : "b";
-              pushGameTrial(trials, gameSetText, taskCount + 1);
+              pushGameTrial(trials, gameSetText, taskCount);
               trials.push({
                 type: "image-button-response",
                 stimulus: resourcePath(imageFileName),
@@ -124,7 +124,8 @@ function main() {
               const fileOrder = csvEntries[3];
               const audioFileEntry = csvEntries[4];
               const audioFileName =
-                conditionText === noiseText
+                conditionSelect.options.item(conditionSelect.selectedIndex)
+                  .textContent === noiseText
                   ? `${fileOrder}_${audioFileEntry.replace("Final", "2Talker")}`
                   : audioFileEntry;
               switch (taskName) {
@@ -180,8 +181,7 @@ function main() {
                   postBreak = true;
                   taskCount += 1;
                   lastTaskName = "";
-                  const gameSetText = usingSetA ? "a" : "b";
-                  pushGameTrial(trials, gameSetText, taskCount + 1);
+                  pushGameTrial(trials, gameSetText, taskCount);
                   break;
                 }
                 default:
@@ -189,9 +189,7 @@ function main() {
             }
           }
         }
-        const gameSetText = usingSetA ? "a" : "b";
-        pushGameTrial(trials, gameSetText, taskCount + 1);
-        pushGameTrial(trials, gameSetText, taskCount + 2);
+        pushTwoConsecutiveGameTrials(trials, gameSetText, taskCount);
         jsPsych.init({
           timeline: [
             {
