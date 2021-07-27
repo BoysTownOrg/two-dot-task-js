@@ -132,7 +132,7 @@ describe("TaskModel", () => {
         [Choice.first, "foo"],
         [Choice.second, "bar"],
       ]),
-      Choice.second
+      "bar"
     );
   });
 
@@ -241,6 +241,17 @@ describe("TaskModel", () => {
       choice: "first",
       word: "foo",
       correct: "no",
+    });
+  });
+
+  it("should notify task correct result when finished", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.second });
+    this.model.finish();
+    expect(this.observer.result()).toEqual({
+      choice: "second",
+      word: "bar",
+      correct: "yes",
     });
   });
 });
