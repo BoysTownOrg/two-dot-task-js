@@ -46,45 +46,36 @@ function pushTwoDotTrial(
   });
 }
 
+function createChildElement(parent, tag) {
+  const child = document.createElement(tag);
+  parent.append(child);
+  return child;
+}
+
 function main() {
   jsPsych.plugins[twoDotPluginId] = plugin.twoDot(twoDotPluginId);
-
   const imageAudioButtonResponsePluginId = "image-audio-button-response";
   jsPsych.plugins[imageAudioButtonResponsePluginId] =
     plugin.imageAudioButtonResponse(imageAudioButtonResponsePluginId);
-
   const stopwatchPluginId = "stopwatch";
   jsPsych.plugins[stopwatchPluginId] = plugin.stopwatch(stopwatchPluginId);
-
-  const page = document.createElement("div");
-  const set = document.createElement("div");
-  const setLabel = document.createElement("label");
+  const page = createChildElement(document.body, "div");
+  const setLabel = createChildElement(createChildElement(page, "div"), "label");
   setLabel.textContent = "Set";
-  const setSelect = document.createElement("select");
-  const setA = document.createElement("option");
+  const setSelect = createChildElement(setLabel, "select");
   const setAText = "A";
-  setA.textContent = setAText;
-  const setB = document.createElement("option");
-  setB.textContent = "B";
-  setSelect.append(setA);
-  setSelect.append(setB);
-  setLabel.appendChild(setSelect);
-  set.append(setLabel);
-  const condition = document.createElement("div");
-  const conditionLabel = document.createElement("label");
+  createChildElement(setSelect, "option").textContent = setAText;
+  createChildElement(setSelect, "option").textContent = "B";
+  const conditionLabel = createChildElement(
+    createChildElement(page, "div"),
+    "label"
+  );
   conditionLabel.textContent = "Condition";
-  const conditionSelect = document.createElement("select");
-  const quietCondition = document.createElement("option");
-  const conditionAText = "Quiet";
-  quietCondition.textContent = conditionAText;
-  const noiseCondition = document.createElement("option");
+  const conditionSelect = createChildElement(conditionLabel, "select");
+  createChildElement(conditionSelect, "option").textContent = "Quiet";
   const noiseText = "Noise";
-  noiseCondition.textContent = noiseText;
-  conditionSelect.append(quietCondition);
-  conditionSelect.append(noiseCondition);
-  conditionLabel.appendChild(conditionSelect);
-  condition.append(conditionLabel);
-  const confirmButton = document.createElement("button");
+  createChildElement(conditionSelect, "option").textContent = noiseText;
+  const confirmButton = createChildElement(page, "button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
     const setText = setSelect.options.item(setSelect.selectedIndex).textContent;
@@ -223,10 +214,6 @@ function main() {
         });
       });
   });
-  page.append(set);
-  page.append(condition);
-  page.append(confirmButton);
-  document.body.append(page);
 }
 
 main();
