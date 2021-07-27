@@ -59,7 +59,7 @@ class TaskUI {
     this.continueButton.textContent = "Continue";
     this.continueButton.style.visibility = "hidden";
     utility.addClickEventListener(this.continueButton, () => {
-      jsPsych.finishTrial();
+      this.observer.notifyThatContinueButtonHasBeenTouched();
     });
     utility.adopt(buttonContainer, this.continueButton);
     utility.adopt(belowTwoDots, buttonContainer);
@@ -84,6 +84,10 @@ class TaskUI {
 
   showContinueButton() {
     this.continueButton.style.visibility = "visible";
+  }
+
+  finish(result) {
+    jsPsych.finishTrial(result);
   }
 
   attach(observer) {
