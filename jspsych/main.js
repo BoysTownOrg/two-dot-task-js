@@ -66,6 +66,10 @@ function createChildElement(parent, tag) {
   return child;
 }
 
+function trimmedEntry(entries, n) {
+  return entries[n].trim();
+}
+
 function parseTrialOrderFileLine(
   trials,
   line,
@@ -74,7 +78,7 @@ function parseTrialOrderFileLine(
   selectedConditionText
 ) {
   const csvEntries = line.split(",");
-  const taskName = csvEntries[0].trim().toLowerCase();
+  const taskName = trimmedEntry(csvEntries, 0).toLowerCase();
   if (
     taskName !== parsingState.lastTaskName &&
     parsingState.lastTaskName !== ""
@@ -83,7 +87,7 @@ function parseTrialOrderFileLine(
     parsingState.taskCount += 1;
   }
   parsingState.lastTaskName = taskName;
-  const imageFileName = csvEntries[6];
+  const imageFileName = trimmedEntry(csvEntries, 6);
   if (parsingState.firstTrial) {
     pushGameTrial(trials, setText, parsingState.taskCount);
     trials.push({
@@ -95,8 +99,8 @@ function parseTrialOrderFileLine(
     });
     parsingState.firstTrial = false;
   } else {
-    const fileOrder = csvEntries[3];
-    const audioFileEntry = csvEntries[4];
+    const fileOrder = trimmedEntry(csvEntries, 3);
+    const audioFileEntry = trimmedEntry(csvEntries, 4);
     const audioFileName =
       selectedConditionText === noiseText
         ? `${fileOrder}_${audioFileEntry.replace("Final", "2Talker")}`
@@ -115,7 +119,7 @@ function parseTrialOrderFileLine(
       case "2 dot test":
         if (parsingState.postBreak) {
           const [firstTargetWord, secondTargetWord] = firstAndThirdWord(
-            csvEntries[2]
+            trimmedEntry(csvEntries, 2)
           );
           pushTwoDotTrial(
             trials,
@@ -124,13 +128,13 @@ function parseTrialOrderFileLine(
             trials[trials.length - 6].imageUrl,
             firstTargetWord,
             secondTargetWord,
-            csvEntries[5]
+            trimmedEntry(csvEntries, 5)
           );
         } else if (!parsingState.readyForSecondLineOfPreBreakTwoDotTrial) {
           [
             parsingState.preBreakTwoDotFirstTargetWord,
             parsingState.preBreakTwoDotSecondTargetWord,
-          ] = firstAndThirdWord(csvEntries[2]);
+          ] = firstAndThirdWord(trimmedEntry(csvEntries, 2));
           parsingState.preBreakTwoDotStimulusFileName = audioFileName;
           parsingState.readyForSecondLineOfPreBreakTwoDotTrial = true;
         } else {
@@ -141,7 +145,7 @@ function parseTrialOrderFileLine(
             resourcePath(imageFileName),
             parsingState.preBreakTwoDotFirstTargetWord,
             parsingState.preBreakTwoDotSecondTargetWord,
-            csvEntries[2]
+            trimmedEntry(csvEntries, 2)
           );
           parsingState.readyForSecondLineOfPreBreakTwoDotTrial = false;
         }
