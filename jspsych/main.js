@@ -66,6 +66,102 @@ function createChildElement(parent, tag) {
   return child;
 }
 
+function parseTrialOrderFileLine(
+  trials,
+  line,
+  parsingState,
+  setText,
+  selectedConditionText
+) {
+  const csvEntries = line.split(",");
+  const taskName = csvEntries[0].trim().toLowerCase();
+  if (
+    taskName !== parsingState.lastTaskName &&
+    parsingState.lastTaskName !== ""
+  ) {
+    pushTwoConsecutiveGameTrials(trials, setText, parsingState.taskCount);
+    parsingState.taskCount += 1;
+  }
+  parsingState.lastTaskName = taskName;
+  const imageFileName = csvEntries[6];
+  if (parsingState.firstTrial) {
+    pushGameTrial(trials, setText, parsingState.taskCount);
+    trials.push({
+      type: "image-button-response",
+      stimulus: resourcePath(imageFileName),
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+    });
+    parsingState.firstTrial = false;
+  } else {
+    const fileOrder = csvEntries[3];
+    const audioFileEntry = csvEntries[4];
+    const audioFileName =
+      selectedConditionText === noiseText
+        ? `${fileOrder}_${audioFileEntry.replace("Final", "2Talker")}`
+        : audioFileEntry;
+    switch (taskName) {
+      case "repetition":
+      case "free recall test":
+      case "cued recall test":
+        trials.push({
+          type: imageAudioButtonResponsePluginId,
+          stimulusUrl: resourcePath(audioFileName),
+          imageUrl: resourcePath(imageFileName),
+          imageHeight: standardImageHeightPixels,
+        });
+        break;
+      case "2 dot test":
+        if (parsingState.postBreak) {
+          const [firstTargetWord, secondTargetWord] = firstAndThirdWord(
+            csvEntries[2]
+          );
+          pushTwoDotTrial(
+            trials,
+            audioFileName,
+            "silence.wav",
+            trials[trials.length - 6].imageUrl,
+            firstTargetWord,
+            secondTargetWord,
+            csvEntries[5]
+          );
+        } else if (!parsingState.readyForSecondLineOfPreBreakTwoDotTrial) {
+          [
+            parsingState.preBreakTwoDotFirstTargetWord,
+            parsingState.preBreakTwoDotSecondTargetWord,
+          ] = firstAndThirdWord(csvEntries[2]);
+          parsingState.preBreakTwoDotStimulusFileName = audioFileName;
+          parsingState.readyForSecondLineOfPreBreakTwoDotTrial = true;
+        } else {
+          pushTwoDotTrial(
+            trials,
+            parsingState.preBreakTwoDotStimulusFileName,
+            audioFileName,
+            resourcePath(imageFileName),
+            parsingState.preBreakTwoDotFirstTargetWord,
+            parsingState.preBreakTwoDotSecondTargetWord,
+            csvEntries[2]
+          );
+          parsingState.readyForSecondLineOfPreBreakTwoDotTrial = false;
+        }
+        break;
+      case "5-minute break": {
+        trials.push({
+          type: stopwatchPluginId,
+          text: 'Take a 5 minute break. Press "Continue" when finished.',
+        });
+        parsingState.postBreak = true;
+        parsingState.taskCount += 1;
+        parsingState.lastTaskName = "";
+        pushGameTrial(trials, setText, parsingState.taskCount);
+        break;
+      }
+      default:
+    }
+  }
+}
+
 function notifyThatConfirmButtonHasBeenClicked(
   page,
   setSelect,
@@ -91,104 +187,16 @@ function notifyThatConfirmButtonHasBeenClicked(
         postBreak: false,
         firstTrial: true,
       };
-      for (const line of text.split("\n").slice(1)) {
-        if (line.length !== 0) {
-          const csvEntries = line.split(",");
-          const taskName = csvEntries[0].trim().toLowerCase();
-          if (
-            taskName !== parsingState.lastTaskName &&
-            parsingState.lastTaskName !== ""
-          ) {
-            pushTwoConsecutiveGameTrials(
-              trials,
-              setText,
-              parsingState.taskCount
-            );
-            parsingState.taskCount += 1;
-          }
-          parsingState.lastTaskName = taskName;
-          const imageFileName = csvEntries[6];
-          if (parsingState.firstTrial) {
-            pushGameTrial(trials, setText, parsingState.taskCount);
-            trials.push({
-              type: "image-button-response",
-              stimulus: resourcePath(imageFileName),
-              stimulus_height: standardImageHeightPixels,
-              choices: ["Continue"],
-              prompt: "",
-            });
-            parsingState.firstTrial = false;
-          } else {
-            const fileOrder = csvEntries[3];
-            const audioFileEntry = csvEntries[4];
-            const audioFileName =
-              conditionSelect.options.item(conditionSelect.selectedIndex)
-                .textContent === noiseText
-                ? `${fileOrder}_${audioFileEntry.replace("Final", "2Talker")}`
-                : audioFileEntry;
-            switch (taskName) {
-              case "repetition":
-              case "free recall test":
-              case "cued recall test":
-                trials.push({
-                  type: imageAudioButtonResponsePluginId,
-                  stimulusUrl: resourcePath(audioFileName),
-                  imageUrl: resourcePath(imageFileName),
-                  imageHeight: standardImageHeightPixels,
-                });
-                break;
-              case "2 dot test":
-                if (parsingState.postBreak) {
-                  const [firstTargetWord, secondTargetWord] = firstAndThirdWord(
-                    csvEntries[2]
-                  );
-                  pushTwoDotTrial(
-                    trials,
-                    audioFileName,
-                    "silence.wav",
-                    trials[trials.length - 6].imageUrl,
-                    firstTargetWord,
-                    secondTargetWord,
-                    csvEntries[5]
-                  );
-                } else if (
-                  !parsingState.readyForSecondLineOfPreBreakTwoDotTrial
-                ) {
-                  [
-                    parsingState.preBreakTwoDotFirstTargetWord,
-                    parsingState.preBreakTwoDotSecondTargetWord,
-                  ] = firstAndThirdWord(csvEntries[2]);
-                  parsingState.preBreakTwoDotStimulusFileName = audioFileName;
-                  parsingState.readyForSecondLineOfPreBreakTwoDotTrial = true;
-                } else {
-                  pushTwoDotTrial(
-                    trials,
-                    parsingState.preBreakTwoDotStimulusFileName,
-                    audioFileName,
-                    resourcePath(imageFileName),
-                    parsingState.preBreakTwoDotFirstTargetWord,
-                    parsingState.preBreakTwoDotSecondTargetWord,
-                    csvEntries[2]
-                  );
-                  parsingState.readyForSecondLineOfPreBreakTwoDotTrial = false;
-                }
-                break;
-              case "5-minute break": {
-                trials.push({
-                  type: stopwatchPluginId,
-                  text: 'Take a 5 minute break. Press "Continue" when finished.',
-                });
-                parsingState.postBreak = true;
-                parsingState.taskCount += 1;
-                parsingState.lastTaskName = "";
-                pushGameTrial(trials, setText, parsingState.taskCount);
-                break;
-              }
-              default:
-            }
-          }
-        }
-      }
+      for (const line of text.split("\n").slice(1))
+        if (line.length !== 0)
+          parseTrialOrderFileLine(
+            trials,
+            line,
+            parsingState,
+            setText,
+            conditionSelect.options.item(conditionSelect.selectedIndex)
+              .textContent
+          );
       pushTwoConsecutiveGameTrials(trials, setText, parsingState.taskCount);
       jsPsych.init({
         timeline: [
