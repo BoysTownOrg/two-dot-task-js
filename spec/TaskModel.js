@@ -127,7 +127,12 @@ describe("TaskModel", () => {
       new Map([
         [Choice.first, { onset: 0.12, offset: 0.34 }],
         [Choice.second, { onset: 0.56, offset: 0.78 }],
-      ])
+      ]),
+      new Map([
+        [Choice.first, "foo"],
+        [Choice.second, "bar"],
+      ]),
+      Choice.second
     );
   });
 
@@ -234,6 +239,8 @@ describe("TaskModel", () => {
     this.model.finish();
     expect(this.observer.result()).toEqual({
       choice: "first",
+      word: "foo",
+      correct: "no",
     });
   });
 });
