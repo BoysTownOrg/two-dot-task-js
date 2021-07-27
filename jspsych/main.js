@@ -201,27 +201,30 @@ function main() {
               }
             }
           }
-          jsPsych.init({
-            timeline: [
-              {
-                type: "preload",
-                auto_preload: true,
-              },
-              {
-                type: "html-button-response",
-                stimulus: 'Press "Start" when ready.',
-                choices: ["Start"],
-              },
-              ...trials,
-              {
-                type: "html-button-response",
-                stimulus:
-                  'The test is done. Press "Finish" to complete. Thank you.',
-                choices: ["Finish"],
-              },
-            ],
-          });
         }
+        const gameSetText = usingSetA ? "a" : "b";
+        pushGameTrial(trials, gameSetText, taskCount + 1);
+        pushGameTrial(trials, gameSetText, taskCount + 2);
+        jsPsych.init({
+          timeline: [
+            {
+              type: "preload",
+              auto_preload: true,
+            },
+            {
+              type: "html-button-response",
+              stimulus: 'Press "Start" when ready.',
+              choices: ["Start"],
+            },
+            ...trials,
+            {
+              type: "html-button-response",
+              stimulus:
+                'The test is done. Press "Finish" to complete. Thank you.',
+              choices: ["Finish"],
+            },
+          ],
+        });
       });
   });
   page.append(set);
