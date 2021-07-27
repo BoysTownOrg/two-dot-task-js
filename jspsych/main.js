@@ -55,6 +55,11 @@ function pushTwoDotTrial(
   });
 }
 
+function firstAndThirdWord(text) {
+  const [first, , third] = text.split(" ");
+  return [first, third];
+}
+
 function createChildElement(parent, tag) {
   const child = document.createElement(tag);
   parent.append(child);
@@ -76,26 +81,35 @@ function notifyThatConfirmButtonHasBeenClicked(
     .then((p) => p.text())
     .then((text) => {
       const trials = [];
-      let preBreakTwoDotStimulusFileName = "";
-      let preBreakTwoDotFirstTargetWord = "";
-      let preBreakTwoDotSecondTargetWord = "";
-      let readyForSecondLineOfPreBreakTwoDotTrial = false;
-      let postBreak = false;
-      let lastTaskName = "";
-      let taskCount = 0;
-      let firstTrial = true;
+      const parsingState = {
+        preBreakTwoDotStimulusFileName: "",
+        preBreakTwoDotFirstTargetWord: "",
+        preBreakTwoDotSecondTargetWord: "",
+        lastTaskName: "",
+        taskCount: 0,
+        readyForSecondLineOfPreBreakTwoDotTrial: false,
+        postBreak: false,
+        firstTrial: true,
+      };
       for (const line of text.split("\n").slice(1)) {
         if (line.length !== 0) {
           const csvEntries = line.split(",");
           const taskName = csvEntries[0].trim().toLowerCase();
-          if (taskName !== lastTaskName && lastTaskName !== "") {
-            pushTwoConsecutiveGameTrials(trials, setText, taskCount);
-            taskCount += 1;
+          if (
+            taskName !== parsingState.lastTaskName &&
+            parsingState.lastTaskName !== ""
+          ) {
+            pushTwoConsecutiveGameTrials(
+              trials,
+              setText,
+              parsingState.taskCount
+            );
+            parsingState.taskCount += 1;
           }
-          lastTaskName = taskName;
+          parsingState.lastTaskName = taskName;
           const imageFileName = csvEntries[6];
-          if (firstTrial) {
-            pushGameTrial(trials, setText, taskCount);
+          if (parsingState.firstTrial) {
+            pushGameTrial(trials, setText, parsingState.taskCount);
             trials.push({
               type: "image-button-response",
               stimulus: resourcePath(imageFileName),
@@ -103,7 +117,7 @@ function notifyThatConfirmButtonHasBeenClicked(
               choices: ["Continue"],
               prompt: "",
             });
-            firstTrial = false;
+            parsingState.firstTrial = false;
           } else {
             const fileOrder = csvEntries[3];
             const audioFileEntry = csvEntries[4];
@@ -124,9 +138,10 @@ function notifyThatConfirmButtonHasBeenClicked(
                 });
                 break;
               case "2 dot test":
-                if (postBreak) {
-                  const [firstTargetWord, , secondTargetWord] =
-                    csvEntries[2].split(" ");
+                if (parsingState.postBreak) {
+                  const [firstTargetWord, secondTargetWord] = firstAndThirdWord(
+                    csvEntries[2]
+                  );
                   pushTwoDotTrial(
                     trials,
                     audioFileName,
@@ -136,25 +151,26 @@ function notifyThatConfirmButtonHasBeenClicked(
                     secondTargetWord,
                     csvEntries[5]
                   );
-                } else if (!readyForSecondLineOfPreBreakTwoDotTrial) {
+                } else if (
+                  !parsingState.readyForSecondLineOfPreBreakTwoDotTrial
+                ) {
                   [
-                    preBreakTwoDotFirstTargetWord,
-                    ,
-                    preBreakTwoDotSecondTargetWord,
-                  ] = csvEntries[2].split(" ");
-                  preBreakTwoDotStimulusFileName = audioFileName;
-                  readyForSecondLineOfPreBreakTwoDotTrial = true;
+                    parsingState.preBreakTwoDotFirstTargetWord,
+                    parsingState.preBreakTwoDotSecondTargetWord,
+                  ] = firstAndThirdWord(csvEntries[2]);
+                  parsingState.preBreakTwoDotStimulusFileName = audioFileName;
+                  parsingState.readyForSecondLineOfPreBreakTwoDotTrial = true;
                 } else {
                   pushTwoDotTrial(
                     trials,
-                    preBreakTwoDotStimulusFileName,
+                    parsingState.preBreakTwoDotStimulusFileName,
                     audioFileName,
                     resourcePath(imageFileName),
-                    preBreakTwoDotFirstTargetWord,
-                    preBreakTwoDotSecondTargetWord,
+                    parsingState.preBreakTwoDotFirstTargetWord,
+                    parsingState.preBreakTwoDotSecondTargetWord,
                     csvEntries[2]
                   );
-                  readyForSecondLineOfPreBreakTwoDotTrial = false;
+                  parsingState.readyForSecondLineOfPreBreakTwoDotTrial = false;
                 }
                 break;
               case "5-minute break": {
@@ -162,10 +178,10 @@ function notifyThatConfirmButtonHasBeenClicked(
                   type: stopwatchPluginId,
                   text: 'Take a 5 minute break. Press "Continue" when finished.',
                 });
-                postBreak = true;
-                taskCount += 1;
-                lastTaskName = "";
-                pushGameTrial(trials, setText, taskCount);
+                parsingState.postBreak = true;
+                parsingState.taskCount += 1;
+                parsingState.lastTaskName = "";
+                pushGameTrial(trials, setText, parsingState.taskCount);
                 break;
               }
               default:
@@ -173,7 +189,7 @@ function notifyThatConfirmButtonHasBeenClicked(
           }
         }
       }
-      pushTwoConsecutiveGameTrials(trials, setText, taskCount);
+      pushTwoConsecutiveGameTrials(trials, setText, parsingState.taskCount);
       jsPsych.init({
         timeline: [
           {
