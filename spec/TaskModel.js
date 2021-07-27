@@ -60,7 +60,16 @@ class TaskModelObserverStub {
     this.notifiedThatSecondChoiceHasStartedPlaying_ = false;
     this.notifiedThatSecondChoiceHasStoppedPlaying_ = false;
     this.notifiedThatTaskIsReadyToEnd_ = false;
+    this.notifiedThatStimulusPlaybackHasEnded_ = false;
     this.timesNotifiedThatFirstChoiceHasStartedPlaying_ = 0;
+  }
+
+  notifyThatStimulusPlaybackHasEnded() {
+    this.notifiedThatStimulusPlaybackHasEnded_ = true;
+  }
+
+  notifiedThatStimulusPlaybackHasEnded() {
+    return this.notifiedThatStimulusPlaybackHasEnded_;
   }
 
   notifiedThatFirstChoiceHasStartedPlaying() {
@@ -253,5 +262,10 @@ describe("TaskModel", () => {
       word: "bar",
       correct: "yes",
     });
+  });
+
+  it("should notify that stimulus playback has ended", function () {
+    this.audioPlayer.endStimulusPlayback();
+    expect(this.observer.notifiedThatStimulusPlaybackHasEnded()).toBeTrue();
   });
 });
