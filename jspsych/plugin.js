@@ -66,12 +66,20 @@ class TaskUI {
     utility.adopt(parent, belowTwoDots);
   }
 
+  colorFirstDotBlue() {
+    this.firstDot.style.backgroundColor = "blue";
+  }
+
   colorFirstDotRed() {
     this.firstDot.style.backgroundColor = "red";
   }
 
   colorFirstDotBlack() {
     this.firstDot.style.backgroundColor = "black";
+  }
+
+  colorSecondDotBlue() {
+    this.secondDot.style.backgroundColor = "blue";
   }
 
   colorSecondDotRed() {
@@ -403,6 +411,12 @@ export function stopwatch(id) {
           default: "",
           description: "The text that is displayed",
         },
+        alarmTimeSeconds: {
+          type: jsPsych.plugins.parameterType.INT,
+          pretty_name: "Alarm time seconds",
+          default: "",
+          description: "The alarm time in seconds",
+        },
       },
     },
     trial(displayElement, trial) {
@@ -425,11 +439,13 @@ export function stopwatch(id) {
       );
 
       // modified from https://jsfiddle.net/Daniel_Hug/pvk6p/
+      let totalSeconds = 0;
       let seconds = 0;
       let minutes = 0;
       let hours = 0;
 
       function updateTime() {
+        totalSeconds += 1;
         seconds += 1;
         if (seconds >= 60) {
           seconds = 0;
@@ -445,6 +461,21 @@ export function stopwatch(id) {
           seconds > 9 ? seconds : `0${seconds}`
         }`;
         jsPsych.pluginAPI.setTimeout(updateTime, 1000);
+        if (totalSeconds >= trial.alarmTimeSeconds) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          const audioContext = new AudioContext();
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = "sine";
+          oscillator.frequency.value = 1000;
+          const gain = audioContext.createGain();
+          gain.gain.value = 0;
+          oscillator.connect(gain);
+          gain.connect(audioContext.destination);
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 0.5);
+          gain.gain.setTargetAtTime(0.2, audioContext.currentTime, 0.05);
+          gain.gain.setTargetAtTime(0, audioContext.currentTime + 0.25, 0.05);
+        }
       }
 
       jsPsych.pluginAPI.setTimeout(updateTime, 1000);

@@ -87,6 +87,16 @@ function parseTrialOrderFileLine(
     parsingState.taskCount += 1;
   }
   parsingState.lastTaskName = taskName;
+  if (taskName === "cued recall test" && parsingState.firstCuedRecall) {
+    trials.push({
+      type: "image-button-response",
+      stimulus: resourcePath(setText === "a" ? "Seesaw.png" : "Airplane.png"),
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+    });
+    parsingState.firstCuedRecall = false;
+  }
   const imageFileName = trimmedEntry(csvEntries, 6);
   if (parsingState.firstTrial) {
     pushGameTrial(trials, setText, parsingState.taskCount);
@@ -154,6 +164,7 @@ function parseTrialOrderFileLine(
         trials.push({
           type: stopwatchPluginId,
           text: 'Take a 5 minute break. Press "Continue" when finished.',
+          alarmTimeSeconds: 300,
         });
         parsingState.postBreak = true;
         parsingState.taskCount += 1;
@@ -190,6 +201,7 @@ function notifyThatConfirmButtonHasBeenClicked(
         readyForSecondLineOfPreBreakTwoDotTrial: false,
         postBreak: false,
         firstTrial: true,
+        firstCuedRecall: true,
       };
       for (const line of text.split("\n").slice(1))
         if (line.length !== 0)
