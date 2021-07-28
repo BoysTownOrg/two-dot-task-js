@@ -164,7 +164,7 @@ function parseTrialOrderFileLine(
         trials.push({
           type: stopwatchPluginId,
           text: 'Take a 5 minute break. Press "Continue" when finished.',
-          alarmTimeSeconds: 4,
+          alarmTimeSeconds: 300,
         });
         parsingState.postBreak = true;
         parsingState.taskCount += 1;
