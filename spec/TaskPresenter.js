@@ -5,9 +5,18 @@ class TaskViewStub {
     this.firstDotColoredRed_ = false;
     this.firstDotColoredBlack_ = false;
     this.firstDotColoredBlue_ = false;
+    this.secondDotColoredBlue_ = false;
     this.secondDotColoredRed_ = false;
     this.secondDotColoredBlack_ = false;
     this.continueButtonShown_ = false;
+  }
+
+  colorSecondDotBlue() {
+    this.secondDotColoredBlue_ = true;
+  }
+
+  secondDotColoredBlue() {
+    return this.secondDotColoredBlue_;
   }
 
   firstDotColoredBlue() {
@@ -112,5 +121,10 @@ describe("TaskPresenter", () => {
   it("should color first dot blue when first choice selected", function () {
     this.presenter.notifyThatFirstChoiceIsSelected();
     expect(this.view.firstDotColoredBlue()).toBeTrue();
+  });
+
+  it("should color second dot blue when second choice selected", function () {
+    this.presenter.notifyThatSecondChoiceIsSelected();
+    expect(this.view.secondDotColoredBlue()).toBeTrue();
   });
 });
