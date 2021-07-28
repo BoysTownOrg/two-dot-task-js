@@ -66,12 +66,20 @@ class TaskUI {
     utility.adopt(parent, belowTwoDots);
   }
 
+  colorFirstDotBlue() {
+    this.firstDot.style.backgroundColor = "blue";
+  }
+
   colorFirstDotRed() {
     this.firstDot.style.backgroundColor = "red";
   }
 
   colorFirstDotBlack() {
     this.firstDot.style.backgroundColor = "black";
+  }
+
+  colorSecondDotBlue() {
+    this.secondDot.style.backgroundColor = "blue";
   }
 
   colorSecondDotRed() {
