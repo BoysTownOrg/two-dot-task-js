@@ -62,6 +62,7 @@ class TaskModelObserverStub {
     this.notifiedThatTaskIsReadyToEnd_ = false;
     this.notifiedThatStimulusPlaybackHasEnded_ = false;
     this.notifiedThatFirstChoiceIsSelected_ = false;
+    this.notifiedThatSecondChoiceIsSelected_ = false;
     this.timesNotifiedThatFirstChoiceHasStartedPlaying_ = 0;
   }
 
@@ -71,6 +72,14 @@ class TaskModelObserverStub {
 
   notifyThatFirstChoiceIsSelected() {
     this.notifiedThatFirstChoiceIsSelected_ = true;
+  }
+
+  notifiedThatSecondChoiceIsSelected() {
+    return this.notifiedThatSecondChoiceIsSelected_;
+  }
+
+  notifyThatSecondChoiceIsSelected() {
+    this.notifiedThatSecondChoiceIsSelected_ = true;
   }
 
   notifyThatStimulusPlaybackHasEnded() {
@@ -282,5 +291,11 @@ describe("TaskModel", () => {
     this.audioPlayer.endStimulusPlayback();
     this.model.submit({ choice: Choice.first });
     expect(this.observer.notifiedThatFirstChoiceIsSelected()).toBeTrue();
+  });
+
+  it("should notify second choice selected", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.second });
+    expect(this.observer.notifiedThatSecondChoiceIsSelected()).toBeTrue();
   });
 });
