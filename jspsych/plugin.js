@@ -411,6 +411,12 @@ export function stopwatch(id) {
           default: "",
           description: "The text that is displayed",
         },
+        alarmTimeSeconds: {
+          type: jsPsych.plugins.parameterType.INT,
+          pretty_name: "Alarm time seconds",
+          default: "",
+          description: "The alarm time in seconds",
+        },
       },
     },
     trial(displayElement, trial) {
@@ -433,11 +439,13 @@ export function stopwatch(id) {
       );
 
       // modified from https://jsfiddle.net/Daniel_Hug/pvk6p/
+      let totalSeconds = 0;
       let seconds = 0;
       let minutes = 0;
       let hours = 0;
 
       function updateTime() {
+        totalSeconds += 1;
         seconds += 1;
         if (seconds >= 60) {
           seconds = 0;
@@ -453,6 +461,19 @@ export function stopwatch(id) {
           seconds > 9 ? seconds : `0${seconds}`
         }`;
         jsPsych.pluginAPI.setTimeout(updateTime, 1000);
+        if (totalSeconds >= trial.alarmTimeSeconds) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          const audioContext = new AudioContext();
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = "sine";
+          oscillator.frequency.value = 1000;
+          const gain = audioContext.createGain();
+          gain.gain.value = 0.2;
+          oscillator.connect(gain);
+          gain.connect(audioContext.destination);
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 0.5);
+        }
       }
 
       jsPsych.pluginAPI.setTimeout(updateTime, 1000);

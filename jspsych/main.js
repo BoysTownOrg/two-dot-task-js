@@ -164,6 +164,7 @@ function parseTrialOrderFileLine(
         trials.push({
           type: stopwatchPluginId,
           text: 'Take a 5 minute break. Press "Continue" when finished.',
+          alarmTimeSeconds: 4,
         });
         parsingState.postBreak = true;
         parsingState.taskCount += 1;
@@ -224,7 +225,7 @@ function notifyThatConfirmButtonHasBeenClicked(
             stimulus: 'Press "Start" when ready.',
             choices: ["Start"],
           },
-          ...trials.slice(30),
+          ...trials,
           {
             type: "html-button-response",
             stimulus:
