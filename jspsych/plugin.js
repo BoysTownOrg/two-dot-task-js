@@ -468,11 +468,13 @@ export function stopwatch(id) {
           oscillator.type = "sine";
           oscillator.frequency.value = 1000;
           const gain = audioContext.createGain();
-          gain.gain.value = 0.2;
+          gain.gain.value = 0;
           oscillator.connect(gain);
           gain.connect(audioContext.destination);
           oscillator.start(audioContext.currentTime);
           oscillator.stop(audioContext.currentTime + 0.5);
+          gain.gain.setTargetAtTime(0.2, audioContext.currentTime, 0.05);
+          gain.gain.setTargetAtTime(0, audioContext.currentTime + 0.25, 0.05);
         }
       }
 
