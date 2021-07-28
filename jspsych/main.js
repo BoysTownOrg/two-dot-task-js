@@ -200,7 +200,7 @@ function notifyThatConfirmButtonHasBeenClicked(
         readyForSecondLineOfPreBreakTwoDotTrial: false,
         postBreak: false,
         firstTrial: true,
-        firstCuedRecall: false,
+        firstCuedRecall: true,
       };
       for (const line of text.split("\n").slice(1))
         if (line.length !== 0)
@@ -224,7 +224,7 @@ function notifyThatConfirmButtonHasBeenClicked(
             stimulus: 'Press "Start" when ready.',
             choices: ["Start"],
           },
-          ...trials,
+          ...trials.slice(30),
           {
             type: "html-button-response",
             stimulus:
