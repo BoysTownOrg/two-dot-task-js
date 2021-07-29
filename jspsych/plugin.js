@@ -434,9 +434,6 @@ export function stopwatch(id) {
       utility.adopt(buttonContainer, continueButton);
       utility.adopt(displayElement, buttonContainer);
       continueButton.textContent = "Continue";
-      utility.addClickEventListener(continueButton, () =>
-        jsPsych.finishTrial()
-      );
 
       // modified from https://jsfiddle.net/Daniel_Hug/pvk6p/
       let totalSeconds = 0;
@@ -478,7 +475,11 @@ export function stopwatch(id) {
         }
       }
 
-      jsPsych.pluginAPI.setTimeout(updateTime, 1000);
+      const timerID = setInterval(updateTime, 1000);
+      utility.addClickEventListener(continueButton, () => {
+        clearInterval(timerID);
+        jsPsych.finishTrial();
+      });
     },
   };
 }
