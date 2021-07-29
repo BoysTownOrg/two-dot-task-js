@@ -457,7 +457,6 @@ export function stopwatch(id) {
         }:${minutes ? (minutes > 9 ? minutes : `0${minutes}`) : "00"}:${
           seconds > 9 ? seconds : `0${seconds}`
         }`;
-        jsPsych.pluginAPI.setTimeout(updateTime, 1000);
         if (totalSeconds >= trial.alarmTimeSeconds) {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           const audioContext = new AudioContext();
