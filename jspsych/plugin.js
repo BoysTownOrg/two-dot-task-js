@@ -20,6 +20,17 @@ function circleElementWithColor(color) {
   return circle;
 }
 
+function audioBufferSource(url) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioContext = new AudioContext();
+  return jsPsych.pluginAPI.getAudioBuffer(url).then((buffer) => {
+    const bufferSource = audioContext.createBufferSource();
+    bufferSource.buffer = buffer;
+    bufferSource.connect(audioContext.destination);
+    return bufferSource;
+  });
+}
+
 class TaskUI {
   constructor(parent, imageUrl, imageHeight) {
     this.parent = parent;
@@ -307,11 +318,12 @@ export function imageAudioButtonResponse(id) {
       utility.addClickEventListener(continueButton, () =>
         jsPsych.finishTrial()
       );
-      const stimulusPlayer = utility.audioPlayer(trial.stimulusUrl);
-      stimulusPlayer.onended = () => {
-        continueButton.style.visibility = "visible";
-      };
-      stimulusPlayer.play();
+      audioBufferSource(trial.stimulusUrl).then((stimulusSource) => {
+        stimulusSource.onended = () => {
+          continueButton.style.visibility = "visible";
+        };
+        stimulusSource.start();
+      });
     },
   };
 }
