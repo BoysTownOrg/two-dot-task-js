@@ -82,10 +82,8 @@ class TaskUI {
     this.parent = parent;
     const image = new Image();
     image.src = imageUrl;
-    image.onload = () => {
-      image.height = imageHeight;
-      image.width = (image.naturalWidth * imageHeight) / image.naturalHeight;
-    };
+    image.style.height = pixelsString(imageHeight);
+    image.style.width = "auto";
     adopt(parent, image);
     const twoDotGrid = divElement();
     twoDotGrid.style.display = "grid";
@@ -94,24 +92,20 @@ class TaskUI {
     )} ${pixelsString(250)} 1fr`;
     twoDotGrid.style.gridGap = `${pixelsString(120)}`;
     this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridRow = 1;
     this.firstDot.style.gridColumn = 2;
     adopt(twoDotGrid, this.firstDot);
     addClickEventListener(this.firstDot, () => {
       this.observer.notifyThatFirstDotHasBeenTouched();
     });
     this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridRow = 1;
     this.secondDot.style.gridColumn = 3;
     addClickEventListener(this.secondDot, () => {
       this.observer.notifyThatSecondDotHasBeenTouched();
     });
     adopt(twoDotGrid, this.secondDot);
     adopt(parent, twoDotGrid);
-    const belowTwoDots = divElement();
+    const belowTwoDots = buttonGroupElement();
     const buttonContainer = buttonContainerElement();
-    buttonContainer.style.gridRow = 2;
-    buttonContainer.style.gridColumn = 2;
     this.continueButton = buttonElement();
     this.continueButton.textContent = "Continue";
     this.continueButton.style.visibility = "hidden";
