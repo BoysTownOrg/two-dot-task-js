@@ -76,8 +76,7 @@ function circleElementWithColor(color) {
 }
 
 function audioBufferSource(url) {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  const audioContext = new AudioContext();
+  const audioContext = jsPsych.pluginAPI.audioContext();
   return jsPsych.pluginAPI.getAudioBuffer(url).then((buffer) => {
     const bufferSource = audioContext.createBufferSource();
     bufferSource.buffer = buffer;
@@ -177,8 +176,7 @@ class WebAudioPlayer {
   constructor(stimulusUrl, feedbackUrl) {
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    this.audioContext = new AudioContext();
+    this.audioContext = jsPsych.pluginAPI.audioContext();
   }
 
   playFeedback() {
@@ -450,8 +448,7 @@ export function stopwatch(id) {
           seconds > 9 ? seconds : `0${seconds}`
         }`;
         if (totalSeconds >= trial.alarmTimeSeconds) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          const audioContext = new AudioContext();
+          const audioContext = jsPsych.pluginAPI.audioContext();
           const oscillator = audioContext.createOscillator();
           oscillator.type = "sine";
           oscillator.frequency.value = 1000;
