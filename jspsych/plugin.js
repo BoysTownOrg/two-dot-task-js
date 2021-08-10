@@ -1,20 +1,86 @@
 import { TaskModel, Choice } from "../lib/TaskModel.js";
 import { TaskController } from "../lib/TaskController.js";
 import { TaskPresenter } from "../lib/TaskPresenter.js";
-import * as utility from "./utility.js";
+
+function addEventListener(element, event, f) {
+  element.addEventListener(event, f);
+}
+
+function addClickEventListener(element, f) {
+  addEventListener(element, "click", f);
+}
+
+function createElement(what) {
+  return document.createElement(what);
+}
+
+function divElement() {
+  return createElement("div");
+}
+
+function pixelsString(a) {
+  return `${a}px`;
+}
+
+function adopt(parent, child) {
+  parent.append(child);
+}
+
+function clear(parent) {
+  // https://stackoverflow.com/a/3955238
+  while (parent.firstChild) {
+    parent.removeChild(parent.lastChild);
+  }
+}
+
+function gridTemplate(n) {
+  return `repeat(${n}, 1fr)`;
+}
+
+function gridElement(rows, columns) {
+  const grid_ = divElement();
+  grid_.style.display = "grid";
+  grid_.style.gridTemplateRows = gridTemplate(rows);
+  grid_.style.gridTemplateColumns = gridTemplate(columns);
+  grid_.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
+  return grid_;
+}
+
+function buttonContainerElement() {
+  const buttonContainer = divElement();
+  buttonContainer.className = "jspsych-image-button-response-button";
+  buttonContainer.style.display = "inline-block";
+  buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
+  return buttonContainer;
+}
+
+function buttonElement() {
+  const button = createElement("button");
+  button.className = "jspsych-btn";
+  return button;
+}
+
+function audioPlayer(url) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioContext = new AudioContext();
+  const player = createElement("audio");
+  player.crossOrigin = "anonymous";
+  const track = audioContext.createMediaElementSource(player);
+  track.connect(audioContext.destination);
+  player.src = url;
+  return player;
+}
 
 function circleElementWithColor(color) {
-  const circle = utility.divElement();
+  const circle = divElement();
   const diameterPixels = 100;
-  circle.style.height = utility.pixelsString(diameterPixels);
-  circle.style.width = utility.pixelsString(diameterPixels);
+  circle.style.height = pixelsString(diameterPixels);
+  circle.style.width = pixelsString(diameterPixels);
   const borderWidthPixels = 2;
-  circle.style.borderRadius = utility.pixelsString(
+  circle.style.borderRadius = pixelsString(
     diameterPixels / 2 + borderWidthPixels
   );
-  circle.style.border = `${utility.pixelsString(
-    borderWidthPixels
-  )} solid black`;
+  circle.style.border = `${pixelsString(borderWidthPixels)} solid black`;
   circle.style.margin = "auto";
   circle.style.backgroundColor = color;
   return circle;
@@ -40,41 +106,41 @@ class TaskUI {
       image.height = imageHeight;
       image.width = (image.naturalWidth * imageHeight) / image.naturalHeight;
     };
-    utility.adopt(parent, image);
-    const twoDotGrid = utility.divElement();
+    adopt(parent, image);
+    const twoDotGrid = divElement();
     twoDotGrid.style.display = "grid";
-    twoDotGrid.style.gridTemplateColumns = `1fr ${utility.pixelsString(
+    twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
       250
-    )} ${utility.pixelsString(250)} 1fr`;
-    twoDotGrid.style.gridGap = `${utility.pixelsString(120)}`;
+    )} ${pixelsString(250)} 1fr`;
+    twoDotGrid.style.gridGap = `${pixelsString(120)}`;
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.gridRow = 1;
     this.firstDot.style.gridColumn = 2;
-    utility.adopt(twoDotGrid, this.firstDot);
-    utility.addClickEventListener(this.firstDot, () => {
+    adopt(twoDotGrid, this.firstDot);
+    addClickEventListener(this.firstDot, () => {
       this.observer.notifyThatFirstDotHasBeenTouched();
     });
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.gridRow = 1;
     this.secondDot.style.gridColumn = 3;
-    utility.addClickEventListener(this.secondDot, () => {
+    addClickEventListener(this.secondDot, () => {
       this.observer.notifyThatSecondDotHasBeenTouched();
     });
-    utility.adopt(twoDotGrid, this.secondDot);
-    utility.adopt(parent, twoDotGrid);
-    const belowTwoDots = utility.divElement();
-    const buttonContainer = utility.buttonContainerElement();
+    adopt(twoDotGrid, this.secondDot);
+    adopt(parent, twoDotGrid);
+    const belowTwoDots = divElement();
+    const buttonContainer = buttonContainerElement();
     buttonContainer.style.gridRow = 2;
     buttonContainer.style.gridColumn = 2;
-    this.continueButton = utility.buttonElement();
+    this.continueButton = buttonElement();
     this.continueButton.textContent = "Continue";
     this.continueButton.style.visibility = "hidden";
-    utility.addClickEventListener(this.continueButton, () => {
+    addClickEventListener(this.continueButton, () => {
       this.observer.notifyThatContinueButtonHasBeenTouched();
     });
-    utility.adopt(buttonContainer, this.continueButton);
-    utility.adopt(belowTwoDots, buttonContainer);
-    utility.adopt(parent, belowTwoDots);
+    adopt(buttonContainer, this.continueButton);
+    adopt(belowTwoDots, buttonContainer);
+    adopt(parent, belowTwoDots);
   }
 
   colorFirstDotBlue() {
@@ -116,7 +182,7 @@ class TaskUI {
 
 class WebAudioPlayer {
   constructor(stimulusUrl, feedbackUrl) {
-    this.player = utility.audioPlayer(stimulusUrl);
+    this.player = audioPlayer(stimulusUrl);
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
   }
@@ -229,7 +295,7 @@ export function twoDot(name) {
       },
     },
     trial(display_element, trial) {
-      utility.clear(display_element);
+      clear(display_element);
       const taskUI = new TaskUI(
         display_element,
         trial.imageUrl,
@@ -294,9 +360,9 @@ export function imageAudioButtonResponse(id) {
       },
     },
     trial(displayElement, trial) {
-      utility.clear(displayElement);
-      const grid = utility.gridElement(2, 1);
-      utility.adopt(displayElement, grid);
+      clear(displayElement);
+      const grid = gridElement(2, 1);
+      adopt(displayElement, grid);
       const image = new Image();
       image.src = trial.imageUrl;
       image.onload = () => {
@@ -306,18 +372,16 @@ export function imageAudioButtonResponse(id) {
       };
       image.style.gridRow = 1;
       image.style.gridColumn = 1;
-      utility.adopt(grid, image);
-      const buttonContainer = utility.buttonContainerElement();
-      utility.adopt(grid, buttonContainer);
+      adopt(grid, image);
+      const buttonContainer = buttonContainerElement();
+      adopt(grid, buttonContainer);
       buttonContainer.style.gridRow = 2;
       buttonContainer.style.gridColumn = 1;
-      const continueButton = utility.buttonElement();
+      const continueButton = buttonElement();
       continueButton.textContent = "Continue";
       continueButton.style.visibility = "hidden";
-      utility.adopt(buttonContainer, continueButton);
-      utility.addClickEventListener(continueButton, () =>
-        jsPsych.finishTrial()
-      );
+      adopt(buttonContainer, continueButton);
+      addClickEventListener(continueButton, () => jsPsych.finishTrial());
       audioBufferSource(trial.stimulusUrl).then((stimulusSource) => {
         stimulusSource.onended = () => {
           continueButton.style.visibility = "visible";
@@ -349,19 +413,19 @@ export function stopwatch(id) {
       },
     },
     trial(displayElement, trial) {
-      utility.clear(displayElement);
-      const text = utility.divElement();
+      clear(displayElement);
+      const text = divElement();
       text.textContent = trial.text;
-      utility.adopt(displayElement, text);
+      adopt(displayElement, text);
       const timeContainer = document.createElement("h1");
       const time = document.createElement("time");
       time.textContent = "00:00:00";
-      utility.adopt(timeContainer, time);
-      utility.adopt(displayElement, timeContainer);
-      const buttonContainer = utility.buttonContainerElement();
-      const continueButton = utility.buttonElement();
-      utility.adopt(buttonContainer, continueButton);
-      utility.adopt(displayElement, buttonContainer);
+      adopt(timeContainer, time);
+      adopt(displayElement, timeContainer);
+      const buttonContainer = buttonContainerElement();
+      const continueButton = buttonElement();
+      adopt(buttonContainer, continueButton);
+      adopt(displayElement, buttonContainer);
       continueButton.textContent = "Continue";
 
       // modified from https://jsfiddle.net/Daniel_Hug/pvk6p/
@@ -404,7 +468,7 @@ export function stopwatch(id) {
       }
 
       const timerID = setInterval(updateTime, 1000);
-      utility.addClickEventListener(continueButton, () => {
+      addClickEventListener(continueButton, () => {
         clearInterval(timerID);
         jsPsych.finishTrial();
       });
