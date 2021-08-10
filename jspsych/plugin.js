@@ -33,24 +33,16 @@ function clear(parent) {
   }
 }
 
-function gridTemplate(n) {
-  return `repeat(${n}, 1fr)`;
-}
-
-function gridElement(rows, columns) {
-  const grid_ = divElement();
-  grid_.style.display = "grid";
-  grid_.style.gridTemplateRows = gridTemplate(rows);
-  grid_.style.gridTemplateColumns = gridTemplate(columns);
-  grid_.style.gridGap = `${pixelsString(20)} ${pixelsString(20)}`;
-  return grid_;
+function buttonGroupElement() {
+  const group = divElement();
+  return group;
 }
 
 function buttonContainerElement() {
   const buttonContainer = divElement();
   buttonContainer.className = "jspsych-image-button-response-button";
   buttonContainer.style.display = "inline-block";
-  buttonContainer.style.margin = `${pixelsString(8)} ${pixelsString(0)}`;
+  buttonContainer.style.margin = `${pixelsString(0)} ${pixelsString(8)}`;
   return buttonContainer;
 }
 
@@ -358,22 +350,15 @@ export function imageAudioButtonResponse(id) {
     },
     trial(displayElement, trial) {
       clear(displayElement);
-      const grid = gridElement(2, 1);
-      adopt(displayElement, grid);
       const image = new Image();
       image.src = trial.imageUrl;
-      image.onload = () => {
-        image.height = trial.imageHeight;
-        image.width =
-          (image.naturalWidth * trial.imageHeight) / image.naturalHeight;
-      };
-      image.style.gridRow = 1;
-      image.style.gridColumn = 1;
-      adopt(grid, image);
+      image.style.height = pixelsString(trial.imageHeight);
+      image.style.width = "auto";
+      adopt(displayElement, image);
+      const buttonGroup = buttonGroupElement();
+      adopt(displayElement, buttonGroup);
       const buttonContainer = buttonContainerElement();
-      adopt(grid, buttonContainer);
-      buttonContainer.style.gridRow = 2;
-      buttonContainer.style.gridColumn = 1;
+      adopt(buttonGroup, buttonContainer);
       const continueButton = buttonElement();
       continueButton.textContent = "Continue";
       continueButton.style.visibility = "hidden";
