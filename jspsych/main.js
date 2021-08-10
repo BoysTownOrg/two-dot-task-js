@@ -4,7 +4,7 @@ function concatenatePaths(a, b) {
   return `${a}/${b}`;
 }
 
-const standardImageHeightPixels = 500;
+const standardImageHeightPixels = 400;
 const twoDotPluginId = "two-dot";
 const imageAudioButtonResponsePluginId = "image-audio-button-response";
 const stopwatchPluginId = "stopwatch";
