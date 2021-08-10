@@ -60,17 +60,6 @@ function buttonElement() {
   return button;
 }
 
-function audioPlayer(url) {
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  const audioContext = new AudioContext();
-  const player = createElement("audio");
-  player.crossOrigin = "anonymous";
-  const track = audioContext.createMediaElementSource(player);
-  track.connect(audioContext.destination);
-  player.src = url;
-  return player;
-}
-
 function circleElementWithColor(color) {
   const circle = divElement();
   const diameterPixels = 100;
@@ -180,35 +169,45 @@ class TaskUI {
   }
 }
 
+function notifyThatPlaybackTimeHasUpdated(observer) {
+  observer.notifyThatPlaybackTimeHasUpdated();
+}
+
 class WebAudioPlayer {
   constructor(stimulusUrl, feedbackUrl) {
-    this.player = audioPlayer(stimulusUrl);
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    this.audioContext = new AudioContext();
   }
 
   playFeedback() {
-    this.player.src = this.feedbackUrl;
-    this.player.ontimeupdate = () => {};
-    this.player.onended = () => {
-      this.observer.notifyThatFeedbackHasEnded();
-    };
-    this.player.play();
+    audioBufferSource(this.feedbackUrl).then((feedbackSource) => {
+      feedbackSource.onended = () => {
+        this.observer.notifyThatFeedbackHasEnded();
+      };
+      feedbackSource.start();
+    });
   }
 
   playStimulus() {
-    this.player.src = this.stimulusUrl;
-    this.player.ontimeupdate = () => {
-      this.observer.notifyThatPlaybackTimeHasUpdated();
-    };
-    this.player.onended = () => {
-      this.observer.notifyThatPlaybackHasEnded();
-    };
-    this.player.play();
+    audioBufferSource(this.stimulusUrl).then((stimulusSource) => {
+      const timerID = setInterval(
+        notifyThatPlaybackTimeHasUpdated,
+        100,
+        this.observer
+      );
+      stimulusSource.onended = () => {
+        clearInterval(timerID);
+        this.observer.notifyThatPlaybackHasEnded();
+      };
+      stimulusSource.start();
+      this.startTime = this.audioContext.currentTime;
+    });
   }
 
   currentTimeSeconds() {
-    return this.player.currentTime;
+    return this.audioContext.currentTime - this.startTime;
   }
 
   attach(observer) {
