@@ -25,6 +25,14 @@ function pushGameTrial(trials, setText, n) {
   });
 }
 
+function pushBlankTrial(trials) {
+  trials.push({
+    type: "html-button-response",
+    stimulus: "",
+    choices: ["Continue"],
+  });
+}
+
 function pushTwoConsecutiveGameTrials(trials, setText, taskCount) {
   pushGameTrial(trials, setText, taskCount);
   pushGameTrial(trials, setText, taskCount + 1);
@@ -119,6 +127,7 @@ function parseTrialOrderFileLine(
       case "repetition":
       case "free recall test":
       case "cued recall test":
+        pushBlankTrial(trials);
         trials.push({
           type: imageAudioButtonResponsePluginId,
           stimulusUrl: resourcePath(audioFileName),
@@ -131,11 +140,12 @@ function parseTrialOrderFileLine(
           const [firstTargetWord, secondTargetWord] = firstAndThirdWord(
             trimmedEntry(csvEntries, 2)
           );
+          pushBlankTrial(trials);
           pushTwoDotTrial(
             trials,
             audioFileName,
             "silence.wav",
-            trials[trials.length - 6].imageUrl,
+            resourcePath(imageFileName),
             firstTargetWord,
             secondTargetWord,
             trimmedEntry(csvEntries, 5)
@@ -148,6 +158,7 @@ function parseTrialOrderFileLine(
           parsingState.preBreakTwoDotStimulusFileName = audioFileName;
           parsingState.readyForSecondLineOfPreBreakTwoDotTrial = true;
         } else {
+          pushBlankTrial(trials);
           pushTwoDotTrial(
             trials,
             parsingState.preBreakTwoDotStimulusFileName,
