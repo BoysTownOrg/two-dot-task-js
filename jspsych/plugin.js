@@ -81,21 +81,28 @@ function audioBufferSource(url) {
   });
 }
 
+function draw(canvas, image, imageHeight) {
+  const height = imageHeight;
+  const width = (imageHeight * image.naturalWidth) / image.naturalHeight;
+  canvas.height = height;
+  canvas.width = width;
+  canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+}
+
 class TaskUI {
   constructor(parent, imageUrl, imageHeight) {
     this.parent = parent;
     const canvas = createElement("canvas");
     canvas.style.margin = 0;
     canvas.style.padding = 0;
-    const context = canvas.getContext("2d");
+    adopt(parent, canvas);
     const image = new Image();
     image.src = imageUrl;
-    const height = imageHeight;
-    const width = (imageHeight * image.naturalWidth) / image.naturalHeight;
-    canvas.height = height;
-    canvas.width = width;
-    adopt(parent, canvas);
-    context.drawImage(image, 0, 0, width, height);
+    if (image.complete) draw(canvas, image, imageHeight);
+    else
+      image.onload = () => {
+        draw(canvas, image, imageHeight);
+      };
     const twoDotGrid = divElement();
     twoDotGrid.style.display = "grid";
     twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
@@ -467,16 +474,14 @@ export function imageAudioButtonResponse(id) {
       const canvas = createElement("canvas");
       canvas.style.margin = 0;
       canvas.style.padding = 0;
-      const context = canvas.getContext("2d");
+      adopt(displayElement, canvas);
       const image = new Image();
       image.src = trial.imageUrl;
-      const height = trial.imageHeight;
-      const width =
-        (trial.imageHeight * image.naturalWidth) / image.naturalHeight;
-      canvas.height = height;
-      canvas.width = width;
-      adopt(displayElement, canvas);
-      context.drawImage(image, 0, 0, width, height);
+      if (image.complete) draw(canvas, image, trial.imageHeight);
+      else
+        image.onload = () => {
+          draw(canvas, image, trial.imageHeight);
+        };
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const buttonContainer = buttonContainerElement();
