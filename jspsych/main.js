@@ -141,15 +141,19 @@ function parseTrialOrderFileLine(
             trimmedEntry(csvEntries, 2)
           );
           pushBlankTrial(trials);
-          pushTwoDotTrial(
-            trials,
-            audioFileName,
-            "silence.wav",
-            resourcePath(imageFileName),
-            firstTargetWord,
-            secondTargetWord,
-            trimmedEntry(csvEntries, 5)
-          );
+          trials.push({
+            type: twoDotPluginId,
+            stimulusUrl: resourcePath(audioFileName),
+            imageUrl: resourcePath(imageFileName),
+            imageHeight: standardImageHeightPixels,
+            firstChoiceOnsetTimeSeconds: 2.5,
+            firstChoiceOffsetTimeSeconds: 3.25,
+            secondChoiceOnsetTimeSeconds: 4.75,
+            secondChoiceOffsetTimeSeconds: 5.5,
+            firstWord: firstTargetWord,
+            secondWord: secondTargetWord,
+            correctWord: trimmedEntry(csvEntries, 5),
+          });
         } else if (!parsingState.readyForSecondLineOfPreBreakTwoDotTrial) {
           [
             parsingState.preBreakTwoDotFirstTargetWord,
