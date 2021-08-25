@@ -84,11 +84,18 @@ function audioBufferSource(url) {
 class TaskUI {
   constructor(parent, imageUrl, imageHeight) {
     this.parent = parent;
+    const canvas = createElement("canvas");
+    canvas.style.margin = 0;
+    canvas.style.padding = 0;
+    const context = canvas.getContext("2d");
     const image = new Image();
     image.src = imageUrl;
-    image.style.height = pixelsString(imageHeight);
-    image.style.width = "auto";
-    adopt(parent, image);
+    const height = imageHeight;
+    const width = (imageHeight * image.naturalWidth) / image.naturalHeight;
+    canvas.height = height;
+    canvas.width = width;
+    adopt(parent, canvas);
+    context.drawImage(image, 0, 0, width, height);
     const twoDotGrid = divElement();
     twoDotGrid.style.display = "grid";
     twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
