@@ -81,28 +81,14 @@ function audioBufferSource(url) {
   });
 }
 
-function draw(canvas, image, imageHeight) {
-  const height = imageHeight;
-  const width = (imageHeight * image.naturalWidth) / image.naturalHeight;
-  canvas.height = height;
-  canvas.width = width;
-  canvas.getContext("2d").drawImage(image, 0, 0, width, height);
-}
-
 class TaskUI {
   constructor(parent, imageUrl, imageHeight) {
     this.parent = parent;
-    const canvas = createElement("canvas");
-    canvas.style.margin = 0;
-    canvas.style.padding = 0;
-    adopt(parent, canvas);
     const image = new Image();
     image.src = imageUrl;
-    if (image.complete) draw(canvas, image, imageHeight);
-    else
-      image.onload = () => {
-        draw(canvas, image, imageHeight);
-      };
+    image.style.height = pixelsString(imageHeight);
+    image.style.width = "auto";
+    adopt(parent, image);
     const twoDotGrid = divElement();
     twoDotGrid.style.display = "grid";
     twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
@@ -471,17 +457,11 @@ export function imageAudioButtonResponse(id) {
     },
     trial(displayElement, trial) {
       clear(displayElement);
-      const canvas = createElement("canvas");
-      canvas.style.margin = 0;
-      canvas.style.padding = 0;
-      adopt(displayElement, canvas);
       const image = new Image();
       image.src = trial.imageUrl;
-      if (image.complete) draw(canvas, image, trial.imageHeight);
-      else
-        image.onload = () => {
-          draw(canvas, image, trial.imageHeight);
-        };
+      image.style.height = pixelsString(trial.imageHeight);
+      image.style.width = "auto";
+      adopt(displayElement, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const buttonContainer = buttonContainerElement();
