@@ -97,6 +97,7 @@ function parseTrialOrderFileLine(
   }
   parsingState.lastTaskName = taskName;
   if (taskName === "cued recall test" && parsingState.firstCuedRecall) {
+    pushBlankTrial(trials);
     trials.push({
       type: "image-button-response",
       stimulus: resourcePath(setText === "a" ? "Seesaw.png" : "Airplane.png"),
@@ -109,6 +110,7 @@ function parseTrialOrderFileLine(
   const imageFileName = trimmedEntry(csvEntries, 6);
   if (parsingState.firstTrial) {
     pushGameTrial(trials, setText, parsingState.taskCount);
+    pushBlankTrial(trials);
     trials.push({
       type: "image-button-response",
       stimulus: resourcePath(imageFileName),
