@@ -6,6 +6,7 @@ function concatenatePaths(a, b) {
 
 const standardImageHeightPixels = 400;
 const twoDotPluginId = "two-dot";
+const twoDotWithoutFeedbackPluginId = "two-dot-without-feedback";
 const imageAudioButtonResponsePluginId = "image-audio-button-response";
 const stopwatchPluginId = "stopwatch";
 const setAText = "A";
@@ -142,7 +143,7 @@ function parseTrialOrderFileLine(
           );
           pushBlankTrial(trials);
           trials.push({
-            type: twoDotPluginId,
+            type: twoDotWithoutFeedbackPluginId,
             stimulusUrl: resourcePath(audioFileName),
             imageUrl: resourcePath(imageFileName),
             imageHeight: standardImageHeightPixels,
@@ -254,6 +255,9 @@ function notifyThatConfirmButtonHasBeenClicked(
 
 function main() {
   jsPsych.plugins[twoDotPluginId] = plugin.twoDot(twoDotPluginId);
+  jsPsych.plugins[twoDotWithoutFeedbackPluginId] = plugin.twoDotWithoutFeedback(
+    twoDotWithoutFeedbackPluginId
+  );
   jsPsych.plugins[imageAudioButtonResponsePluginId] =
     plugin.imageAudioButtonResponse(imageAudioButtonResponsePluginId);
   jsPsych.plugins[stopwatchPluginId] = plugin.stopwatch(stopwatchPluginId);
