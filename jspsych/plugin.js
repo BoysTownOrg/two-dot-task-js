@@ -464,11 +464,19 @@ export function imageAudioButtonResponse(id) {
     },
     trial(displayElement, trial) {
       clear(displayElement);
+      const canvas = createElement("canvas");
+      canvas.style.margin = 0;
+      canvas.style.padding = 0;
+      const context = canvas.getContext("2d");
       const image = new Image();
       image.src = trial.imageUrl;
-      image.style.height = pixelsString(trial.imageHeight);
-      image.style.width = "auto";
-      adopt(displayElement, image);
+      const height = trial.imageHeight;
+      const width =
+        (trial.imageHeight * image.naturalWidth) / image.naturalHeight;
+      canvas.height = height;
+      canvas.width = width;
+      adopt(displayElement, canvas);
+      context.drawImage(image, 0, 0, width, height);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const buttonContainer = buttonContainerElement();
