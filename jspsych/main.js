@@ -6,6 +6,7 @@ function concatenatePaths(a, b) {
 
 const standardImageHeightPixels = 400;
 const twoDotPluginId = "two-dot";
+const twoDotWithoutFeedbackPluginId = "two-dot-without-feedback";
 const imageAudioButtonResponsePluginId = "image-audio-button-response";
 const stopwatchPluginId = "stopwatch";
 const setAText = "A";
@@ -141,15 +142,19 @@ function parseTrialOrderFileLine(
             trimmedEntry(csvEntries, 2)
           );
           pushBlankTrial(trials);
-          pushTwoDotTrial(
-            trials,
-            audioFileName,
-            "silence.wav",
-            resourcePath(imageFileName),
-            firstTargetWord,
-            secondTargetWord,
-            trimmedEntry(csvEntries, 5)
-          );
+          trials.push({
+            type: twoDotWithoutFeedbackPluginId,
+            stimulusUrl: resourcePath(audioFileName),
+            imageUrl: resourcePath(imageFileName),
+            imageHeight: standardImageHeightPixels,
+            firstChoiceOnsetTimeSeconds: 2.5,
+            firstChoiceOffsetTimeSeconds: 3.25,
+            secondChoiceOnsetTimeSeconds: 4.75,
+            secondChoiceOffsetTimeSeconds: 5.5,
+            firstWord: firstTargetWord,
+            secondWord: secondTargetWord,
+            correctWord: trimmedEntry(csvEntries, 5),
+          });
         } else if (!parsingState.readyForSecondLineOfPreBreakTwoDotTrial) {
           [
             parsingState.preBreakTwoDotFirstTargetWord,
@@ -250,6 +255,9 @@ function notifyThatConfirmButtonHasBeenClicked(
 
 function main() {
   jsPsych.plugins[twoDotPluginId] = plugin.twoDot(twoDotPluginId);
+  jsPsych.plugins[twoDotWithoutFeedbackPluginId] = plugin.twoDotWithoutFeedback(
+    twoDotWithoutFeedbackPluginId
+  );
   jsPsych.plugins[imageAudioButtonResponsePluginId] =
     plugin.imageAudioButtonResponse(imageAudioButtonResponsePluginId);
   jsPsych.plugins[stopwatchPluginId] = plugin.stopwatch(stopwatchPluginId);

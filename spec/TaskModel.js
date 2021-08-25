@@ -1,4 +1,8 @@
-import { TaskModel, Choice } from "../lib/TaskModel.js";
+import {
+  TaskModel,
+  TaskModelWithoutFeedback,
+  Choice,
+} from "../lib/TaskModel.js";
 
 class AudioPlayerStub {
   constructor() {
@@ -64,6 +68,7 @@ class TaskModelObserverStub {
     this.notifiedThatFirstChoiceIsSelected_ = false;
     this.notifiedThatSecondChoiceIsSelected_ = false;
     this.timesNotifiedThatFirstChoiceHasStartedPlaying_ = 0;
+    this.timesNotifiedThatTaskIsReadyToEnd_ = 0;
   }
 
   notifiedThatFirstChoiceIsSelected() {
@@ -135,7 +140,12 @@ class TaskModelObserverStub {
     return this.notifiedThatTaskIsReadyToEnd_;
   }
 
+  timesNotifiedThatTaskIsReadyToEnd() {
+    return this.timesNotifiedThatTaskIsReadyToEnd_;
+  }
+
   notifyThatTaskIsReadyToEnd() {
+    this.timesNotifiedThatTaskIsReadyToEnd_ += 1;
     this.notifiedThatTaskIsReadyToEnd_ = true;
   }
 
@@ -258,6 +268,157 @@ describe("TaskModel", () => {
   it("should notify task ready to end after feedback ends", function () {
     this.audioPlayer.endFeedback();
     expect(this.observer.notifiedThatTaskIsReadyToEnd()).toBeTrue();
+  });
+
+  it("should notify task result when finished", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.first });
+    this.model.finish();
+    expect(this.observer.result()).toEqual({
+      choice: "first",
+      word: "foo",
+      correct: "no",
+    });
+  });
+
+  it("should notify task correct result when finished", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.second });
+    this.model.finish();
+    expect(this.observer.result()).toEqual({
+      choice: "second",
+      word: "bar",
+      correct: "yes",
+    });
+  });
+
+  it("should notify that stimulus playback has ended", function () {
+    this.audioPlayer.endStimulusPlayback();
+    expect(this.observer.notifiedThatStimulusPlaybackHasEnded()).toBeTrue();
+  });
+
+  it("should notify first choice selected", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.first });
+    expect(this.observer.notifiedThatFirstChoiceIsSelected()).toBeTrue();
+  });
+
+  it("should notify second choice selected", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.second });
+    expect(this.observer.notifiedThatSecondChoiceIsSelected()).toBeTrue();
+  });
+});
+
+describe("TaskModelWithoutFeedback", () => {
+  beforeEach(function () {
+    this.audioPlayer = new AudioPlayerStub();
+    this.observer = new TaskModelObserverStub();
+    this.model = new TaskModelWithoutFeedback(
+      this.audioPlayer,
+      this.observer,
+      new Map([
+        [Choice.first, { onset: 0.12, offset: 0.34 }],
+        [Choice.second, { onset: 0.56, offset: 0.78 }],
+      ]),
+      new Map([
+        [Choice.first, "foo"],
+        [Choice.second, "bar"],
+      ]),
+      "bar"
+    );
+  });
+
+  it("should play stimulus on start", function () {
+    this.model.start();
+    expect(this.audioPlayer.stimulusPlayed()).toBeTrue();
+  });
+
+  it("should notify task ready to end after choice is submitted and stimulus has finished", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.first });
+    expect(this.observer.notifiedThatTaskIsReadyToEnd()).toBeTrue();
+  });
+
+  it("should not notify task ready to end after choice is submitted when stimulus has not finished", function () {
+    this.model.submit({ choice: Choice.first });
+    expect(this.observer.notifiedThatTaskIsReadyToEnd()).toBeFalse();
+  });
+
+  it("should not notify task ready to end twice after choice is submitted when stimulus has finished", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.first });
+    this.model.submit({ choice: Choice.first });
+    expect(this.observer.timesNotifiedThatTaskIsReadyToEnd()).toBe(1);
+  });
+
+  it("should notify that first choice has started playing when time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.13);
+    this.audioPlayer.updateTime();
+    expect(this.observer.notifiedThatFirstChoiceHasStartedPlaying()).toBeTrue();
+  });
+
+  it("should not notify that first choice has started playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.11);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatFirstChoiceHasStartedPlaying()
+    ).toBeFalse();
+  });
+
+  it("should notify that first choice has stopped playing when time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.34);
+    this.audioPlayer.updateTime();
+    expect(this.observer.notifiedThatFirstChoiceHasStoppedPlaying()).toBeTrue();
+  });
+
+  it("should not notify that first choice has stopped playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.33);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatFirstChoiceHasStoppedPlaying()
+    ).toBeFalse();
+  });
+
+  it("should not notify that first choice has started playing twice", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.13);
+    this.audioPlayer.updateTime();
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.timesNotifiedThatFirstChoiceHasStartedPlaying()
+    ).toEqual(1);
+  });
+
+  it("should notify that second choice has started playing when time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.57);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStartedPlaying()
+    ).toBeTrue();
+  });
+
+  it("should not notify that second choice has started playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.55);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStartedPlaying()
+    ).toBeFalse();
+  });
+
+  it("should notify that second choice has stopped playing when time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.78);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
+    ).toBeTrue();
+  });
+
+  it("should not notify that second choice has stopped playing when not time", function () {
+    this.audioPlayer.setCurrentTimeSeconds(0.77);
+    this.audioPlayer.updateTime();
+    expect(
+      this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
+    ).toBeFalse();
   });
 
   it("should notify task result when finished", function () {

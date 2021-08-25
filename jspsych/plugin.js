@@ -1,4 +1,8 @@
-import { TaskModel, Choice } from "../lib/TaskModel.js";
+import {
+  TaskModel,
+  Choice,
+  TaskModelWithoutFeedback,
+} from "../lib/TaskModel.js";
 import { TaskController } from "../lib/TaskController.js";
 import { TaskPresenter } from "../lib/TaskPresenter.js";
 
@@ -286,6 +290,115 @@ export function twoDot(name) {
       );
       const model = new TaskModel(
         new WebAudioPlayer(trial.stimulusUrl, trial.feedbackUrl),
+        new TaskPresenter(taskUI),
+        new Map([
+          [
+            Choice.first,
+            {
+              onset: trial.firstChoiceOnsetTimeSeconds,
+              offset: trial.firstChoiceOffsetTimeSeconds,
+            },
+          ],
+          [
+            Choice.second,
+            {
+              onset: trial.secondChoiceOnsetTimeSeconds,
+              offset: trial.secondChoiceOffsetTimeSeconds,
+            },
+          ],
+        ]),
+        new Map([
+          [Choice.first, trial.firstWord],
+          [Choice.second, trial.secondWord],
+        ]),
+        trial.correctWord
+      );
+      const controller = new TaskController(taskUI, model);
+      model.start();
+    },
+  };
+}
+
+export function twoDotWithoutFeedback(name) {
+  jsPsych.pluginAPI.registerPreload(name, "stimulusUrl", "audio");
+  jsPsych.pluginAPI.registerPreload(name, "imageUrl", "image");
+
+  return {
+    name,
+    description: "",
+    info: {
+      parameters: {
+        stimulusUrl: {
+          type: jsPsych.plugins.parameterType.AUDIO,
+          pretty_name: "Stimulus URL",
+          default: "",
+          description: "The stimulus audio",
+        },
+        imageUrl: {
+          type: jsPsych.plugins.parameterType.IMAGE,
+          pretty_name: "Image URL",
+          default: "",
+          description: "The image",
+        },
+        imageHeight: {
+          type: jsPsych.plugins.parameterType.INT,
+          pretty_name: "Image height",
+          default: null,
+          description: "The image height in pixels",
+        },
+        firstChoiceOnsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "First choice onset time",
+          default: 0,
+          description: "The first choice onset time in seconds",
+        },
+        firstChoiceOffsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "First choice offset time",
+          default: 0,
+          description: "The first choice offset time in seconds",
+        },
+        secondChoiceOnsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "Second choice onset time",
+          default: 0,
+          description: "The second choice onset time in seconds",
+        },
+        secondChoiceOffsetTimeSeconds: {
+          type: jsPsych.plugins.parameterType.FLOAT,
+          pretty_name: "Second choice offset time",
+          default: 0,
+          description: "The second choice offset time in seconds",
+        },
+        firstWord: {
+          type: jsPsych.plugins.parameterType.STRING,
+          pretty_name: "First word",
+          default: "",
+          description: "The word represented by the first choice",
+        },
+        secondWord: {
+          type: jsPsych.plugins.parameterType.STRING,
+          pretty_name: "Second word",
+          default: "",
+          description: "The word represented by the second choice",
+        },
+        correctWord: {
+          type: jsPsych.plugins.parameterType.STRING,
+          pretty_name: "Correct word",
+          default: "",
+          description: "The correct word",
+        },
+      },
+    },
+    trial(display_element, trial) {
+      clear(display_element);
+      const taskUI = new TaskUI(
+        display_element,
+        trial.imageUrl,
+        trial.imageHeight
+      );
+      const model = new TaskModelWithoutFeedback(
+        new WebAudioPlayer(trial.stimulusUrl, ""),
         new TaskPresenter(taskUI),
         new Map([
           [
