@@ -476,8 +476,12 @@ export function imageAudioButtonResponse(id) {
       adopt(repeatButtonContainer, repeatButton);
       repeatButton.textContent = "Repeat";
       repeatButton.style.visibility = "hidden";
-      addClickEventListener(continueButton, () => jsPsych.finishTrial());
-      addClickEventListener(repeatButton, () => jsPsych.finishTrial());
+      addClickEventListener(continueButton, () =>
+        jsPsych.finishTrial({ repeat: false })
+      );
+      addClickEventListener(repeatButton, () =>
+        jsPsych.finishTrial({ repeat: true })
+      );
       audioBufferSource(trial.stimulusUrl).then((stimulusSource) => {
         stimulusSource.onended = () => {
           continueButton.style.visibility = "visible";

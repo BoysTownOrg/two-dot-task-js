@@ -132,10 +132,17 @@ function parseTrialOrderFileLine(
       case "cued recall test":
         pushBlankTrial(trials);
         trials.push({
-          type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath(audioFileName),
-          imageUrl: resourcePath(imageFileName),
-          imageHeight: standardImageHeightPixels,
+          timeline: [
+            {
+              type: imageAudioButtonResponsePluginId,
+              stimulusUrl: resourcePath(audioFileName),
+              imageUrl: resourcePath(imageFileName),
+              imageHeight: standardImageHeightPixels,
+            },
+          ],
+          loop_function(data) {
+            return data.values()[0].repeat;
+          },
         });
         break;
       case "2 dot test":
