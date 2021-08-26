@@ -72,15 +72,22 @@ function pushTwoDotTrial(
   correctWord
 ) {
   trials.push({
-    feedbackUrl: resourcePath(feedbackAudioFileName),
-    ...twoDotTrialProperties(
-      twoDotPluginId,
-      stimulusFileName,
-      imageUrl,
-      firstWord,
-      secondWord,
-      correctWord
-    ),
+    timeline: [
+      {
+        feedbackUrl: resourcePath(feedbackAudioFileName),
+        ...twoDotTrialProperties(
+          twoDotPluginId,
+          stimulusFileName,
+          imageUrl,
+          firstWord,
+          secondWord,
+          correctWord
+        ),
+      },
+    ],
+    loop_function(data) {
+      return data.values()[0].repeat;
+    },
   });
 }
 
@@ -92,16 +99,21 @@ function pushTwoDotWithoutFeedbackTrial(
   secondWord,
   correctWord
 ) {
-  trials.push(
-    twoDotTrialProperties(
-      twoDotWithoutFeedbackPluginId,
-      stimulusFileName,
-      imageUrl,
-      firstWord,
-      secondWord,
-      correctWord
-    )
-  );
+  trials.push({
+    timeline: [
+      twoDotTrialProperties(
+        twoDotWithoutFeedbackPluginId,
+        stimulusFileName,
+        imageUrl,
+        firstWord,
+        secondWord,
+        correctWord
+      ),
+    ],
+    loop_function(data) {
+      return data.values()[0].repeat;
+    },
+  });
 }
 
 function firstAndThirdWord(text) {

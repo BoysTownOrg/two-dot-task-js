@@ -109,16 +109,25 @@ class TaskUI {
     adopt(twoDotGrid, this.secondDot);
     adopt(parent, twoDotGrid);
     const belowTwoDots = buttonGroupElement();
-    const buttonContainer = buttonContainerElement();
+    adopt(parent, belowTwoDots);
+    const continueButtonContainer = buttonContainerElement();
+    adopt(belowTwoDots, continueButtonContainer);
     this.continueButton = buttonElement();
+    adopt(continueButtonContainer, this.continueButton);
     this.continueButton.textContent = "Continue";
     this.continueButton.style.visibility = "hidden";
     addClickEventListener(this.continueButton, () => {
       this.observer.notifyThatContinueButtonHasBeenTouched();
     });
-    adopt(buttonContainer, this.continueButton);
-    adopt(belowTwoDots, buttonContainer);
-    adopt(parent, belowTwoDots);
+    const repeatButtonContainer = buttonContainerElement();
+    adopt(belowTwoDots, repeatButtonContainer);
+    this.repeatButton = buttonElement();
+    adopt(repeatButtonContainer, this.repeatButton);
+    this.repeatButton.textContent = "Repeat";
+    this.repeatButton.style.visibility = "hidden";
+    addClickEventListener(this.repeatButton, () => {
+      jsPsych.finishTrial({ repeat: true });
+    });
   }
 
   colorFirstDotBlue() {
@@ -147,10 +156,11 @@ class TaskUI {
 
   showContinueButton() {
     this.continueButton.style.visibility = "visible";
+    this.repeatButton.style.visibility = "visible";
   }
 
   finish(result) {
-    jsPsych.finishTrial(result);
+    jsPsych.finishTrial({ ...result, repeat: false });
   }
 
   attach(observer) {
