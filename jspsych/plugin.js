@@ -464,16 +464,24 @@ export function imageAudioButtonResponse(id) {
       adopt(displayElement, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
-      const buttonContainer = buttonContainerElement();
-      adopt(buttonGroup, buttonContainer);
+      const continueButtonContainer = buttonContainerElement();
+      adopt(buttonGroup, continueButtonContainer);
       const continueButton = buttonElement();
+      adopt(continueButtonContainer, continueButton);
       continueButton.textContent = "Continue";
       continueButton.style.visibility = "hidden";
-      adopt(buttonContainer, continueButton);
+      const repeatButtonContainer = buttonContainerElement();
+      adopt(buttonGroup, repeatButtonContainer);
+      const repeatButton = buttonElement();
+      adopt(repeatButtonContainer, repeatButton);
+      repeatButton.textContent = "Repeat";
+      repeatButton.style.visibility = "hidden";
       addClickEventListener(continueButton, () => jsPsych.finishTrial());
+      addClickEventListener(repeatButton, () => jsPsych.finishTrial());
       audioBufferSource(trial.stimulusUrl).then((stimulusSource) => {
         stimulusSource.onended = () => {
           continueButton.style.visibility = "visible";
+          repeatButton.style.visibility = "visible";
         };
         stimulusSource.start();
       });
