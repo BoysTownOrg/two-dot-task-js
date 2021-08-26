@@ -109,16 +109,25 @@ class TaskUI {
     adopt(twoDotGrid, this.secondDot);
     adopt(parent, twoDotGrid);
     const belowTwoDots = buttonGroupElement();
-    const buttonContainer = buttonContainerElement();
+    adopt(parent, belowTwoDots);
+    const continueButtonContainer = buttonContainerElement();
+    adopt(belowTwoDots, continueButtonContainer);
     this.continueButton = buttonElement();
+    adopt(continueButtonContainer, this.continueButton);
     this.continueButton.textContent = "Continue";
     this.continueButton.style.visibility = "hidden";
     addClickEventListener(this.continueButton, () => {
       this.observer.notifyThatContinueButtonHasBeenTouched();
     });
-    adopt(buttonContainer, this.continueButton);
-    adopt(belowTwoDots, buttonContainer);
-    adopt(parent, belowTwoDots);
+    const repeatButtonContainer = buttonContainerElement();
+    adopt(belowTwoDots, repeatButtonContainer);
+    this.repeatButton = buttonElement();
+    adopt(repeatButtonContainer, this.repeatButton);
+    this.repeatButton.textContent = "Repeat";
+    this.repeatButton.style.visibility = "hidden";
+    addClickEventListener(this.repeatButton, () => {
+      jsPsych.finishTrial({ repeat: true });
+    });
   }
 
   colorFirstDotBlue() {
@@ -147,10 +156,11 @@ class TaskUI {
 
   showContinueButton() {
     this.continueButton.style.visibility = "visible";
+    this.repeatButton.style.visibility = "visible";
   }
 
   finish(result) {
-    jsPsych.finishTrial(result);
+    jsPsych.finishTrial({ ...result, repeat: false });
   }
 
   attach(observer) {
@@ -464,16 +474,28 @@ export function imageAudioButtonResponse(id) {
       adopt(displayElement, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
-      const buttonContainer = buttonContainerElement();
-      adopt(buttonGroup, buttonContainer);
+      const continueButtonContainer = buttonContainerElement();
+      adopt(buttonGroup, continueButtonContainer);
       const continueButton = buttonElement();
+      adopt(continueButtonContainer, continueButton);
       continueButton.textContent = "Continue";
       continueButton.style.visibility = "hidden";
-      adopt(buttonContainer, continueButton);
-      addClickEventListener(continueButton, () => jsPsych.finishTrial());
+      const repeatButtonContainer = buttonContainerElement();
+      adopt(buttonGroup, repeatButtonContainer);
+      const repeatButton = buttonElement();
+      adopt(repeatButtonContainer, repeatButton);
+      repeatButton.textContent = "Repeat";
+      repeatButton.style.visibility = "hidden";
+      addClickEventListener(continueButton, () =>
+        jsPsych.finishTrial({ repeat: false })
+      );
+      addClickEventListener(repeatButton, () =>
+        jsPsych.finishTrial({ repeat: true })
+      );
       audioBufferSource(trial.stimulusUrl).then((stimulusSource) => {
         stimulusSource.onended = () => {
           continueButton.style.visibility = "visible";
+          repeatButton.style.visibility = "visible";
         };
         stimulusSource.start();
       });

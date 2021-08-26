@@ -39,6 +39,29 @@ function pushTwoConsecutiveGameTrials(trials, setText, taskCount) {
   pushGameTrial(trials, setText, taskCount + 1);
 }
 
+function twoDotTrialProperties(
+  type,
+  stimulusFileName,
+  imageUrl,
+  firstWord,
+  secondWord,
+  correctWord
+) {
+  return {
+    type,
+    stimulusUrl: resourcePath(stimulusFileName),
+    imageUrl,
+    imageHeight: standardImageHeightPixels,
+    firstChoiceOnsetTimeSeconds: 2.5,
+    firstChoiceOffsetTimeSeconds: 3.25,
+    secondChoiceOnsetTimeSeconds: 4.75,
+    secondChoiceOffsetTimeSeconds: 5.5,
+    firstWord,
+    secondWord,
+    correctWord,
+  };
+}
+
 function pushTwoDotTrial(
   trials,
   stimulusFileName,
@@ -49,18 +72,47 @@ function pushTwoDotTrial(
   correctWord
 ) {
   trials.push({
-    type: twoDotPluginId,
-    stimulusUrl: resourcePath(stimulusFileName),
-    feedbackUrl: resourcePath(feedbackAudioFileName),
-    imageUrl,
-    imageHeight: standardImageHeightPixels,
-    firstChoiceOnsetTimeSeconds: 2.5,
-    firstChoiceOffsetTimeSeconds: 3.25,
-    secondChoiceOnsetTimeSeconds: 4.75,
-    secondChoiceOffsetTimeSeconds: 5.5,
-    firstWord,
-    secondWord,
-    correctWord,
+    timeline: [
+      {
+        feedbackUrl: resourcePath(feedbackAudioFileName),
+        ...twoDotTrialProperties(
+          twoDotPluginId,
+          stimulusFileName,
+          imageUrl,
+          firstWord,
+          secondWord,
+          correctWord
+        ),
+      },
+    ],
+    loop_function(data) {
+      return data.values()[0].repeat;
+    },
+  });
+}
+
+function pushTwoDotWithoutFeedbackTrial(
+  trials,
+  stimulusFileName,
+  imageUrl,
+  firstWord,
+  secondWord,
+  correctWord
+) {
+  trials.push({
+    timeline: [
+      twoDotTrialProperties(
+        twoDotWithoutFeedbackPluginId,
+        stimulusFileName,
+        imageUrl,
+        firstWord,
+        secondWord,
+        correctWord
+      ),
+    ],
+    loop_function(data) {
+      return data.values()[0].repeat;
+    },
   });
 }
 
@@ -132,10 +184,17 @@ function parseTrialOrderFileLine(
       case "cued recall test":
         pushBlankTrial(trials);
         trials.push({
-          type: imageAudioButtonResponsePluginId,
-          stimulusUrl: resourcePath(audioFileName),
-          imageUrl: resourcePath(imageFileName),
-          imageHeight: standardImageHeightPixels,
+          timeline: [
+            {
+              type: imageAudioButtonResponsePluginId,
+              stimulusUrl: resourcePath(audioFileName),
+              imageUrl: resourcePath(imageFileName),
+              imageHeight: standardImageHeightPixels,
+            },
+          ],
+          loop_function(data) {
+            return data.values()[0].repeat;
+          },
         });
         break;
       case "2 dot test":
@@ -144,19 +203,14 @@ function parseTrialOrderFileLine(
             trimmedEntry(csvEntries, 2)
           );
           pushBlankTrial(trials);
-          trials.push({
-            type: twoDotWithoutFeedbackPluginId,
-            stimulusUrl: resourcePath(audioFileName),
-            imageUrl: resourcePath(imageFileName),
-            imageHeight: standardImageHeightPixels,
-            firstChoiceOnsetTimeSeconds: 2.5,
-            firstChoiceOffsetTimeSeconds: 3.25,
-            secondChoiceOnsetTimeSeconds: 4.75,
-            secondChoiceOffsetTimeSeconds: 5.5,
-            firstWord: firstTargetWord,
-            secondWord: secondTargetWord,
-            correctWord: trimmedEntry(csvEntries, 5),
-          });
+          pushTwoDotWithoutFeedbackTrial(
+            trials,
+            audioFileName,
+            resourcePath(imageFileName),
+            firstTargetWord,
+            secondTargetWord,
+            trimmedEntry(csvEntries, 5)
+          );
         } else if (!parsingState.readyForSecondLineOfPreBreakTwoDotTrial) {
           [
             parsingState.preBreakTwoDotFirstTargetWord,
