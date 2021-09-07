@@ -23,6 +23,8 @@ function pushGameTrial(trials, setText, n) {
     stimulus_height: standardImageHeightPixels,
     choices: ["Continue"],
     prompt: "",
+    button_html:
+      '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>',
   });
 }
 
