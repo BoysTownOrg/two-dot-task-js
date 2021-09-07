@@ -39,6 +39,9 @@ function clear(parent) {
 
 function buttonGroupElement() {
   const group = divElement();
+  group.style.position = "absolute";
+  group.style.bottom = "5%";
+  group.style.right = "5%";
   return group;
 }
 
