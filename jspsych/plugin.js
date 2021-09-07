@@ -536,10 +536,12 @@ export function stopwatch(id) {
       time.textContent = "00:00:00";
       adopt(timeContainer, time);
       adopt(displayElement, timeContainer);
+      const buttonGroup = buttonGroupElement();
       const buttonContainer = buttonContainerElement();
       const continueButton = buttonElement();
       adopt(buttonContainer, continueButton);
-      adopt(displayElement, buttonContainer);
+      adopt(buttonGroup, buttonContainer);
+      adopt(displayElement, buttonGroup);
       continueButton.textContent = "Continue";
 
       // modified from https://jsfiddle.net/Daniel_Hug/pvk6p/
