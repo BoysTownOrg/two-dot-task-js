@@ -31,6 +31,8 @@ function pushBlankTrial(trials) {
     type: "html-button-response",
     stimulus: "",
     choices: ["Continue"],
+    button_html:
+      '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>',
   });
 }
 
