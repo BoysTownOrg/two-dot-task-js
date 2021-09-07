@@ -11,6 +11,8 @@ const imageAudioButtonResponsePluginId = "image-audio-button-response";
 const stopwatchPluginId = "stopwatch";
 const setAText = "A";
 const noiseText = "Noise";
+const bottomRightButtonHTML =
+  '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
 
 function resourcePath(fileName) {
   return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
@@ -23,8 +25,7 @@ function pushGameTrial(trials, setText, n) {
     stimulus_height: standardImageHeightPixels,
     choices: ["Continue"],
     prompt: "",
-    button_html:
-      '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>',
+    button_html: bottomRightButtonHTML,
   });
 }
 
@@ -33,8 +34,7 @@ function pushBlankTrial(trials) {
     type: "html-button-response",
     stimulus: "",
     choices: ["Continue"],
-    button_html:
-      '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>',
+    button_html: bottomRightButtonHTML,
   });
 }
 
@@ -160,8 +160,7 @@ function parseTrialOrderFileLine(
       stimulus_height: standardImageHeightPixels,
       choices: ["Continue"],
       prompt: "",
-      button_html:
-        '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>',
+      button_html: bottomRightButtonHTML,
     });
     parsingState.firstCuedRecall = false;
   }
@@ -175,8 +174,7 @@ function parseTrialOrderFileLine(
       stimulus_height: standardImageHeightPixels,
       choices: ["Continue"],
       prompt: "",
-      button_html:
-        '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>',
+      button_html: bottomRightButtonHTML,
     });
     parsingState.firstTrial = false;
   } else {
@@ -304,6 +302,7 @@ function notifyThatConfirmButtonHasBeenClicked(
             type: "html-button-response",
             stimulus: 'Press "Start" when ready.',
             choices: ["Start"],
+            button_html: bottomRightButtonHTML,
           },
           ...trials,
           {
@@ -311,6 +310,7 @@ function notifyThatConfirmButtonHasBeenClicked(
             stimulus:
               'The test is done. Press "Finish" to complete. Thank you.',
             choices: ["Finish"],
+            button_html: bottomRightButtonHTML,
           },
         ],
       });
