@@ -114,7 +114,6 @@ class TaskUI {
     const belowTwoDots = buttonGroupElement();
     adopt(parent, belowTwoDots);
     const continueButtonContainer = buttonContainerElement();
-    adopt(belowTwoDots, continueButtonContainer);
     this.continueButton = buttonElement();
     adopt(continueButtonContainer, this.continueButton);
     this.continueButton.textContent = "Continue";
@@ -123,11 +122,12 @@ class TaskUI {
       this.observer.notifyThatContinueButtonHasBeenTouched();
     });
     const repeatButtonContainer = buttonContainerElement();
-    adopt(belowTwoDots, repeatButtonContainer);
     this.repeatButton = buttonElement();
     adopt(repeatButtonContainer, this.repeatButton);
     this.repeatButton.textContent = "Repeat";
     this.repeatButton.style.visibility = "hidden";
+    adopt(belowTwoDots, repeatButtonContainer);
+    adopt(belowTwoDots, continueButtonContainer);
     addClickEventListener(this.repeatButton, () => {
       jsPsych.finishTrial({ repeat: true });
     });
@@ -478,17 +478,17 @@ export function imageAudioButtonResponse(id) {
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const continueButtonContainer = buttonContainerElement();
-      adopt(buttonGroup, continueButtonContainer);
       const continueButton = buttonElement();
       adopt(continueButtonContainer, continueButton);
       continueButton.textContent = "Continue";
       continueButton.style.visibility = "hidden";
       const repeatButtonContainer = buttonContainerElement();
-      adopt(buttonGroup, repeatButtonContainer);
       const repeatButton = buttonElement();
       adopt(repeatButtonContainer, repeatButton);
       repeatButton.textContent = "Repeat";
       repeatButton.style.visibility = "hidden";
+      adopt(buttonGroup, repeatButtonContainer);
+      adopt(buttonGroup, continueButtonContainer);
       addClickEventListener(continueButton, () =>
         jsPsych.finishTrial({ repeat: false })
       );
