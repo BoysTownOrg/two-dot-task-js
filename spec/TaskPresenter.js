@@ -9,6 +9,15 @@ class TaskViewStub {
     this.secondDotColoredRed_ = false;
     this.secondDotColoredBlack_ = false;
     this.continueButtonShown_ = false;
+    this.cursorShown_ = false;
+  }
+
+  cursorShown() {
+    return this.cursorShown_;
+  }
+
+  showCursor() {
+    this.cursorShown_ = true;
   }
 
   colorSecondDotBlue() {
@@ -126,5 +135,10 @@ describe("TaskPresenter", () => {
   it("should color second dot blue when second choice selected", function () {
     this.presenter.notifyThatSecondChoiceIsSelected();
     expect(this.view.secondDotColoredBlue()).toBeTrue();
+  });
+
+  it("should show cursor when either choice selected", function () {
+    this.presenter.notifyThatSecondChoiceIsSelected();
+    expect(this.view.cursorShown()).toBeTrue();
   });
 });
