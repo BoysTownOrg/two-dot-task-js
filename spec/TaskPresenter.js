@@ -10,6 +10,15 @@ class TaskViewStub {
     this.secondDotColoredBlack_ = false;
     this.continueButtonShown_ = false;
     this.cursorShown_ = false;
+    this.cursorHidden_ = false;
+  }
+
+  hideCursor() {
+    this.cursorHidden_ = true;
+  }
+
+  cursorHidden() {
+    return this.cursorHidden_;
   }
 
   cursorShown() {
@@ -89,6 +98,10 @@ describe("TaskPresenter", () => {
   beforeEach(function () {
     this.view = new TaskViewStub();
     this.presenter = new TaskPresenter(this.view);
+  });
+
+  it("initially hides cursor", function () {
+    expect(this.view.cursorHidden()).toBeTrue();
   });
 
   it("should color first dot red when first choice starts playing", function () {
