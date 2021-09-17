@@ -133,6 +133,14 @@ class TaskUI {
     });
   }
 
+  hideCursor() {
+    this.parent.style.cursor = "none";
+  }
+
+  showCursor() {
+    this.parent.style.cursor = "";
+  }
+
   colorFirstDotBlue() {
     this.firstDot.style.backgroundColor = "blue";
   }
