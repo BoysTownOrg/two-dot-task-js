@@ -265,9 +265,15 @@ describe("TaskModel", () => {
     ).toBeFalse();
   });
 
-  it("should notify task ready to end after feedback ends", function () {
+  it("should notify task correct result after feedback ends", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.second });
     this.audioPlayer.endFeedback();
-    expect(this.observer.notifiedThatTaskIsReadyToEnd()).toBeTrue();
+    expect(this.observer.result()).toEqual({
+      choice: "second",
+      word: "bar",
+      correct: "yes",
+    });
   });
 
   it("should notify task result when finished", function () {
