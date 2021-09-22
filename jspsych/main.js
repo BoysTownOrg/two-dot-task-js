@@ -38,6 +38,16 @@ function pushBlankTrial(trials) {
   });
 }
 
+function pushGreenCircleTrial(trials) {
+  trials.push({
+    type: "html-button-response",
+    stimulus: "",
+    choices: [""],
+    button_html:
+      '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
+  });
+}
+
 function pushTwoConsecutiveGameTrials(trials, setText, taskCount) {
   pushGameTrial(trials, setText, taskCount);
   pushGameTrial(trials, setText, taskCount + 1);
@@ -208,7 +218,7 @@ function parseTrialOrderFileLine(
           const [firstTargetWord, secondTargetWord] = firstAndThirdWord(
             trimmedEntry(csvEntries, 2)
           );
-          pushBlankTrial(trials);
+          pushGreenCircleTrial(trials);
           pushTwoDotWithoutFeedbackTrial(
             trials,
             audioFileName,
@@ -225,7 +235,7 @@ function parseTrialOrderFileLine(
           parsingState.preBreakTwoDotStimulusFileName = audioFileName;
           parsingState.readyForSecondLineOfPreBreakTwoDotTrial = true;
         } else {
-          pushBlankTrial(trials);
+          pushGreenCircleTrial(trials);
           pushTwoDotTrial(
             trials,
             parsingState.preBreakTwoDotStimulusFileName,
