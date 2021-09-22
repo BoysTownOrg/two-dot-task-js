@@ -340,22 +340,9 @@ describe("TaskModelWithoutFeedback", () => {
     expect(this.audioPlayer.stimulusPlayed()).toBeTrue();
   });
 
-  it("should notify task ready to end after choice is submitted and stimulus has finished", function () {
-    this.audioPlayer.endStimulusPlayback();
-    this.model.submit({ choice: Choice.first });
-    expect(this.observer.notifiedThatTaskIsReadyToEnd()).toBeTrue();
-  });
-
   it("should not notify task ready to end after choice is submitted when stimulus has not finished", function () {
     this.model.submit({ choice: Choice.first });
     expect(this.observer.notifiedThatTaskIsReadyToEnd()).toBeFalse();
-  });
-
-  it("should not notify task ready to end twice after choice is submitted when stimulus has finished", function () {
-    this.audioPlayer.endStimulusPlayback();
-    this.model.submit({ choice: Choice.first });
-    this.model.submit({ choice: Choice.first });
-    expect(this.observer.timesNotifiedThatTaskIsReadyToEnd()).toBe(1);
   });
 
   it("should notify that first choice has started playing when time", function () {
@@ -425,6 +412,16 @@ describe("TaskModelWithoutFeedback", () => {
     expect(
       this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
     ).toBeFalse();
+  });
+
+  it("should notify task result on submit", function () {
+    this.audioPlayer.endStimulusPlayback();
+    this.model.submit({ choice: Choice.first });
+    expect(this.observer.result()).toEqual({
+      choice: "first",
+      word: "foo",
+      correct: "no",
+    });
   });
 
   it("should notify task result when finished", function () {
