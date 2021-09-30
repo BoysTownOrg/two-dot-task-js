@@ -9,7 +9,6 @@ const twoDotPluginId = "two-dot";
 const twoDotWithoutFeedbackPluginId = "two-dot-without-feedback";
 const imageAudioButtonResponsePluginId = "image-audio-button-response";
 const stopwatchPluginId = "stopwatch";
-const setAText = "A";
 const noiseText = "Noise";
 const bottomRightButtonHTML =
   '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
@@ -265,17 +264,10 @@ function parseTrialOrderFileLine(
   }
 }
 
-function notifyThatConfirmButtonHasBeenClicked(
-  page,
-  setSelect,
-  conditionSelect
-) {
+function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
   document.body.removeChild(page);
 
-  const setText =
-    setSelect.options.item(setSelect.selectedIndex).textContent === setAText
-      ? "a"
-      : "b";
+  const setText = "a";
   fetch(resourcePath(`set-${setText}.csv`))
     .then((p) => p.text())
     .then((text) => {
@@ -336,11 +328,6 @@ function main() {
     plugin.imageAudioButtonResponse(imageAudioButtonResponsePluginId);
   jsPsych.plugins[stopwatchPluginId] = plugin.stopwatch(stopwatchPluginId);
   const page = createChildElement(document.body, "div");
-  const setLabel = createChildElement(createChildElement(page, "div"), "label");
-  setLabel.textContent = "Set";
-  const setSelect = createChildElement(setLabel, "select");
-  createChildElement(setSelect, "option").textContent = setAText;
-  createChildElement(setSelect, "option").textContent = "B";
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
     "label"
@@ -352,7 +339,7 @@ function main() {
   const confirmButton = createChildElement(page, "button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
-    notifyThatConfirmButtonHasBeenClicked(page, setSelect, conditionSelect);
+    notifyThatConfirmButtonHasBeenClicked(page, conditionSelect);
   });
 }
 
