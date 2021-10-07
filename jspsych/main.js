@@ -148,7 +148,6 @@ function parseTrialOrderFileLine(
   trials,
   line,
   parsingState,
-  setText,
   selectedConditionText
 ) {
   const csvEntries = line.split(",");
@@ -165,7 +164,7 @@ function parseTrialOrderFileLine(
     pushBlankTrial(trials);
     trials.push({
       type: "image-button-response",
-      stimulus: resourcePath(setText === "a" ? "Seesaw.png" : "Airplane.png"),
+      stimulus: resourcePath("Seesaw.png"),
       stimulus_height: standardImageHeightPixels,
       choices: ["Continue"],
       prompt: "",
@@ -267,8 +266,7 @@ function parseTrialOrderFileLine(
 function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
   document.body.removeChild(page);
 
-  const setText = "a";
-  fetch(resourcePath(`set-${setText}.csv`))
+  fetch(resourcePath("set-a.csv"))
     .then((p) => p.text())
     .then((text) => {
       const trials = [];
@@ -289,7 +287,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
             trials,
             line,
             parsingState,
-            setText,
             conditionSelect.options.item(conditionSelect.selectedIndex)
               .textContent
           );
