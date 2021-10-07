@@ -155,7 +155,7 @@ function parseTrialOrderFileLine(
   if (
     taskName !== parsingState.lastTaskName &&
     parsingState.lastTaskName !== "" &&
-    !(taskName === "repetition" && parsingState.taskCount === 2)
+    !(taskName === "repetition" && parsingState.taskCount === 1)
   ) {
     pushTwoConsecutiveGameTrials(trials, parsingState.taskCount);
     parsingState.taskCount += 1;
@@ -195,7 +195,7 @@ function parseTrialOrderFileLine(
         : audioFileEntry;
     switch (taskName) {
       case "repetition":
-        if (parsingState.taskCount > 1) break;
+        if (parsingState.taskCount > 0) break;
       // falls through
       case "free recall test":
       case "cued recall test":
