@@ -17,10 +17,10 @@ function resourcePath(fileName) {
   return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
 }
 
-function pushGameTrial(trials, setText, n) {
+function pushGameTrial(trials, n) {
   trials.push({
     type: "image-button-response",
-    stimulus: resourcePath(`game-${setText}-${n + 1}.jpg`),
+    stimulus: resourcePath(`game${n + 1}.jpg`),
     stimulus_height: standardImageHeightPixels,
     choices: ["Continue"],
     prompt: "",
@@ -47,9 +47,9 @@ function pushGreenCircleTrial(trials) {
   });
 }
 
-function pushTwoConsecutiveGameTrials(trials, setText, taskCount) {
-  pushGameTrial(trials, setText, taskCount);
-  pushGameTrial(trials, setText, taskCount + 1);
+function pushTwoConsecutiveGameTrials(trials, taskCount) {
+  pushGameTrial(trials, taskCount);
+  pushGameTrial(trials, taskCount + 1);
 }
 
 function twoDotTrialProperties(
@@ -157,7 +157,7 @@ function parseTrialOrderFileLine(
     taskName !== parsingState.lastTaskName &&
     parsingState.lastTaskName !== ""
   ) {
-    pushTwoConsecutiveGameTrials(trials, setText, parsingState.taskCount);
+    pushTwoConsecutiveGameTrials(trials, parsingState.taskCount);
     parsingState.taskCount += 1;
   }
   parsingState.lastTaskName = taskName;
@@ -175,7 +175,7 @@ function parseTrialOrderFileLine(
   }
   const imageFileName = trimmedEntry(csvEntries, 6);
   if (parsingState.firstTrial) {
-    pushGameTrial(trials, setText, parsingState.taskCount);
+    pushGameTrial(trials, parsingState.taskCount);
     pushBlankTrial(trials);
     trials.push({
       type: "image-button-response",
@@ -256,7 +256,7 @@ function parseTrialOrderFileLine(
         parsingState.postBreak = true;
         parsingState.taskCount += 1;
         parsingState.lastTaskName = "";
-        pushGameTrial(trials, setText, parsingState.taskCount);
+        pushGameTrial(trials, parsingState.taskCount);
         break;
       }
       default:
@@ -293,7 +293,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
             conditionSelect.options.item(conditionSelect.selectedIndex)
               .textContent
           );
-      pushTwoConsecutiveGameTrials(trials, setText, parsingState.taskCount);
+      pushTwoConsecutiveGameTrials(trials, parsingState.taskCount);
       jsPsych.init({
         timeline: [
           {
