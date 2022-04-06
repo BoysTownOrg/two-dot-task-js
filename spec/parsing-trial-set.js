@@ -70,6 +70,7 @@ Task,Known/Novel,TargetWord,File Order,audio (.wav) file,TargetImage,image files
 Repetition,Known ,Button,1,Repetition_BUTTON_Final.wav,Button,Button.png,
 Repetition,Known,Baby,2,Repetition_BABY_Final.wav,Baby,Baby.png,
 2 dot test,Known,Baby or Cheetah,8,TwoDot_BABY_CHEETAH_Final.wav,Baby,Baby.png,
+2 dot test,Known,Baby,9,Feedback_BABY_Final.wav,Baby,Baby.png,
 Repetition,Novel,Topin,20,Repetition_TOPIN_Final.wav,Topin,Topin.png,
 2 dot test,Novel,Topin or Nedig,24,TwoDot_TOPIN_NEDIG_Final.wav,Topin,Topin.png,
 Free Recall Test,Known,Baby,32,FreeRecall_WHAT_Final.wav,Baby,Baby.png,
@@ -90,5 +91,6 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[5].type).toBe(TrialType.gameTransition);
     expect(trialSet[6].type).toBe(TrialType.greenCircle);
     expect(trialSet[7].type).toBe(TrialType.twoDot);
+    expect(trialSet[7].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
   });
 });
