@@ -96,5 +96,6 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[7].correctTargetWord).toBe("Baby");
     expect(trialSet[7].stimulusFileName).toBe("TwoDot_BABY_CHEETAH_Final.wav");
     expect(trialSet[7].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
+    expect(trialSet[7].imageFileName).toBe("Baby.png");
   });
 });
