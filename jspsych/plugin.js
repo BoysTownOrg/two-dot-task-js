@@ -241,7 +241,7 @@ export function twoDot(jsPsychModule) {
         trial.imageHeight
       );
       const model = new TaskModel(
-        new WebAudioPlayer(trial.stimulusUrl, trial.feedbackUrl),
+        new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, trial.feedbackUrl),
         new TaskPresenter(taskUI),
         new Map([
           [
@@ -360,7 +360,7 @@ export function twoDotWithoutFeedback(jsPsychModule) {
         trial.imageHeight
       );
       const model = new TaskModelWithoutFeedback(
-        new WebAudioPlayer(trial.stimulusUrl, ""),
+        new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
         new TaskPresenter(taskUI),
         new Map([
           [
