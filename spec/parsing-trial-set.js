@@ -68,6 +68,7 @@ Cued Recall Test,Novel,Dae ,51,CuedRecall_DAE_Final.wav,Daevl,Daevl.png,
     const trialSet = parse(`
 Task,Known/Novel,TargetWord,File Order,audio (.wav) file,TargetImage,image files,
 Repetition,Known ,Button,1,Repetition_BUTTON_Final.wav,Button,Button.png,
+Repetition,Known,Baby,2,Repetition_BABY_Final.wav,Baby,Baby.png,
 2 dot test,Known,Baby or Cheetah,8,TwoDot_BABY_CHEETAH_Final.wav,Baby,Baby.png,
 Repetition,Novel,Topin,20,Repetition_TOPIN_Final.wav,Topin,Topin.png,
 2 dot test,Novel,Topin or Nedig,24,TwoDot_TOPIN_NEDIG_Final.wav,Topin,Topin.png,
@@ -82,5 +83,9 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[1].type).toBe(TrialType.blank);
     expect(trialSet[2].type).toBe(TrialType.image);
     expect(trialSet[2].imageFileName).toBe("Button.png");
+    expect(trialSet[3].type).toBe(TrialType.blank);
+    // expect(trialSet[4].type).toBe(TrialType.imageWithAudio);
+    // expect(trialSet[4].imageFileName).toBe("Baby.png");
+    // expect(trialSet[4].audioFileName).toBe("Repetition_BABY_Final.wav");
   });
 });
