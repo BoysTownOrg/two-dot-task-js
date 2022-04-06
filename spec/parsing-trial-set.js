@@ -134,5 +134,11 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[26].audioFileName).toBe("CuedRecall_TO_Final.wav");
     expect(trialSet[27].type).toBe(TrialType.gameTransition);
     expect(trialSet[28].type).toBe(TrialType.greenCircle);
+    expect(trialSet[29].type).toBe(TrialType.twoDotWithoutFeedback);
+    expect(trialSet[29].firstTargetWord).toBe("Daevl");
+    expect(trialSet[29].secondTargetWord).toBe("Topin");
+    expect(trialSet[29].correctTargetWord).toBe("Topin");
+    expect(trialSet[29].stimulusFileName).toBe("TwoDot_DAEVL_TOPIN_Final.wav");
+    expect(trialSet[29].imageFileName).toBe("Topin.png");
   });
 });
