@@ -1,14 +1,19 @@
 import * as plugin from "./plugin.js";
 
+const jsPsych = initJsPsych();
+
+const twoDotPluginId = plugin.twoDot(jsPsychModule);
+const twoDotWithoutFeedbackPluginId =
+  plugin.twoDotWithoutFeedback(jsPsychModule);
+const imageAudioButtonResponsePluginId =
+  plugin.imageAudioButtonResponse(jsPsychModule);
+const stopwatchPluginId = plugin.stopwatch(jsPsychModule);
+
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
 }
 
 const standardImageHeightPixels = 400;
-const twoDotPluginId = "two-dot";
-const twoDotWithoutFeedbackPluginId = "two-dot-without-feedback";
-const imageAudioButtonResponsePluginId = "image-audio-button-response";
-const stopwatchPluginId = "stopwatch";
 const noiseText = "Noise";
 const bottomRightButtonHTML =
   '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
@@ -19,7 +24,7 @@ function resourcePath(fileName) {
 
 function pushGameTrial(trials, n) {
   trials.push({
-    type: "image-button-response",
+    type: jsPsychImageButtonResponse,
     stimulus: resourcePath(`game${n + 1}.jpg`),
     stimulus_height: standardImageHeightPixels,
     choices: ["Continue"],
@@ -30,7 +35,7 @@ function pushGameTrial(trials, n) {
 
 function pushBlankTrial(trials) {
   trials.push({
-    type: "html-button-response",
+    type: jsPsychHtmlButtonResponse,
     stimulus: "",
     choices: ["Continue"],
     button_html: bottomRightButtonHTML,
@@ -39,7 +44,7 @@ function pushBlankTrial(trials) {
 
 function pushGreenCircleTrial(trials) {
   trials.push({
-    type: "html-button-response",
+    type: jsPsychHtmlButtonResponse,
     stimulus: "",
     choices: [""],
     button_html:
@@ -164,7 +169,7 @@ function parseTrialOrderFileLine(
   if (taskName === "cued recall test" && parsingState.firstCuedRecall) {
     pushBlankTrial(trials);
     trials.push({
-      type: "image-button-response",
+      type: jsPsychImageButtonResponse,
       stimulus: resourcePath("Seesaw.png"),
       stimulus_height: standardImageHeightPixels,
       choices: ["Continue"],
@@ -178,7 +183,7 @@ function parseTrialOrderFileLine(
     pushGameTrial(trials, parsingState.taskCount);
     pushBlankTrial(trials);
     trials.push({
-      type: "image-button-response",
+      type: jsPsychImageButtonResponse,
       stimulus: resourcePath(imageFileName),
       stimulus_height: standardImageHeightPixels,
       choices: ["Continue"],
@@ -294,39 +299,29 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
               .textContent
           );
       pushTwoConsecutiveGameTrials(trials, parsingState.taskCount);
-      jsPsych.init({
-        timeline: [
-          {
-            type: "preload",
-            auto_preload: true,
-          },
-          {
-            type: "html-button-response",
-            stimulus: 'Press "Start" when ready.',
-            choices: ["Start"],
-            button_html: bottomRightButtonHTML,
-          },
-          ...trials,
-          {
-            type: "html-button-response",
-            stimulus:
-              'The test is done. Press "Finish" to complete. Thank you.',
-            choices: ["Finish"],
-            button_html: bottomRightButtonHTML,
-          },
-        ],
-      });
+      jsPsych.run([
+        {
+          type: jsPsychPreload,
+          auto_preload: true,
+        },
+        {
+          type: jsPsychHtmlButtonResponse,
+          stimulus: 'Press "Start" when ready.',
+          choices: ["Start"],
+          button_html: bottomRightButtonHTML,
+        },
+        ...trials,
+        {
+          type: jsPsychHtmlButtonResponse,
+          stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
+          choices: ["Finish"],
+          button_html: bottomRightButtonHTML,
+        },
+      ]);
     });
 }
 
 function main() {
-  jsPsych.plugins[twoDotPluginId] = plugin.twoDot(twoDotPluginId);
-  jsPsych.plugins[twoDotWithoutFeedbackPluginId] = plugin.twoDotWithoutFeedback(
-    twoDotWithoutFeedbackPluginId
-  );
-  jsPsych.plugins[imageAudioButtonResponsePluginId] =
-    plugin.imageAudioButtonResponse(imageAudioButtonResponsePluginId);
-  jsPsych.plugins[stopwatchPluginId] = plugin.stopwatch(stopwatchPluginId);
   const page = createChildElement(document.body, "div");
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
