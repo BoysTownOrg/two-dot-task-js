@@ -79,5 +79,6 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
 2 dot test,Novel,Daevl or Topin,52,TwoDot_DAEVL_TOPIN_Final.wav,Topin,Topin.png,
 `);
     expect(trialSet[0].type).toBe(TrialType.initialGame);
+    expect(trialSet[1].type).toBe(TrialType.blank);
   });
 });
