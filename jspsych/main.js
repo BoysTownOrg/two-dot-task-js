@@ -1,13 +1,11 @@
-import * as plugin from "./plugin.js";
+import * as pluginClasses from "./plugin.js";
 
-const jsPsych = initJsPsych();
-
-const twoDotPluginId = plugin.twoDot(jsPsychModule);
-const twoDotWithoutFeedbackPluginId =
-  plugin.twoDotWithoutFeedback(jsPsychModule);
-const imageAudioButtonResponsePluginId =
-  plugin.imageAudioButtonResponse(jsPsychModule);
-const stopwatchPluginId = plugin.stopwatch(jsPsychModule);
+const twoDotPluginClass = pluginClasses.twoDot(jsPsychModule);
+const twoDotWithoutFeedbackPluginClass =
+  pluginClasses.twoDotWithoutFeedback(jsPsychModule);
+const imageAudioButtonResponsePluginClass =
+  pluginClasses.imageAudioButtonResponse(jsPsychModule);
+const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
@@ -94,7 +92,7 @@ function pushTwoDotTrial(
       {
         feedbackUrl: resourcePath(feedbackAudioFileName),
         ...twoDotTrialProperties(
-          twoDotPluginId,
+          twoDotPluginClass,
           stimulusFileName,
           imageUrl,
           firstWord,
@@ -120,7 +118,7 @@ function pushTwoDotWithoutFeedbackTrial(
   trials.push({
     timeline: [
       twoDotTrialProperties(
-        twoDotWithoutFeedbackPluginId,
+        twoDotWithoutFeedbackPluginClass,
         stimulusFileName,
         imageUrl,
         firstWord,
@@ -208,7 +206,7 @@ function parseTrialOrderFileLine(
         trials.push({
           timeline: [
             {
-              type: imageAudioButtonResponsePluginId,
+              type: imageAudioButtonResponsePluginClass,
               stimulusUrl: resourcePath(audioFileName),
               imageUrl: resourcePath(imageFileName),
               imageHeight: standardImageHeightPixels,
@@ -256,7 +254,7 @@ function parseTrialOrderFileLine(
         break;
       case "5-minute break": {
         trials.push({
-          type: stopwatchPluginId,
+          type: stopwatchPluginClass,
           text: 'Take a 5 minute break. Press "Continue" when finished.',
           alarmTimeSeconds: 300,
         });
@@ -299,6 +297,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
               .textContent
           );
       pushTwoConsecutiveGameTrials(trials, parsingState.taskCount);
+      const jsPsych = initJsPsych();
       jsPsych.run([
         {
           type: jsPsychPreload,
