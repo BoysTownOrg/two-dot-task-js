@@ -129,5 +129,8 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[23].audioFileName).toBe("FreeRecall_WHAT_Final.wav");
     expect(trialSet[24].type).toBe(TrialType.gameTransition);
     expect(trialSet[25].type).toBe(TrialType.blank);
+    expect(trialSet[26].type).toBe(TrialType.imageWithAudio);
+    expect(trialSet[26].imageFileName).toBe("Topin.png");
+    expect(trialSet[26].audioFileName).toBe("CuedRecall_TO_Final.wav");
   });
 });
