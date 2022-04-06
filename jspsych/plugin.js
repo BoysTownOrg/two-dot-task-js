@@ -226,7 +226,8 @@ class WebAudioPlayer {
   }
 }
 
-export function twoDot(jsPsychModule) {
+// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
+export function twoDot(jspsych) {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -275,67 +276,67 @@ export function twoDot(jsPsychModule) {
     description: "",
     parameters: {
       stimulusUrl: {
-        type: jsPsychModule.ParameterType.AUDIO,
+        type: jspsych.ParameterType.AUDIO,
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
       },
       feedbackUrl: {
-        type: jsPsychModule.ParameterType.AUDIO,
+        type: jspsych.ParameterType.AUDIO,
         pretty_name: "Feedback URL",
         default: "",
         description: "The feedback audio",
       },
       imageUrl: {
-        type: jsPsychModule.ParameterType.IMAGE,
+        type: jspsych.ParameterType.IMAGE,
         pretty_name: "Image URL",
         default: "",
         description: "The image",
       },
       imageHeight: {
-        type: jsPsychModule.ParameterType.INT,
+        type: jspsych.ParameterType.INT,
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
       },
       firstChoiceOnsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "First choice onset time",
         default: 0,
         description: "The first choice onset time in seconds",
       },
       firstChoiceOffsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "First choice offset time",
         default: 0,
         description: "The first choice offset time in seconds",
       },
       secondChoiceOnsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "Second choice onset time",
         default: 0,
         description: "The second choice onset time in seconds",
       },
       secondChoiceOffsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "Second choice offset time",
         default: 0,
         description: "The second choice offset time in seconds",
       },
       firstWord: {
-        type: jsPsychModule.ParameterType.STRING,
+        type: jspsych.ParameterType.STRING,
         pretty_name: "First word",
         default: "",
         description: "The word represented by the first choice",
       },
       secondWord: {
-        type: jsPsychModule.ParameterType.STRING,
+        type: jspsych.ParameterType.STRING,
         pretty_name: "Second word",
         default: "",
         description: "The word represented by the second choice",
       },
       correctWord: {
-        type: jsPsychModule.ParameterType.STRING,
+        type: jspsych.ParameterType.STRING,
         pretty_name: "Correct word",
         default: "",
         description: "The correct word",
@@ -345,7 +346,8 @@ export function twoDot(jsPsychModule) {
   return Plugin;
 }
 
-export function twoDotWithoutFeedback(jsPsychModule) {
+// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
+export function twoDotWithoutFeedback(jspsych) {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -394,61 +396,61 @@ export function twoDotWithoutFeedback(jsPsychModule) {
     description: "",
     parameters: {
       stimulusUrl: {
-        type: jsPsychModule.ParameterType.AUDIO,
+        type: jspsych.ParameterType.AUDIO,
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
       },
       imageUrl: {
-        type: jsPsychModule.ParameterType.IMAGE,
+        type: jspsych.ParameterType.IMAGE,
         pretty_name: "Image URL",
         default: "",
         description: "The image",
       },
       imageHeight: {
-        type: jsPsychModule.ParameterType.INT,
+        type: jspsych.ParameterType.INT,
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
       },
       firstChoiceOnsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "First choice onset time",
         default: 0,
         description: "The first choice onset time in seconds",
       },
       firstChoiceOffsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "First choice offset time",
         default: 0,
         description: "The first choice offset time in seconds",
       },
       secondChoiceOnsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "Second choice onset time",
         default: 0,
         description: "The second choice onset time in seconds",
       },
       secondChoiceOffsetTimeSeconds: {
-        type: jsPsychModule.ParameterType.FLOAT,
+        type: jspsych.ParameterType.FLOAT,
         pretty_name: "Second choice offset time",
         default: 0,
         description: "The second choice offset time in seconds",
       },
       firstWord: {
-        type: jsPsychModule.ParameterType.STRING,
+        type: jspsych.ParameterType.STRING,
         pretty_name: "First word",
         default: "",
         description: "The word represented by the first choice",
       },
       secondWord: {
-        type: jsPsychModule.ParameterType.STRING,
+        type: jspsych.ParameterType.STRING,
         pretty_name: "Second word",
         default: "",
         description: "The word represented by the second choice",
       },
       correctWord: {
-        type: jsPsychModule.ParameterType.STRING,
+        type: jspsych.ParameterType.STRING,
         pretty_name: "Correct word",
         default: "",
         description: "The correct word",
@@ -458,7 +460,8 @@ export function twoDotWithoutFeedback(jsPsychModule) {
   return Plugin;
 }
 
-export function imageAudioButtonResponse(jsPsychModule) {
+// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
+export function imageAudioButtonResponse(jspsych) {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -506,19 +509,19 @@ export function imageAudioButtonResponse(jsPsychModule) {
     name: "image-audio-button-response",
     parameters: {
       stimulusUrl: {
-        type: jsPsychModule.ParameterType.AUDIO,
+        type: jspsych.ParameterType.AUDIO,
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
       },
       imageUrl: {
-        type: jsPsychModule.ParameterType.IMAGE,
+        type: jspsych.ParameterType.IMAGE,
         pretty_name: "Image URL",
         default: "",
         description: "The image",
       },
       imageHeight: {
-        type: jsPsychModule.ParameterType.INT,
+        type: jspsych.ParameterType.INT,
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
@@ -528,7 +531,8 @@ export function imageAudioButtonResponse(jsPsychModule) {
   return Plugin;
 }
 
-export function stopwatch(jsPsychModule) {
+// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
+export function stopwatch(jspsych) {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -603,13 +607,13 @@ export function stopwatch(jsPsychModule) {
     description: "",
     parameters: {
       text: {
-        type: jsPsychModule.ParameterType.STRING,
+        type: jspsych.ParameterType.STRING,
         pretty_name: "Displayed Text",
         default: "",
         description: "The text that is displayed",
       },
       alarmTimeSeconds: {
-        type: jsPsychModule.ParameterType.INT,
+        type: jspsych.ParameterType.INT,
         pretty_name: "Alarm time seconds",
         default: "",
         description: "The alarm time in seconds",
