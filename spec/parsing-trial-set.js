@@ -73,6 +73,7 @@ Repetition,Known,Baby,2,Repetition_BABY_Final.wav,Baby,Baby.png,
 2 dot test,Known,Baby,9,Feedback_BABY_Final.wav,Baby,Baby.png,
 Repetition,Novel,Topin,20,Repetition_TOPIN_Final.wav,Topin,Topin.png,
 2 dot test,Novel,Topin or Nedig,24,TwoDot_TOPIN_NEDIG_Final.wav,Topin,Topin.png,
+2 dot test,Novel,Topin,25,Feedback_TOPIN_Final.wav,Topin,Topin.png,
 Free Recall Test,Known,Baby,32,FreeRecall_WHAT_Final.wav,Baby,Baby.png,
 Cued Recall Test,Known,Bay,38,CuedRecall_BAY_Final.wav,Baby,Baby.png,
 5-Minute Break,,,,,,,
@@ -98,5 +99,6 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[7].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
     expect(trialSet[7].imageFileName).toBe("Baby.png");
     expect(trialSet[8].type).toBe(TrialType.gameTransition);
+    expect(trialSet[9].type).toBe(TrialType.greenCircle);
   });
 });
