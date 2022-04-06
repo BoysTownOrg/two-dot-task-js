@@ -91,6 +91,9 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[5].type).toBe(TrialType.gameTransition);
     expect(trialSet[6].type).toBe(TrialType.greenCircle);
     expect(trialSet[7].type).toBe(TrialType.twoDot);
+    expect(trialSet[7].firstTargetWord).toBe("Baby");
+    expect(trialSet[7].secondTargetWord).toBe("Cheetah");
+    expect(trialSet[7].correctTargetWord).toBe("Baby");
     expect(trialSet[7].stimulusFileName).toBe("TwoDot_BABY_CHEETAH_Final.wav");
     expect(trialSet[7].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
   });
