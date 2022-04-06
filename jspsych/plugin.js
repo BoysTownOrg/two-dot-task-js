@@ -74,7 +74,7 @@ function circleElementWithColor(color) {
   return circle;
 }
 
-function audioBufferSource(url) {
+function audioBufferSource(jsPsych, url) {
   const audioContext = jsPsych.pluginAPI.audioContext();
   return jsPsych.pluginAPI.getAudioBuffer(url).then((buffer) => {
     const bufferSource = audioContext.createBufferSource();
@@ -85,8 +85,9 @@ function audioBufferSource(url) {
 }
 
 class TaskUI {
-  constructor(parent, imageUrl, imageHeight) {
+  constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
+    this.jsPsych = jsPsych;
     const image = new Image();
     image.src = imageUrl;
     image.style.height = pixelsString(imageHeight);
@@ -171,7 +172,7 @@ class TaskUI {
   }
 
   finish(result) {
-    jsPsych.finishTrial({ ...result, repeat: false });
+    this.jsPsych.finishTrial({ ...result, repeat: false });
   }
 
   attach(observer) {
@@ -184,14 +185,15 @@ function notifyThatPlaybackTimeHasUpdated(observer) {
 }
 
 class WebAudioPlayer {
-  constructor(stimulusUrl, feedbackUrl) {
+  constructor(jsPsych, stimulusUrl, feedbackUrl) {
+    this.jsPsych = jsPsych;
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
     this.audioContext = jsPsych.pluginAPI.audioContext();
   }
 
   playFeedback() {
-    audioBufferSource(this.feedbackUrl).then((feedbackSource) => {
+    audioBufferSource(this.jsPsych, this.feedbackUrl).then((feedbackSource) => {
       feedbackSource.onended = () => {
         this.observer.notifyThatFeedbackHasEnded();
       };
@@ -200,7 +202,7 @@ class WebAudioPlayer {
   }
 
   playStimulus() {
-    audioBufferSource(this.stimulusUrl).then((stimulusSource) => {
+    audioBufferSource(this.jsPsych, this.stimulusUrl).then((stimulusSource) => {
       const timerID = setInterval(
         notifyThatPlaybackTimeHasUpdated,
         100,
@@ -224,87 +226,16 @@ class WebAudioPlayer {
   }
 }
 
-export function twoDot(name) {
-  jsPsych.pluginAPI.registerPreload(name, "stimulusUrl", "audio");
-  jsPsych.pluginAPI.registerPreload(name, "feedbackUrl", "audio");
-  jsPsych.pluginAPI.registerPreload(name, "imageUrl", "image");
+export function twoDot(jsPsychModule) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
 
-  return {
-    name,
-    description: "",
-    info: {
-      parameters: {
-        stimulusUrl: {
-          type: jsPsych.plugins.parameterType.AUDIO,
-          pretty_name: "Stimulus URL",
-          default: "",
-          description: "The stimulus audio",
-        },
-        feedbackUrl: {
-          type: jsPsych.plugins.parameterType.AUDIO,
-          pretty_name: "Feedback URL",
-          default: "",
-          description: "The feedback audio",
-        },
-        imageUrl: {
-          type: jsPsych.plugins.parameterType.IMAGE,
-          pretty_name: "Image URL",
-          default: "",
-          description: "The image",
-        },
-        imageHeight: {
-          type: jsPsych.plugins.parameterType.INT,
-          pretty_name: "Image height",
-          default: null,
-          description: "The image height in pixels",
-        },
-        firstChoiceOnsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "First choice onset time",
-          default: 0,
-          description: "The first choice onset time in seconds",
-        },
-        firstChoiceOffsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "First choice offset time",
-          default: 0,
-          description: "The first choice offset time in seconds",
-        },
-        secondChoiceOnsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "Second choice onset time",
-          default: 0,
-          description: "The second choice onset time in seconds",
-        },
-        secondChoiceOffsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "Second choice offset time",
-          default: 0,
-          description: "The second choice offset time in seconds",
-        },
-        firstWord: {
-          type: jsPsych.plugins.parameterType.STRING,
-          pretty_name: "First word",
-          default: "",
-          description: "The word represented by the first choice",
-        },
-        secondWord: {
-          type: jsPsych.plugins.parameterType.STRING,
-          pretty_name: "Second word",
-          default: "",
-          description: "The word represented by the second choice",
-        },
-        correctWord: {
-          type: jsPsych.plugins.parameterType.STRING,
-          pretty_name: "Correct word",
-          default: "",
-          description: "The correct word",
-        },
-      },
-    },
     trial(display_element, trial) {
       clear(display_element);
       const taskUI = new TaskUI(
+        this.jsPsych,
         display_element,
         trial.imageUrl,
         trial.imageHeight
@@ -336,84 +267,94 @@ export function twoDot(name) {
       );
       const controller = new TaskController(taskUI, model);
       model.start();
-    },
-  };
-}
+    }
+  }
 
-export function twoDotWithoutFeedback(name) {
-  jsPsych.pluginAPI.registerPreload(name, "stimulusUrl", "audio");
-  jsPsych.pluginAPI.registerPreload(name, "imageUrl", "image");
-
-  return {
-    name,
+  Plugin.info = {
+    name: "two-dot",
     description: "",
-    info: {
-      parameters: {
-        stimulusUrl: {
-          type: jsPsych.plugins.parameterType.AUDIO,
-          pretty_name: "Stimulus URL",
-          default: "",
-          description: "The stimulus audio",
-        },
-        imageUrl: {
-          type: jsPsych.plugins.parameterType.IMAGE,
-          pretty_name: "Image URL",
-          default: "",
-          description: "The image",
-        },
-        imageHeight: {
-          type: jsPsych.plugins.parameterType.INT,
-          pretty_name: "Image height",
-          default: null,
-          description: "The image height in pixels",
-        },
-        firstChoiceOnsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "First choice onset time",
-          default: 0,
-          description: "The first choice onset time in seconds",
-        },
-        firstChoiceOffsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "First choice offset time",
-          default: 0,
-          description: "The first choice offset time in seconds",
-        },
-        secondChoiceOnsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "Second choice onset time",
-          default: 0,
-          description: "The second choice onset time in seconds",
-        },
-        secondChoiceOffsetTimeSeconds: {
-          type: jsPsych.plugins.parameterType.FLOAT,
-          pretty_name: "Second choice offset time",
-          default: 0,
-          description: "The second choice offset time in seconds",
-        },
-        firstWord: {
-          type: jsPsych.plugins.parameterType.STRING,
-          pretty_name: "First word",
-          default: "",
-          description: "The word represented by the first choice",
-        },
-        secondWord: {
-          type: jsPsych.plugins.parameterType.STRING,
-          pretty_name: "Second word",
-          default: "",
-          description: "The word represented by the second choice",
-        },
-        correctWord: {
-          type: jsPsych.plugins.parameterType.STRING,
-          pretty_name: "Correct word",
-          default: "",
-          description: "The correct word",
-        },
+    parameters: {
+      stimulusUrl: {
+        type: jsPsychModule.ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      feedbackUrl: {
+        type: jsPsychModule.ParameterType.AUDIO,
+        pretty_name: "Feedback URL",
+        default: "",
+        description: "The feedback audio",
+      },
+      imageUrl: {
+        type: jsPsychModule.ParameterType.IMAGE,
+        pretty_name: "Image URL",
+        default: "",
+        description: "The image",
+      },
+      imageHeight: {
+        type: jsPsychModule.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      firstChoiceOnsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "First choice onset time",
+        default: 0,
+        description: "The first choice onset time in seconds",
+      },
+      firstChoiceOffsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "First choice offset time",
+        default: 0,
+        description: "The first choice offset time in seconds",
+      },
+      secondChoiceOnsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "Second choice onset time",
+        default: 0,
+        description: "The second choice onset time in seconds",
+      },
+      secondChoiceOffsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "Second choice offset time",
+        default: 0,
+        description: "The second choice offset time in seconds",
+      },
+      firstWord: {
+        type: jsPsychModule.ParameterType.STRING,
+        pretty_name: "First word",
+        default: "",
+        description: "The word represented by the first choice",
+      },
+      secondWord: {
+        type: jsPsychModule.ParameterType.STRING,
+        pretty_name: "Second word",
+        default: "",
+        description: "The word represented by the second choice",
+      },
+      correctWord: {
+        type: jsPsychModule.ParameterType.STRING,
+        pretty_name: "Correct word",
+        default: "",
+        description: "The correct word",
       },
     },
+  };
+  return Plugin;
+}
+
+export function twoDotWithoutFeedback(jsPsychModule) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
     trial(display_element, trial) {
       clear(display_element);
       const taskUI = new TaskUI(
+        this.jsPsych,
         display_element,
         trial.imageUrl,
         trial.imageHeight
@@ -445,37 +386,84 @@ export function twoDotWithoutFeedback(name) {
       );
       const controller = new TaskController(taskUI, model);
       model.start();
-    },
-  };
-}
+    }
+  }
 
-export function imageAudioButtonResponse(id) {
-  jsPsych.pluginAPI.registerPreload(id, "stimulusUrl", "audio");
-  jsPsych.pluginAPI.registerPreload(id, "imageUrl", "image");
-
-  return {
-    info: {
-      parameters: {
-        stimulusUrl: {
-          type: jsPsych.plugins.parameterType.AUDIO,
-          pretty_name: "Stimulus URL",
-          default: "",
-          description: "The stimulus audio",
-        },
-        imageUrl: {
-          type: jsPsych.plugins.parameterType.IMAGE,
-          pretty_name: "Image URL",
-          default: "",
-          description: "The image",
-        },
-        imageHeight: {
-          type: jsPsych.plugins.parameterType.INT,
-          pretty_name: "Image height",
-          default: null,
-          description: "The image height in pixels",
-        },
+  Plugin.info = {
+    name: "two-dot-without-feedback",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: jsPsychModule.ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      imageUrl: {
+        type: jsPsychModule.ParameterType.IMAGE,
+        pretty_name: "Image URL",
+        default: "",
+        description: "The image",
+      },
+      imageHeight: {
+        type: jsPsychModule.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      firstChoiceOnsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "First choice onset time",
+        default: 0,
+        description: "The first choice onset time in seconds",
+      },
+      firstChoiceOffsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "First choice offset time",
+        default: 0,
+        description: "The first choice offset time in seconds",
+      },
+      secondChoiceOnsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "Second choice onset time",
+        default: 0,
+        description: "The second choice onset time in seconds",
+      },
+      secondChoiceOffsetTimeSeconds: {
+        type: jsPsychModule.ParameterType.FLOAT,
+        pretty_name: "Second choice offset time",
+        default: 0,
+        description: "The second choice offset time in seconds",
+      },
+      firstWord: {
+        type: jsPsychModule.ParameterType.STRING,
+        pretty_name: "First word",
+        default: "",
+        description: "The word represented by the first choice",
+      },
+      secondWord: {
+        type: jsPsychModule.ParameterType.STRING,
+        pretty_name: "Second word",
+        default: "",
+        description: "The word represented by the second choice",
+      },
+      correctWord: {
+        type: jsPsychModule.ParameterType.STRING,
+        pretty_name: "Correct word",
+        default: "",
+        description: "The correct word",
       },
     },
+  };
+  return Plugin;
+}
+
+export function imageAudioButtonResponse(jsPsychModule) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
     trial(displayElement, trial) {
       clear(displayElement);
       const image = new Image();
@@ -498,42 +486,54 @@ export function imageAudioButtonResponse(id) {
       adopt(buttonGroup, repeatButtonContainer);
       adopt(buttonGroup, continueButtonContainer);
       addClickEventListener(continueButton, () =>
-        jsPsych.finishTrial({ repeat: false })
+        this.jsPsych.finishTrial({ repeat: false })
       );
       addClickEventListener(repeatButton, () =>
-        jsPsych.finishTrial({ repeat: true })
+        this.jsPsych.finishTrial({ repeat: true })
       );
-      audioBufferSource(trial.stimulusUrl).then((stimulusSource) => {
-        stimulusSource.onended = () => {
-          continueButton.style.visibility = "visible";
-          repeatButton.style.visibility = "visible";
-        };
-        stimulusSource.start();
-      });
-    },
-  };
-}
-
-export function stopwatch(id) {
-  return {
-    info: {
-      name: id,
-      description: "",
-      parameters: {
-        text: {
-          type: jsPsych.plugins.parameterType.STRING,
-          pretty_name: "Displayed Text",
-          default: "",
-          description: "The text that is displayed",
-        },
-        alarmTimeSeconds: {
-          type: jsPsych.plugins.parameterType.INT,
-          pretty_name: "Alarm time seconds",
-          default: "",
-          description: "The alarm time in seconds",
-        },
+      audioBufferSource(this.jsPsych, trial.stimulusUrl).then(
+        (stimulusSource) => {
+          stimulusSource.onended = () => {
+            continueButton.style.visibility = "visible";
+            repeatButton.style.visibility = "visible";
+          };
+          stimulusSource.start();
+        }
+      );
+    }
+  }
+  Plugin.info = {
+    name: "image-audio-button-response",
+    parameters: {
+      stimulusUrl: {
+        type: jsPsychModule.ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      imageUrl: {
+        type: jsPsychModule.ParameterType.IMAGE,
+        pretty_name: "Image URL",
+        default: "",
+        description: "The image",
+      },
+      imageHeight: {
+        type: jsPsychModule.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
       },
     },
+  };
+  return Plugin;
+}
+
+export function stopwatch(jsPsychModule) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
     trial(displayElement, trial) {
       clear(displayElement);
       const text = divElement();
@@ -557,6 +557,7 @@ export function stopwatch(id) {
       let seconds = 0;
       let minutes = 0;
       let hours = 0;
+      const jsPsych = this.jsPsych;
 
       function updateTime() {
         totalSeconds += 1;
@@ -595,6 +596,25 @@ export function stopwatch(id) {
         clearInterval(timerID);
         jsPsych.finishTrial();
       });
+    }
+  }
+  Plugin.info = {
+    name: "stopwatch",
+    description: "",
+    parameters: {
+      text: {
+        type: jsPsychModule.ParameterType.STRING,
+        pretty_name: "Displayed Text",
+        default: "",
+        description: "The text that is displayed",
+      },
+      alarmTimeSeconds: {
+        type: jsPsychModule.ParameterType.INT,
+        pretty_name: "Alarm time seconds",
+        default: "",
+        description: "The alarm time in seconds",
+      },
     },
   };
+  return Plugin;
 }

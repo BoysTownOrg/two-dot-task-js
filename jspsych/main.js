@@ -1,14 +1,19 @@
 import * as plugin from "./plugin.js";
 
+const jsPsych = initJsPsych();
+
+const twoDotPluginId = plugin.twoDot(jsPsychModule);
+const twoDotWithoutFeedbackPluginId =
+  plugin.twoDotWithoutFeedback(jsPsychModule);
+const imageAudioButtonResponsePluginId =
+  plugin.imageAudioButtonResponse(jsPsychModule);
+const stopwatchPluginId = plugin.stopwatch(jsPsychModule);
+
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
 }
 
 const standardImageHeightPixels = 400;
-const twoDotPluginId = "two-dot";
-const twoDotWithoutFeedbackPluginId = "two-dot-without-feedback";
-const imageAudioButtonResponsePluginId = "image-audio-button-response";
-const stopwatchPluginId = "stopwatch";
 const noiseText = "Noise";
 const bottomRightButtonHTML =
   '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
@@ -320,13 +325,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
 }
 
 function main() {
-  jsPsych.plugins[twoDotPluginId] = plugin.twoDot(twoDotPluginId);
-  jsPsych.plugins[twoDotWithoutFeedbackPluginId] = plugin.twoDotWithoutFeedback(
-    twoDotWithoutFeedbackPluginId
-  );
-  jsPsych.plugins[imageAudioButtonResponsePluginId] =
-    plugin.imageAudioButtonResponse(imageAudioButtonResponsePluginId);
-  jsPsych.plugins[stopwatchPluginId] = plugin.stopwatch(stopwatchPluginId);
   const page = createChildElement(document.body, "div");
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
