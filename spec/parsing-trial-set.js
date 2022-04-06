@@ -116,5 +116,9 @@ Cued Recall Test,Novel,To,48,CuedRecall_TO_Final.wav,Topin,Topin.png,
     expect(trialSet[15].type).toBe(TrialType.blank);
     expect(trialSet[16].type).toBe(TrialType.image);
     expect(trialSet[16].imageFileName).toBe("Seesaw.png");
+    expect(trialSet[17].type).toBe(TrialType.blank);
+    expect(trialSet[18].type).toBe(TrialType.imageWithAudio);
+    expect(trialSet[18].imageFileName).toBe("Baby.png");
+    expect(trialSet[18].audioFileName).toBe("CuedRecall_BAY_Final.wav");
   });
 });
