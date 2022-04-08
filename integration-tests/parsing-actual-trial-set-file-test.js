@@ -1,0 +1,72 @@
+import { parse, TrialType } from "../lib/parsing-trial-set.js";
+
+import * as fs from "fs";
+
+describe("parsing-actual-trial-set-file", () => {
+  it("tbd", () => {
+    const trialSet = parse(
+      fs.readFileSync("integration-tests/set-a.csv", "utf8")
+    );
+    expect(trialSet[0].type).toBe(TrialType.initialGame);
+    expect(trialSet[1].type).toBe(TrialType.blank);
+    expect(trialSet[2].type).toBe(TrialType.image);
+    expect(trialSet[2].imageFileName).toBe("Button.png");
+    expect(trialSet[3].type).toBe(TrialType.blank);
+    expect(trialSet[4].type).toBe(TrialType.imageWithAudio);
+    expect(trialSet[4].imageFileName).toBe("Baby.png");
+    expect(trialSet[4].audioFileName).toBe("Repetition_BABY_Final.wav");
+    // expect(trialSet[5].type).toBe(TrialType.gameTransition);
+    // expect(trialSet[6].type).toBe(TrialType.greenCircle);
+    // expect(trialSet[7].type).toBe(TrialType.twoDot);
+    // expect(trialSet[7].firstTargetWord).toBe("Baby");
+    // expect(trialSet[7].secondTargetWord).toBe("Cheetah");
+    // expect(trialSet[7].correctTargetWord).toBe("Baby");
+    // expect(trialSet[7].stimulusFileName).toBe("TwoDot_BABY_CHEETAH_Final.wav");
+    // expect(trialSet[7].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
+    // expect(trialSet[7].imageFileName).toBe("Baby.png");
+    // expect(trialSet[8].type).toBe(TrialType.gameTransition);
+    // expect(trialSet[9].type).toBe(TrialType.greenCircle);
+    // expect(trialSet[10].type).toBe(TrialType.twoDot);
+    // expect(trialSet[10].firstTargetWord).toBe("Topin");
+    // expect(trialSet[10].secondTargetWord).toBe("Nedig");
+    // expect(trialSet[10].correctTargetWord).toBe("Topin");
+    // expect(trialSet[10].stimulusFileName).toBe("TwoDot_TOPIN_NEDIG_Final.wav");
+    // expect(trialSet[10].feedbackAudioFileName).toBe("Feedback_TOPIN_Final.wav");
+    // expect(trialSet[10].imageFileName).toBe("Topin.png");
+    // expect(trialSet[11].type).toBe(TrialType.gameTransition);
+    // expect(trialSet[12].type).toBe(TrialType.blank);
+    // expect(trialSet[13].type).toBe(TrialType.imageWithAudio);
+    // expect(trialSet[13].imageFileName).toBe("Baby.png");
+    // expect(trialSet[13].audioFileName).toBe("FreeRecall_WHAT_Final.wav");
+    // expect(trialSet[14].type).toBe(TrialType.gameTransition);
+    // expect(trialSet[15].type).toBe(TrialType.blank);
+    // expect(trialSet[16].type).toBe(TrialType.image);
+    // expect(trialSet[16].imageFileName).toBe("Seesaw.png");
+    // expect(trialSet[17].type).toBe(TrialType.blank);
+    // expect(trialSet[18].type).toBe(TrialType.imageWithAudio);
+    // expect(trialSet[18].imageFileName).toBe("Baby.png");
+    // expect(trialSet[18].audioFileName).toBe("CuedRecall_BAY_Final.wav");
+    // expect(trialSet[19].type).toBe(TrialType.gameTransition);
+    // expect(trialSet[20].type).toBe(TrialType.break);
+    // expect(trialSet[21].type).toBe(TrialType.initialGame);
+    // expect(trialSet[22].type).toBe(TrialType.blank);
+    // expect(trialSet[23].type).toBe(TrialType.imageWithAudio);
+    // expect(trialSet[23].imageFileName).toBe("Topin.png");
+    // expect(trialSet[23].audioFileName).toBe("FreeRecall_WHAT_Final.wav");
+    // expect(trialSet[24].type).toBe(TrialType.gameTransition);
+    // expect(trialSet[25].type).toBe(TrialType.blank);
+    // expect(trialSet[26].type).toBe(TrialType.imageWithAudio);
+    // expect(trialSet[26].imageFileName).toBe("Topin.png");
+    // expect(trialSet[26].audioFileName).toBe("CuedRecall_TO_Final.wav");
+    // expect(trialSet[27].type).toBe(TrialType.gameTransition);
+    // expect(trialSet[28].type).toBe(TrialType.greenCircle);
+    // expect(trialSet[29].type).toBe(TrialType.twoDotWithoutFeedback);
+    // expect(trialSet[29].firstTargetWord).toBe("Daevl");
+    // expect(trialSet[29].secondTargetWord).toBe("Topin");
+    // expect(trialSet[29].correctTargetWord).toBe("Topin");
+    // expect(trialSet[29].stimulusFileName).toBe("TwoDot_DAEVL_TOPIN_Final.wav");
+    // expect(trialSet[29].imageFileName).toBe("Topin.png");
+    // expect(trialSet[30].type).toBe(TrialType.gameTransition);
+    // expect(trialSet.length).toBe(31);
+  });
+});
