@@ -67,11 +67,12 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[32].stimulusFileName).toBe("TwoDot_NEDIG_KINIT_Final.wav");
     expect(trialSet[32].feedbackAudioFileName).toBe("Feedback_NEDIG_Final.wav");
     expect(trialSet[32].imageFileName).toBe("Nedig.png");
-    // expect(trialSet[11].type).toBe(TrialType.gameTransition);
-    // expect(trialSet[12].type).toBe(TrialType.blank);
-    // expect(trialSet[13].type).toBe(TrialType.imageWithAudio);
-    // expect(trialSet[13].imageFileName).toBe("Baby.png");
-    // expect(trialSet[13].audioFileName).toBe("FreeRecall_WHAT_Final.wav");
+    // ...
+    expect(trialSet[37].type).toBe(TrialType.gameTransition);
+    expect(trialSet[38].type).toBe(TrialType.blank);
+    expect(trialSet[39].type).toBe(TrialType.imageWithAudio);
+    expect(trialSet[39].imageFileName).toBe("Baby.png");
+    expect(trialSet[39].audioFileName).toBe("FreeRecall_WHAT_Final.wav");
     // expect(trialSet[14].type).toBe(TrialType.gameTransition);
     // expect(trialSet[15].type).toBe(TrialType.blank);
     // expect(trialSet[16].type).toBe(TrialType.image);
