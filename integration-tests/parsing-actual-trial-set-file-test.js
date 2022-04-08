@@ -27,15 +27,16 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[10].type).toBe(TrialType.imageWithAudio);
     expect(trialSet[10].imageFileName).toBe("Nedig.png");
     expect(trialSet[10].audioFileName).toBe("Repetition_NEDIG_Final.wav");
-    // expect(trialSet[5].type).toBe(TrialType.gameTransition);
-    // expect(trialSet[6].type).toBe(TrialType.greenCircle);
-    // expect(trialSet[7].type).toBe(TrialType.twoDot);
-    // expect(trialSet[7].firstTargetWord).toBe("Baby");
-    // expect(trialSet[7].secondTargetWord).toBe("Cheetah");
-    // expect(trialSet[7].correctTargetWord).toBe("Baby");
-    // expect(trialSet[7].stimulusFileName).toBe("TwoDot_BABY_CHEETAH_Final.wav");
-    // expect(trialSet[7].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
-    // expect(trialSet[7].imageFileName).toBe("Baby.png");
+    // ...
+    expect(trialSet[15].type).toBe(TrialType.gameTransition);
+    expect(trialSet[16].type).toBe(TrialType.greenCircle);
+    expect(trialSet[17].type).toBe(TrialType.twoDot);
+    expect(trialSet[17].firstTargetWord).toBe("Baby");
+    expect(trialSet[17].secondTargetWord).toBe("Cheetah");
+    expect(trialSet[17].correctTargetWord).toBe("Baby");
+    expect(trialSet[17].stimulusFileName).toBe("TwoDot_BABY_CHEETAH_Final.wav");
+    expect(trialSet[17].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
+    expect(trialSet[17].imageFileName).toBe("Baby.png");
     // expect(trialSet[8].type).toBe(TrialType.gameTransition);
     // expect(trialSet[9].type).toBe(TrialType.greenCircle);
     // expect(trialSet[10].type).toBe(TrialType.twoDot);
