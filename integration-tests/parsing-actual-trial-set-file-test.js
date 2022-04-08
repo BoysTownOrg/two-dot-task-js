@@ -3,7 +3,7 @@ import { parse, TrialType } from "../lib/parsing-trial-set.js";
 import * as fs from "fs";
 
 describe("parsing-actual-trial-set-file", () => {
-  it("tbd", () => {
+  it("parses original trial set, ignoring second Repetition block", () => {
     const trialSet = parse(
       fs.readFileSync("integration-tests/set-a.csv", "utf8")
     );
