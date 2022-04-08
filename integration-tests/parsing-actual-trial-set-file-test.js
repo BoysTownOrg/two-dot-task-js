@@ -90,8 +90,9 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[56].type).toBe(TrialType.imageWithAudio);
     expect(trialSet[56].imageFileName).toBe("Rooster.png");
     expect(trialSet[56].audioFileName).toBe("CuedRecall_ROO_Final.wav");
-    // expect(trialSet[19].type).toBe(TrialType.gameTransition);
-    // expect(trialSet[20].type).toBe(TrialType.break);
+    // ...
+    expect(trialSet[65].type).toBe(TrialType.gameTransition);
+    expect(trialSet[66].type).toBe(TrialType.break);
     // expect(trialSet[21].type).toBe(TrialType.initialGame);
     // expect(trialSet[22].type).toBe(TrialType.blank);
     // expect(trialSet[23].type).toBe(TrialType.imageWithAudio);
