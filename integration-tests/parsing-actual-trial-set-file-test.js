@@ -128,7 +128,8 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[89].correctTargetWord).toBe("Nedig");
     expect(trialSet[89].stimulusFileName).toBe("TwoDot_NEDIG_KINIT_Final.wav");
     expect(trialSet[89].imageFileName).toBe("Nedig.png");
-    // expect(trialSet[30].type).toBe(TrialType.gameTransition);
-    // expect(trialSet.length).toBe(31);
+    // ...
+    expect(trialSet[94].type).toBe(TrialType.gameTransition);
+    expect(trialSet.length).toBe(95);
   });
 });
