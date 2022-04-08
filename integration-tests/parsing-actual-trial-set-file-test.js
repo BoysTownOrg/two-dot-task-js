@@ -37,6 +37,18 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[17].stimulusFileName).toBe("TwoDot_BABY_CHEETAH_Final.wav");
     expect(trialSet[17].feedbackAudioFileName).toBe("Feedback_BABY_Final.wav");
     expect(trialSet[17].imageFileName).toBe("Baby.png");
+    expect(trialSet[18].type).toBe(TrialType.greenCircle);
+    expect(trialSet[19].type).toBe(TrialType.twoDot);
+    expect(trialSet[19].firstTargetWord).toBe("Pizza");
+    expect(trialSet[19].secondTargetWord).toBe("Rooster");
+    expect(trialSet[19].correctTargetWord).toBe("Rooster");
+    expect(trialSet[19].stimulusFileName).toBe(
+      "TwoDot_PIZZA_ROOSTER_Final.wav"
+    );
+    expect(trialSet[19].feedbackAudioFileName).toBe(
+      "Feedback_ROOSTER_Final.wav"
+    );
+    expect(trialSet[19].imageFileName).toBe("Rooster.png");
     // expect(trialSet[8].type).toBe(TrialType.gameTransition);
     // expect(trialSet[9].type).toBe(TrialType.greenCircle);
     // expect(trialSet[10].type).toBe(TrialType.twoDot);
