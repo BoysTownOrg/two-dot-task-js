@@ -77,10 +77,11 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[41].type).toBe(TrialType.imageWithAudio);
     expect(trialSet[41].imageFileName).toBe("Rooster.png");
     expect(trialSet[41].audioFileName).toBe("FreeRecall_WHAT_Final.wav");
-    // expect(trialSet[14].type).toBe(TrialType.gameTransition);
-    // expect(trialSet[15].type).toBe(TrialType.blank);
-    // expect(trialSet[16].type).toBe(TrialType.image);
-    // expect(trialSet[16].imageFileName).toBe("Seesaw.png");
+    // ...
+    expect(trialSet[50].type).toBe(TrialType.gameTransition);
+    expect(trialSet[51].type).toBe(TrialType.blank);
+    expect(trialSet[52].type).toBe(TrialType.image);
+    expect(trialSet[52].imageFileName).toBe("Seesaw.png");
     // expect(trialSet[17].type).toBe(TrialType.blank);
     // expect(trialSet[18].type).toBe(TrialType.imageWithAudio);
     // expect(trialSet[18].imageFileName).toBe("Baby.png");
