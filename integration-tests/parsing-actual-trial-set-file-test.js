@@ -15,6 +15,10 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[4].type).toBe(TrialType.imageWithAudio);
     expect(trialSet[4].imageFileName).toBe("Baby.png");
     expect(trialSet[4].audioFileName).toBe("Repetition_BABY_Final.wav");
+    expect(trialSet[5].type).toBe(TrialType.blank);
+    expect(trialSet[6].type).toBe(TrialType.imageWithAudio);
+    expect(trialSet[6].imageFileName).toBe("Rooster.png");
+    expect(trialSet[6].audioFileName).toBe("Repetition_ROOSTER_Final.wav");
     // expect(trialSet[5].type).toBe(TrialType.gameTransition);
     // expect(trialSet[6].type).toBe(TrialType.greenCircle);
     // expect(trialSet[7].type).toBe(TrialType.twoDot);
