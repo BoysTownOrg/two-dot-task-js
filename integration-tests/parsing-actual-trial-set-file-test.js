@@ -49,15 +49,16 @@ describe("parsing-actual-trial-set-file", () => {
       "Feedback_ROOSTER_Final.wav"
     );
     expect(trialSet[19].imageFileName).toBe("Rooster.png");
-    // expect(trialSet[8].type).toBe(TrialType.gameTransition);
-    // expect(trialSet[9].type).toBe(TrialType.greenCircle);
-    // expect(trialSet[10].type).toBe(TrialType.twoDot);
-    // expect(trialSet[10].firstTargetWord).toBe("Topin");
-    // expect(trialSet[10].secondTargetWord).toBe("Nedig");
-    // expect(trialSet[10].correctTargetWord).toBe("Topin");
-    // expect(trialSet[10].stimulusFileName).toBe("TwoDot_TOPIN_NEDIG_Final.wav");
-    // expect(trialSet[10].feedbackAudioFileName).toBe("Feedback_TOPIN_Final.wav");
-    // expect(trialSet[10].imageFileName).toBe("Topin.png");
+    // ...
+    expect(trialSet[28].type).toBe(TrialType.gameTransition);
+    expect(trialSet[29].type).toBe(TrialType.greenCircle);
+    expect(trialSet[30].type).toBe(TrialType.twoDot);
+    expect(trialSet[30].firstTargetWord).toBe("Topin");
+    expect(trialSet[30].secondTargetWord).toBe("Nedig");
+    expect(trialSet[30].correctTargetWord).toBe("Topin");
+    expect(trialSet[30].stimulusFileName).toBe("TwoDot_TOPIN_NEDIG_Final.wav");
+    expect(trialSet[30].feedbackAudioFileName).toBe("Feedback_TOPIN_Final.wav");
+    expect(trialSet[30].imageFileName).toBe("Topin.png");
     // expect(trialSet[11].type).toBe(TrialType.gameTransition);
     // expect(trialSet[12].type).toBe(TrialType.blank);
     // expect(trialSet[13].type).toBe(TrialType.imageWithAudio);
