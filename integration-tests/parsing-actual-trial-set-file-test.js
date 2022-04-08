@@ -121,6 +121,13 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[87].correctTargetWord).toBe("Topin");
     expect(trialSet[87].stimulusFileName).toBe("TwoDot_DAEVL_TOPIN_Final.wav");
     expect(trialSet[87].imageFileName).toBe("Topin.png");
+    expect(trialSet[88].type).toBe(TrialType.greenCircle);
+    expect(trialSet[89].type).toBe(TrialType.twoDotWithoutFeedback);
+    expect(trialSet[89].firstTargetWord).toBe("Nedig");
+    expect(trialSet[89].secondTargetWord).toBe("Kinit");
+    expect(trialSet[89].correctTargetWord).toBe("Nedig");
+    expect(trialSet[89].stimulusFileName).toBe("TwoDot_NEDIG_KINIT_Final.wav");
+    expect(trialSet[89].imageFileName).toBe("Nedig.png");
     // expect(trialSet[30].type).toBe(TrialType.gameTransition);
     // expect(trialSet.length).toBe(31);
   });
