@@ -112,14 +112,15 @@ describe("parsing-actual-trial-set-file", () => {
     expect(trialSet[80].type).toBe(TrialType.imageWithAudio);
     expect(trialSet[80].imageFileName).toBe("Nedig.png");
     expect(trialSet[80].audioFileName).toBe("CuedRecall_NE_Final.wav");
-    // expect(trialSet[27].type).toBe(TrialType.gameTransition);
-    // expect(trialSet[28].type).toBe(TrialType.greenCircle);
-    // expect(trialSet[29].type).toBe(TrialType.twoDotWithoutFeedback);
-    // expect(trialSet[29].firstTargetWord).toBe("Daevl");
-    // expect(trialSet[29].secondTargetWord).toBe("Topin");
-    // expect(trialSet[29].correctTargetWord).toBe("Topin");
-    // expect(trialSet[29].stimulusFileName).toBe("TwoDot_DAEVL_TOPIN_Final.wav");
-    // expect(trialSet[29].imageFileName).toBe("Topin.png");
+    // ...
+    expect(trialSet[85].type).toBe(TrialType.gameTransition);
+    expect(trialSet[86].type).toBe(TrialType.greenCircle);
+    expect(trialSet[87].type).toBe(TrialType.twoDotWithoutFeedback);
+    expect(trialSet[87].firstTargetWord).toBe("Daevl");
+    expect(trialSet[87].secondTargetWord).toBe("Topin");
+    expect(trialSet[87].correctTargetWord).toBe("Topin");
+    expect(trialSet[87].stimulusFileName).toBe("TwoDot_DAEVL_TOPIN_Final.wav");
+    expect(trialSet[87].imageFileName).toBe("Topin.png");
     // expect(trialSet[30].type).toBe(TrialType.gameTransition);
     // expect(trialSet.length).toBe(31);
   });
