@@ -539,11 +539,17 @@ export function imageVideoButtonResponse(jspsych) {
 
     trial(displayElement, trial) {
       clear(displayElement);
+      const gridLayout = document.createElement("div");
+      gridLayout.style.display = "grid";
+      gridLayout.style.gridTemplateColumns = "1fr 1fr";
+      adopt(displayElement, gridLayout);
       const image = new Image();
       image.src = trial.imageUrl;
       image.style.height = pixelsString(trial.imageHeight);
       image.style.width = "auto";
-      adopt(displayElement, image);
+      image.style.gridRow = 1;
+      image.style.gridColumn = 2;
+      adopt(gridLayout, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const continueButtonContainer = buttonContainerElement();
@@ -565,7 +571,9 @@ export function imageVideoButtonResponse(jspsych) {
         this.jsPsych.finishTrial({ repeat: true })
       );
       const videoElement = document.createElement("video");
-      adopt(displayElement, videoElement);
+      videoElement.style.gridRow = 1;
+      videoElement.style.gridColumn = 1;
+      adopt(gridLayout, videoElement);
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         trial.stimulusUrl
       );
