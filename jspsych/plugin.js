@@ -180,6 +180,121 @@ class TaskUI {
   }
 }
 
+class TaskWithVideoUI {
+  constructor(
+    jsPsych,
+    parent,
+    videoElement,
+    imageUrl,
+    imageHeight,
+    videoHeight
+  ) {
+    this.parent = parent;
+    this.jsPsych = jsPsych;
+    const gridLayout = document.createElement("div");
+    gridLayout.style.display = "grid";
+    gridLayout.style.gridTemplateColumns = "1fr 1fr";
+    adopt(parent, gridLayout);
+    const rightHandSide = document.createElement("div");
+    rightHandSide.style.gridColumn = 2;
+    rightHandSide.style.gridRow = 1;
+    adopt(gridLayout, rightHandSide);
+    const image = new Image();
+    image.src = imageUrl;
+    image.style.height = pixelsString(imageHeight);
+    image.style.width = "auto";
+    adopt(rightHandSide, image);
+    const twoDotGrid = divElement();
+    twoDotGrid.style.display = "grid";
+    twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
+      250
+    )} ${pixelsString(250)} 1fr`;
+    twoDotGrid.style.gridGap = `${pixelsString(120)}`;
+    this.firstDot = circleElementWithColor("black");
+    this.firstDot.style.gridColumn = 2;
+    adopt(twoDotGrid, this.firstDot);
+    addClickEventListener(this.firstDot, () => {
+      this.observer.notifyThatFirstDotHasBeenTouched();
+    });
+    this.secondDot = circleElementWithColor("black");
+    this.secondDot.style.gridColumn = 3;
+    addClickEventListener(this.secondDot, () => {
+      this.observer.notifyThatSecondDotHasBeenTouched();
+    });
+    adopt(twoDotGrid, this.secondDot);
+    adopt(rightHandSide, twoDotGrid);
+    const belowTwoDots = buttonGroupElement();
+    adopt(rightHandSide, belowTwoDots);
+    const continueButtonContainer = buttonContainerElement();
+    this.continueButton = buttonElement();
+    adopt(continueButtonContainer, this.continueButton);
+    this.continueButton.textContent = "Continue";
+    this.continueButton.style.visibility = "hidden";
+    addClickEventListener(this.continueButton, () => {
+      this.observer.notifyThatContinueButtonHasBeenTouched();
+    });
+    const repeatButtonContainer = buttonContainerElement();
+    this.repeatButton = buttonElement();
+    adopt(repeatButtonContainer, this.repeatButton);
+    this.repeatButton.textContent = "Repeat";
+    this.repeatButton.style.visibility = "hidden";
+    adopt(belowTwoDots, repeatButtonContainer);
+    adopt(belowTwoDots, continueButtonContainer);
+    addClickEventListener(this.repeatButton, () => {
+      jsPsych.finishTrial({ repeat: true });
+    });
+    videoElement.style.gridRow = 1;
+    videoElement.style.gridColumn = 1;
+    videoElement.height = videoHeight;
+    adopt(gridLayout, videoElement);
+  }
+
+  hideCursor() {
+    this.parent.style.cursor = "none";
+  }
+
+  showCursor() {
+    this.parent.style.cursor = "";
+  }
+
+  colorFirstDotBlue() {
+    this.firstDot.style.backgroundColor = "blue";
+  }
+
+  colorFirstDotRed() {
+    this.firstDot.style.backgroundColor = "red";
+  }
+
+  colorFirstDotBlack() {
+    this.firstDot.style.backgroundColor = "black";
+  }
+
+  colorSecondDotBlue() {
+    this.secondDot.style.backgroundColor = "blue";
+  }
+
+  colorSecondDotRed() {
+    this.secondDot.style.backgroundColor = "red";
+  }
+
+  colorSecondDotBlack() {
+    this.secondDot.style.backgroundColor = "black";
+  }
+
+  showContinueButton() {
+    this.continueButton.style.visibility = "visible";
+    this.repeatButton.style.visibility = "visible";
+  }
+
+  finish(result) {
+    this.jsPsych.finishTrial({ ...result, repeat: false });
+  }
+
+  attach(observer) {
+    this.observer = observer;
+  }
+}
+
 function notifyThatPlaybackTimeHasUpdated(observer) {
   observer.notifyThatPlaybackTimeHasUpdated();
 }
