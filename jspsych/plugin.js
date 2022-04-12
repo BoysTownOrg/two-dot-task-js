@@ -129,11 +129,16 @@ function attach(ui, observer) {
   ui.observer = observer;
 }
 
-function addTwoDotUI(ui, jsPsych, parent, imageUrl, imageHeight) {
+function imageFromUrlAndHeight(imageUrl, imageHeight) {
   const image = new Image();
   image.src = imageUrl;
   image.style.height = pixelsString(imageHeight);
   image.style.width = "auto";
+  return image;
+}
+
+function addTwoDotUI(ui, jsPsych, parent, imageUrl, imageHeight) {
+  const image = imageFromUrlAndHeight(imageUrl, imageHeight);
   adopt(parent, image);
   const twoDotGrid = divElement();
   twoDotGrid.style.display = "grid";
@@ -654,18 +659,10 @@ export function twoDotWithoutFeedback(jspsych) {
 
 function initializeRepeatableTrial(
   jsPsych,
-  parent,
-  image,
   buttonGroup,
   continueButton,
-  repeatButton,
-  imageUrl,
-  imageHeight
+  repeatButton
 ) {
-  image.src = imageUrl;
-  image.style.height = pixelsString(imageHeight);
-  image.style.width = "auto";
-  adopt(parent, image);
   const continueButtonContainer = buttonContainerElement();
   adopt(continueButtonContainer, continueButton);
   continueButton.textContent = "Continue";
@@ -693,20 +690,17 @@ export function imageAudioButtonResponse(jspsych) {
 
     trial(displayElement, trial) {
       clear(displayElement);
-      const image = new Image();
+      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
+      adopt(displayElement, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const continueButton = buttonElement();
       const repeatButton = buttonElement();
       initializeRepeatableTrial(
         this.jsPsych,
-        displayElement,
-        image,
         buttonGroup,
         continueButton,
-        repeatButton,
-        trial.imageUrl,
-        trial.imageHeight
+        repeatButton
       );
       audioBufferSource(this.jsPsych, trial.stimulusUrl).then(
         (stimulusSource) => {
@@ -757,22 +751,19 @@ export function imageVideoButtonResponse(jspsych) {
       gridLayout.style.display = "grid";
       gridLayout.style.gridTemplateColumns = "1fr 1fr";
       adopt(displayElement, gridLayout);
-      const image = new Image();
+      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       image.style.gridRow = 1;
       image.style.gridColumn = 2;
+      adopt(gridLayout, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const continueButton = buttonElement();
       const repeatButton = buttonElement();
       initializeRepeatableTrial(
         this.jsPsych,
-        gridLayout,
-        image,
         buttonGroup,
         continueButton,
-        repeatButton,
-        trial.imageUrl,
-        trial.imageHeight
+        repeatButton
       );
       const videoElement = document.createElement("video");
       videoElement.height = trial.videoHeight;
