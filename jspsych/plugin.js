@@ -652,6 +652,38 @@ export function twoDotWithoutFeedback(jspsych) {
   return Plugin;
 }
 
+function initializeRepeatableTrial(
+  jsPsych,
+  parent,
+  image,
+  buttonGroup,
+  continueButton,
+  repeatButton,
+  imageUrl,
+  imageHeight
+) {
+  image.src = imageUrl;
+  image.style.height = pixelsString(imageHeight);
+  image.style.width = "auto";
+  adopt(parent, image);
+  const continueButtonContainer = buttonContainerElement();
+  adopt(continueButtonContainer, continueButton);
+  continueButton.textContent = "Continue";
+  continueButton.style.visibility = "hidden";
+  const repeatButtonContainer = buttonContainerElement();
+  adopt(repeatButtonContainer, repeatButton);
+  repeatButton.textContent = "Repeat";
+  repeatButton.style.visibility = "hidden";
+  adopt(buttonGroup, repeatButtonContainer);
+  adopt(buttonGroup, continueButtonContainer);
+  addClickEventListener(continueButton, () =>
+    jsPsych.finishTrial({ repeat: false })
+  );
+  addClickEventListener(repeatButton, () =>
+    jsPsych.finishTrial({ repeat: true })
+  );
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function imageAudioButtonResponse(jspsych) {
   class Plugin {
@@ -662,29 +694,19 @@ export function imageAudioButtonResponse(jspsych) {
     trial(displayElement, trial) {
       clear(displayElement);
       const image = new Image();
-      image.src = trial.imageUrl;
-      image.style.height = pixelsString(trial.imageHeight);
-      image.style.width = "auto";
-      adopt(displayElement, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
-      const continueButtonContainer = buttonContainerElement();
       const continueButton = buttonElement();
-      adopt(continueButtonContainer, continueButton);
-      continueButton.textContent = "Continue";
-      continueButton.style.visibility = "hidden";
-      const repeatButtonContainer = buttonContainerElement();
       const repeatButton = buttonElement();
-      adopt(repeatButtonContainer, repeatButton);
-      repeatButton.textContent = "Repeat";
-      repeatButton.style.visibility = "hidden";
-      adopt(buttonGroup, repeatButtonContainer);
-      adopt(buttonGroup, continueButtonContainer);
-      addClickEventListener(continueButton, () =>
-        this.jsPsych.finishTrial({ repeat: false })
-      );
-      addClickEventListener(repeatButton, () =>
-        this.jsPsych.finishTrial({ repeat: true })
+      initializeRepeatableTrial(
+        this.jsPsych,
+        displayElement,
+        image,
+        buttonGroup,
+        continueButton,
+        repeatButton,
+        trial.imageUrl,
+        trial.imageHeight
       );
       audioBufferSource(this.jsPsych, trial.stimulusUrl).then(
         (stimulusSource) => {
@@ -736,31 +758,21 @@ export function imageVideoButtonResponse(jspsych) {
       gridLayout.style.gridTemplateColumns = "1fr 1fr";
       adopt(displayElement, gridLayout);
       const image = new Image();
-      image.src = trial.imageUrl;
-      image.style.height = pixelsString(trial.imageHeight);
-      image.style.width = "auto";
       image.style.gridRow = 1;
       image.style.gridColumn = 2;
-      adopt(gridLayout, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
-      const continueButtonContainer = buttonContainerElement();
       const continueButton = buttonElement();
-      adopt(continueButtonContainer, continueButton);
-      continueButton.textContent = "Continue";
-      continueButton.style.visibility = "hidden";
-      const repeatButtonContainer = buttonContainerElement();
       const repeatButton = buttonElement();
-      adopt(repeatButtonContainer, repeatButton);
-      repeatButton.textContent = "Repeat";
-      repeatButton.style.visibility = "hidden";
-      adopt(buttonGroup, repeatButtonContainer);
-      adopt(buttonGroup, continueButtonContainer);
-      addClickEventListener(continueButton, () =>
-        this.jsPsych.finishTrial({ repeat: false })
-      );
-      addClickEventListener(repeatButton, () =>
-        this.jsPsych.finishTrial({ repeat: true })
+      initializeRepeatableTrial(
+        this.jsPsych,
+        gridLayout,
+        image,
+        buttonGroup,
+        continueButton,
+        repeatButton,
+        trial.imageUrl,
+        trial.imageHeight
       );
       const videoElement = document.createElement("video");
       videoElement.height = trial.videoHeight;
