@@ -387,6 +387,18 @@ class WebVideoPlayer {
 
 function twoDotCommonParameters(jspsych) {
   return {
+    imageUrl: {
+      type: jspsych.ParameterType.IMAGE,
+      pretty_name: "Image URL",
+      default: "",
+      description: "The image",
+    },
+    imageHeight: {
+      type: jspsych.ParameterType.INT,
+      pretty_name: "Image height",
+      default: null,
+      description: "The image height in pixels",
+    },
     firstChoiceOnsetTimeSeconds: {
       type: jspsych.ParameterType.FLOAT,
       pretty_name: "First choice onset time",
@@ -493,18 +505,6 @@ export function twoDot(jspsych) {
         default: "",
         description: "The feedback audio",
       },
-      imageUrl: {
-        type: jspsych.ParameterType.IMAGE,
-        pretty_name: "Image URL",
-        default: "",
-        description: "The image",
-      },
-      imageHeight: {
-        type: jspsych.ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
-      },
       ...twoDotCommonParameters(jspsych),
     },
   };
@@ -579,18 +579,6 @@ export function twoDotWithVideo(jspsych) {
         default: "",
         description: "The feedback video",
       },
-      imageUrl: {
-        type: jspsych.ParameterType.IMAGE,
-        pretty_name: "Image URL",
-        default: "",
-        description: "The image",
-      },
-      imageHeight: {
-        type: jspsych.ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
-      },
       videoHeight: {
         type: jspsych.ParameterType.INT,
         pretty_name: "Video height",
@@ -657,18 +645,6 @@ export function twoDotWithoutFeedback(jspsych) {
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
-      },
-      imageUrl: {
-        type: jspsych.ParameterType.IMAGE,
-        pretty_name: "Image URL",
-        default: "",
-        description: "The image",
-      },
-      imageHeight: {
-        type: jspsych.ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
       },
       ...twoDotCommonParameters(jspsych),
     },
