@@ -37,6 +37,7 @@ function main() {
           ),
           imageUrl: resourcePath("Baby.png"),
           imageHeight: standardImageHeightPixels,
+          videoHeight: standardImageHeightPixels,
         },
       ],
       loop_function(data) {

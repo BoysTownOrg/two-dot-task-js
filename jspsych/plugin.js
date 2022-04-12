@@ -571,6 +571,7 @@ export function imageVideoButtonResponse(jspsych) {
         this.jsPsych.finishTrial({ repeat: true })
       );
       const videoElement = document.createElement("video");
+      videoElement.height = trial.videoHeight;
       videoElement.style.gridRow = 1;
       videoElement.style.gridColumn = 1;
       adopt(gridLayout, videoElement);
@@ -604,6 +605,12 @@ export function imageVideoButtonResponse(jspsych) {
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
+      },
+      videoHeight: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: "Video height",
+        default: null,
+        description: "The video height in pixels",
       },
     },
   };
