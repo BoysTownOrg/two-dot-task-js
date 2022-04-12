@@ -84,6 +84,51 @@ function audioBufferSource(jsPsych, url) {
   });
 }
 
+function hideCursor(ui) {
+  ui.parent.style.cursor = "none";
+}
+
+function showCursor(ui) {
+  ui.parent.style.cursor = "";
+}
+
+function colorFirstDotBlue(ui) {
+  ui.firstDot.style.backgroundColor = "blue";
+}
+
+function colorFirstDotRed(ui) {
+  ui.firstDot.style.backgroundColor = "red";
+}
+
+function colorFirstDotBlack(ui) {
+  ui.firstDot.style.backgroundColor = "black";
+}
+
+function colorSecondDotBlue(ui) {
+  ui.secondDot.style.backgroundColor = "blue";
+}
+
+function colorSecondDotRed(ui) {
+  ui.secondDot.style.backgroundColor = "red";
+}
+
+function colorSecondDotBlack(ui) {
+  ui.secondDot.style.backgroundColor = "black";
+}
+
+function showContinueButton(ui) {
+  ui.continueButton.style.visibility = "visible";
+  ui.repeatButton.style.visibility = "visible";
+}
+
+function finish(ui, result) {
+  ui.jsPsych.finishTrial({ ...result, repeat: false });
+}
+
+function attach(ui, observer) {
+  ui.observer = observer;
+}
+
 class TaskUI {
   constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
@@ -135,48 +180,47 @@ class TaskUI {
   }
 
   hideCursor() {
-    this.parent.style.cursor = "none";
+    hideCursor(this);
   }
 
   showCursor() {
-    this.parent.style.cursor = "";
+    showCursor(this);
   }
 
   colorFirstDotBlue() {
-    this.firstDot.style.backgroundColor = "blue";
+    colorFirstDotBlue(this);
   }
 
   colorFirstDotRed() {
-    this.firstDot.style.backgroundColor = "red";
+    colorFirstDotRed(this);
   }
 
   colorFirstDotBlack() {
-    this.firstDot.style.backgroundColor = "black";
+    colorFirstDotBlack(this);
   }
 
   colorSecondDotBlue() {
-    this.secondDot.style.backgroundColor = "blue";
+    colorSecondDotBlue(this);
   }
 
   colorSecondDotRed() {
-    this.secondDot.style.backgroundColor = "red";
+    colorSecondDotRed(this);
   }
 
   colorSecondDotBlack() {
-    this.secondDot.style.backgroundColor = "black";
+    colorSecondDotBlack(this);
   }
 
   showContinueButton() {
-    this.continueButton.style.visibility = "visible";
-    this.repeatButton.style.visibility = "visible";
+    showContinueButton(this);
   }
 
   finish(result) {
-    this.jsPsych.finishTrial({ ...result, repeat: false });
+    finish(this, result);
   }
 
   attach(observer) {
-    this.observer = observer;
+    attach(this, observer);
   }
 }
 
@@ -250,48 +294,47 @@ class TaskWithVideoUI {
   }
 
   hideCursor() {
-    this.parent.style.cursor = "none";
+    hideCursor(this);
   }
 
   showCursor() {
-    this.parent.style.cursor = "";
+    showCursor(this);
   }
 
   colorFirstDotBlue() {
-    this.firstDot.style.backgroundColor = "blue";
+    colorFirstDotBlue(this);
   }
 
   colorFirstDotRed() {
-    this.firstDot.style.backgroundColor = "red";
+    colorFirstDotRed(this);
   }
 
   colorFirstDotBlack() {
-    this.firstDot.style.backgroundColor = "black";
+    colorFirstDotBlack(this);
   }
 
   colorSecondDotBlue() {
-    this.secondDot.style.backgroundColor = "blue";
+    colorSecondDotBlue(this);
   }
 
   colorSecondDotRed() {
-    this.secondDot.style.backgroundColor = "red";
+    colorSecondDotRed(this);
   }
 
   colorSecondDotBlack() {
-    this.secondDot.style.backgroundColor = "black";
+    colorSecondDotBlack(this);
   }
 
   showContinueButton() {
-    this.continueButton.style.visibility = "visible";
-    this.repeatButton.style.visibility = "visible";
+    showContinueButton(this);
   }
 
   finish(result) {
-    this.jsPsych.finishTrial({ ...result, repeat: false });
+    finish(this, result);
   }
 
   attach(observer) {
-    this.observer = observer;
+    attach(this, observer);
   }
 }
 
