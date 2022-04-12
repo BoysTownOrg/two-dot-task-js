@@ -2,6 +2,7 @@ import * as pluginClasses from "./plugin.js";
 
 const imageVideoButtonResponsePluginClass =
   pluginClasses.imageVideoButtonResponse(jsPsychModule);
+const twoDotWithVideoPluginClass = pluginClasses.twoDotWithVideo(jsPsychModule);
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
@@ -43,6 +44,25 @@ function main() {
       loop_function(data) {
         return data.values()[0].repeat;
       },
+    },
+    {
+      type: twoDotWithVideoPluginClass,
+      stimulusUrl: resourcePath(
+        concatenatePaths("Clear Mask Stimuli", "TwoDot_BABY_CHEETAH.mp4")
+      ),
+      feedbackUrl: resourcePath(
+        concatenatePaths("Clear Mask Stimuli", "TwoDotResponse_BABY.mp4")
+      ),
+      imageUrl: resourcePath("Baby.png"),
+      imageHeight: standardImageHeightPixels,
+      videoHeight: standardImageHeightPixels,
+      firstChoiceOnsetTimeSeconds: 2.5,
+      firstChoiceOffsetTimeSeconds: 3.25,
+      secondChoiceOnsetTimeSeconds: 4.75,
+      secondChoiceOffsetTimeSeconds: 5.5,
+      firstWord: "Baby",
+      secondWord: "Cheetah",
+      correctWord: "Baby",
     },
     {
       type: jsPsychHtmlButtonResponse,

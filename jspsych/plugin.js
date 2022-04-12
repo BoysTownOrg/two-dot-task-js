@@ -501,6 +501,139 @@ export function twoDot(jspsych) {
   return Plugin;
 }
 
+export function twoDotWithVideo(jspsych) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(display_element, trial) {
+      clear(display_element);
+      const videoElement = document.createElement("video");
+      const taskUI = new TaskWithVideoUI(
+        this.jsPsych,
+        display_element,
+        videoElement,
+        trial.imageUrl,
+        trial.imageHeight,
+        trial.videoHeight
+      );
+      const model = new TaskModel(
+        new WebVideoPlayer(
+          this.jsPsych,
+          videoElement,
+          trial.stimulusUrl,
+          trial.feedbackUrl
+        ),
+        new TaskPresenter(taskUI),
+        new Map([
+          [
+            Choice.first,
+            {
+              onset: trial.firstChoiceOnsetTimeSeconds,
+              offset: trial.firstChoiceOffsetTimeSeconds,
+            },
+          ],
+          [
+            Choice.second,
+            {
+              onset: trial.secondChoiceOnsetTimeSeconds,
+              offset: trial.secondChoiceOffsetTimeSeconds,
+            },
+          ],
+        ]),
+        new Map([
+          [Choice.first, trial.firstWord],
+          [Choice.second, trial.secondWord],
+        ]),
+        trial.correctWord
+      );
+      const controller = new TaskController(taskUI, model);
+      model.start();
+    }
+  }
+
+  Plugin.info = {
+    name: "two-dot",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: jspsych.ParameterType.VIDEO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus video",
+      },
+      feedbackUrl: {
+        type: jspsych.ParameterType.VIDEO,
+        pretty_name: "Feedback URL",
+        default: "",
+        description: "The feedback video",
+      },
+      imageUrl: {
+        type: jspsych.ParameterType.IMAGE,
+        pretty_name: "Image URL",
+        default: "",
+        description: "The image",
+      },
+      imageHeight: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      videoHeight: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: "Video height",
+        default: null,
+        description: "The video height in pixels",
+      },
+      firstChoiceOnsetTimeSeconds: {
+        type: jspsych.ParameterType.FLOAT,
+        pretty_name: "First choice onset time",
+        default: 0,
+        description: "The first choice onset time in seconds",
+      },
+      firstChoiceOffsetTimeSeconds: {
+        type: jspsych.ParameterType.FLOAT,
+        pretty_name: "First choice offset time",
+        default: 0,
+        description: "The first choice offset time in seconds",
+      },
+      secondChoiceOnsetTimeSeconds: {
+        type: jspsych.ParameterType.FLOAT,
+        pretty_name: "Second choice onset time",
+        default: 0,
+        description: "The second choice onset time in seconds",
+      },
+      secondChoiceOffsetTimeSeconds: {
+        type: jspsych.ParameterType.FLOAT,
+        pretty_name: "Second choice offset time",
+        default: 0,
+        description: "The second choice offset time in seconds",
+      },
+      firstWord: {
+        type: jspsych.ParameterType.STRING,
+        pretty_name: "First word",
+        default: "",
+        description: "The word represented by the first choice",
+      },
+      secondWord: {
+        type: jspsych.ParameterType.STRING,
+        pretty_name: "Second word",
+        default: "",
+        description: "The word represented by the second choice",
+      },
+      correctWord: {
+        type: jspsych.ParameterType.STRING,
+        pretty_name: "Correct word",
+        default: "",
+        description: "The correct word",
+      },
+    },
+  };
+  return Plugin;
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function twoDotWithoutFeedback(jspsych) {
   class Plugin {
