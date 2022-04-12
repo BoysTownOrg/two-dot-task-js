@@ -385,6 +385,53 @@ class WebVideoPlayer {
   }
 }
 
+function twoDotCommonParameters(jspsych) {
+  return {
+    firstChoiceOnsetTimeSeconds: {
+      type: jspsych.ParameterType.FLOAT,
+      pretty_name: "First choice onset time",
+      default: 0,
+      description: "The first choice onset time in seconds",
+    },
+    firstChoiceOffsetTimeSeconds: {
+      type: jspsych.ParameterType.FLOAT,
+      pretty_name: "First choice offset time",
+      default: 0,
+      description: "The first choice offset time in seconds",
+    },
+    secondChoiceOnsetTimeSeconds: {
+      type: jspsych.ParameterType.FLOAT,
+      pretty_name: "Second choice onset time",
+      default: 0,
+      description: "The second choice onset time in seconds",
+    },
+    secondChoiceOffsetTimeSeconds: {
+      type: jspsych.ParameterType.FLOAT,
+      pretty_name: "Second choice offset time",
+      default: 0,
+      description: "The second choice offset time in seconds",
+    },
+    firstWord: {
+      type: jspsych.ParameterType.STRING,
+      pretty_name: "First word",
+      default: "",
+      description: "The word represented by the first choice",
+    },
+    secondWord: {
+      type: jspsych.ParameterType.STRING,
+      pretty_name: "Second word",
+      default: "",
+      description: "The word represented by the second choice",
+    },
+    correctWord: {
+      type: jspsych.ParameterType.STRING,
+      pretty_name: "Correct word",
+      default: "",
+      description: "The correct word",
+    },
+  };
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function twoDot(jspsych) {
   class Plugin {
@@ -458,48 +505,7 @@ export function twoDot(jspsych) {
         default: null,
         description: "The image height in pixels",
       },
-      firstChoiceOnsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "First choice onset time",
-        default: 0,
-        description: "The first choice onset time in seconds",
-      },
-      firstChoiceOffsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "First choice offset time",
-        default: 0,
-        description: "The first choice offset time in seconds",
-      },
-      secondChoiceOnsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "Second choice onset time",
-        default: 0,
-        description: "The second choice onset time in seconds",
-      },
-      secondChoiceOffsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "Second choice offset time",
-        default: 0,
-        description: "The second choice offset time in seconds",
-      },
-      firstWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "First word",
-        default: "",
-        description: "The word represented by the first choice",
-      },
-      secondWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "Second word",
-        default: "",
-        description: "The word represented by the second choice",
-      },
-      correctWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "Correct word",
-        default: "",
-        description: "The correct word",
-      },
+      ...twoDotCommonParameters(jspsych),
     },
   };
   return Plugin;
@@ -591,48 +597,7 @@ export function twoDotWithVideo(jspsych) {
         default: null,
         description: "The video height in pixels",
       },
-      firstChoiceOnsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "First choice onset time",
-        default: 0,
-        description: "The first choice onset time in seconds",
-      },
-      firstChoiceOffsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "First choice offset time",
-        default: 0,
-        description: "The first choice offset time in seconds",
-      },
-      secondChoiceOnsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "Second choice onset time",
-        default: 0,
-        description: "The second choice onset time in seconds",
-      },
-      secondChoiceOffsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "Second choice offset time",
-        default: 0,
-        description: "The second choice offset time in seconds",
-      },
-      firstWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "First word",
-        default: "",
-        description: "The word represented by the first choice",
-      },
-      secondWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "Second word",
-        default: "",
-        description: "The word represented by the second choice",
-      },
-      correctWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "Correct word",
-        default: "",
-        description: "The correct word",
-      },
+      ...twoDotCommonParameters(jspsych),
     },
   };
   return Plugin;
@@ -705,48 +670,7 @@ export function twoDotWithoutFeedback(jspsych) {
         default: null,
         description: "The image height in pixels",
       },
-      firstChoiceOnsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "First choice onset time",
-        default: 0,
-        description: "The first choice onset time in seconds",
-      },
-      firstChoiceOffsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "First choice offset time",
-        default: 0,
-        description: "The first choice offset time in seconds",
-      },
-      secondChoiceOnsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "Second choice onset time",
-        default: 0,
-        description: "The second choice onset time in seconds",
-      },
-      secondChoiceOffsetTimeSeconds: {
-        type: jspsych.ParameterType.FLOAT,
-        pretty_name: "Second choice offset time",
-        default: 0,
-        description: "The second choice offset time in seconds",
-      },
-      firstWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "First word",
-        default: "",
-        description: "The word represented by the first choice",
-      },
-      secondWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "Second word",
-        default: "",
-        description: "The word represented by the second choice",
-      },
-      correctWord: {
-        type: jspsych.ParameterType.STRING,
-        pretty_name: "Correct word",
-        default: "",
-        description: "The correct word",
-      },
+      ...twoDotCommonParameters(jspsych),
     },
   };
   return Plugin;
