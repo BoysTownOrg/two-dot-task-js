@@ -129,54 +129,58 @@ function attach(ui, observer) {
   ui.observer = observer;
 }
 
+function addTwoDotUI(ui, jsPsych, parent, imageUrl, imageHeight) {
+  const image = new Image();
+  image.src = imageUrl;
+  image.style.height = pixelsString(imageHeight);
+  image.style.width = "auto";
+  adopt(parent, image);
+  const twoDotGrid = divElement();
+  twoDotGrid.style.display = "grid";
+  twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
+    250
+  )} ${pixelsString(250)} 1fr`;
+  twoDotGrid.style.gridGap = `${pixelsString(120)}`;
+  ui.firstDot = circleElementWithColor("black");
+  ui.firstDot.style.gridColumn = 2;
+  adopt(twoDotGrid, ui.firstDot);
+  addClickEventListener(ui.firstDot, () => {
+    ui.observer.notifyThatFirstDotHasBeenTouched();
+  });
+  ui.secondDot = circleElementWithColor("black");
+  ui.secondDot.style.gridColumn = 3;
+  addClickEventListener(ui.secondDot, () => {
+    ui.observer.notifyThatSecondDotHasBeenTouched();
+  });
+  adopt(twoDotGrid, ui.secondDot);
+  adopt(parent, twoDotGrid);
+  const belowTwoDots = buttonGroupElement();
+  adopt(parent, belowTwoDots);
+  const continueButtonContainer = buttonContainerElement();
+  ui.continueButton = buttonElement();
+  adopt(continueButtonContainer, ui.continueButton);
+  ui.continueButton.textContent = "Continue";
+  ui.continueButton.style.visibility = "hidden";
+  addClickEventListener(ui.continueButton, () => {
+    ui.observer.notifyThatContinueButtonHasBeenTouched();
+  });
+  const repeatButtonContainer = buttonContainerElement();
+  ui.repeatButton = buttonElement();
+  adopt(repeatButtonContainer, ui.repeatButton);
+  ui.repeatButton.textContent = "Repeat";
+  ui.repeatButton.style.visibility = "hidden";
+  adopt(belowTwoDots, repeatButtonContainer);
+  adopt(belowTwoDots, continueButtonContainer);
+  addClickEventListener(ui.repeatButton, () => {
+    jsPsych.finishTrial({ repeat: true });
+  });
+}
+
 class TaskUI {
   constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const image = new Image();
-    image.src = imageUrl;
-    image.style.height = pixelsString(imageHeight);
-    image.style.width = "auto";
-    adopt(parent, image);
-    const twoDotGrid = divElement();
-    twoDotGrid.style.display = "grid";
-    twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
-      250
-    )} ${pixelsString(250)} 1fr`;
-    twoDotGrid.style.gridGap = `${pixelsString(120)}`;
-    this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridColumn = 2;
-    adopt(twoDotGrid, this.firstDot);
-    addClickEventListener(this.firstDot, () => {
-      this.observer.notifyThatFirstDotHasBeenTouched();
-    });
-    this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridColumn = 3;
-    addClickEventListener(this.secondDot, () => {
-      this.observer.notifyThatSecondDotHasBeenTouched();
-    });
-    adopt(twoDotGrid, this.secondDot);
-    adopt(parent, twoDotGrid);
-    const belowTwoDots = buttonGroupElement();
-    adopt(parent, belowTwoDots);
-    const continueButtonContainer = buttonContainerElement();
-    this.continueButton = buttonElement();
-    adopt(continueButtonContainer, this.continueButton);
-    this.continueButton.textContent = "Continue";
-    this.continueButton.style.visibility = "hidden";
-    addClickEventListener(this.continueButton, () => {
-      this.observer.notifyThatContinueButtonHasBeenTouched();
-    });
-    const repeatButtonContainer = buttonContainerElement();
-    this.repeatButton = buttonElement();
-    adopt(repeatButtonContainer, this.repeatButton);
-    this.repeatButton.textContent = "Repeat";
-    this.repeatButton.style.visibility = "hidden";
-    adopt(belowTwoDots, repeatButtonContainer);
-    adopt(belowTwoDots, continueButtonContainer);
-    addClickEventListener(this.repeatButton, () => {
-      jsPsych.finishTrial({ repeat: true });
-    });
+    addTwoDotUI(this, jsPsych, parent, imageUrl, imageHeight);
   }
 
   hideCursor() {
@@ -243,50 +247,7 @@ class TaskWithVideoUI {
     rightHandSide.style.gridColumn = 2;
     rightHandSide.style.gridRow = 1;
     adopt(gridLayout, rightHandSide);
-    const image = new Image();
-    image.src = imageUrl;
-    image.style.height = pixelsString(imageHeight);
-    image.style.width = "auto";
-    adopt(rightHandSide, image);
-    const twoDotGrid = divElement();
-    twoDotGrid.style.display = "grid";
-    twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
-      250
-    )} ${pixelsString(250)} 1fr`;
-    twoDotGrid.style.gridGap = `${pixelsString(120)}`;
-    this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridColumn = 2;
-    adopt(twoDotGrid, this.firstDot);
-    addClickEventListener(this.firstDot, () => {
-      this.observer.notifyThatFirstDotHasBeenTouched();
-    });
-    this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridColumn = 3;
-    addClickEventListener(this.secondDot, () => {
-      this.observer.notifyThatSecondDotHasBeenTouched();
-    });
-    adopt(twoDotGrid, this.secondDot);
-    adopt(rightHandSide, twoDotGrid);
-    const belowTwoDots = buttonGroupElement();
-    adopt(rightHandSide, belowTwoDots);
-    const continueButtonContainer = buttonContainerElement();
-    this.continueButton = buttonElement();
-    adopt(continueButtonContainer, this.continueButton);
-    this.continueButton.textContent = "Continue";
-    this.continueButton.style.visibility = "hidden";
-    addClickEventListener(this.continueButton, () => {
-      this.observer.notifyThatContinueButtonHasBeenTouched();
-    });
-    const repeatButtonContainer = buttonContainerElement();
-    this.repeatButton = buttonElement();
-    adopt(repeatButtonContainer, this.repeatButton);
-    this.repeatButton.textContent = "Repeat";
-    this.repeatButton.style.visibility = "hidden";
-    adopt(belowTwoDots, repeatButtonContainer);
-    adopt(belowTwoDots, continueButtonContainer);
-    addClickEventListener(this.repeatButton, () => {
-      jsPsych.finishTrial({ repeat: true });
-    });
+    addTwoDotUI(this, jsPsych, rightHandSide, imageUrl, imageHeight);
     videoElement.style.gridRow = 1;
     videoElement.style.gridColumn = 1;
     videoElement.height = videoHeight;
