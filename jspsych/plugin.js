@@ -226,6 +226,46 @@ class WebAudioPlayer {
   }
 }
 
+class WebVideoPlayer {
+  constructor(jsPsych, videoElement, stimulusUrl, feedbackUrl) {
+    this.jsPsych = jsPsych;
+    this.stimulusUrl = stimulusUrl;
+    this.feedbackUrl = feedbackUrl;
+    this.videoElement = videoElement;
+  }
+
+  playFeedback() {
+    this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
+      this.feedbackUrl
+    );
+    this.videoElement.onended = () => {
+      this.observer.notifyThatFeedbackHasEnded();
+    };
+    this.videoElement.play();
+  }
+
+  playStimulus() {
+    this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
+      this.stimulusUrl
+    );
+    this.videoElement.ontimeupdate = () => {
+      notifyThatPlaybackTimeHasUpdated(this.observer);
+    };
+    this.videoElement.onended = () => {
+      this.observer.notifyThatPlaybackHasEnded();
+    };
+    this.videoElement.play();
+  }
+
+  currentTimeSeconds() {
+    return this.videoElement.currentTime;
+  }
+
+  attach(observer) {
+    this.observer = observer;
+  }
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function twoDot(jspsych) {
   class Plugin {
