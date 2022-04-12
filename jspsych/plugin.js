@@ -531,6 +531,77 @@ export function imageAudioButtonResponse(jspsych) {
   return Plugin;
 }
 
+export function imageVideoButtonResponse(jspsych) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(displayElement, trial) {
+      clear(displayElement);
+      const image = new Image();
+      image.src = trial.imageUrl;
+      image.style.height = pixelsString(trial.imageHeight);
+      image.style.width = "auto";
+      adopt(displayElement, image);
+      const buttonGroup = buttonGroupElement();
+      adopt(displayElement, buttonGroup);
+      const continueButtonContainer = buttonContainerElement();
+      const continueButton = buttonElement();
+      adopt(continueButtonContainer, continueButton);
+      continueButton.textContent = "Continue";
+      continueButton.style.visibility = "hidden";
+      const repeatButtonContainer = buttonContainerElement();
+      const repeatButton = buttonElement();
+      adopt(repeatButtonContainer, repeatButton);
+      repeatButton.textContent = "Repeat";
+      repeatButton.style.visibility = "hidden";
+      adopt(buttonGroup, repeatButtonContainer);
+      adopt(buttonGroup, continueButtonContainer);
+      addClickEventListener(continueButton, () =>
+        this.jsPsych.finishTrial({ repeat: false })
+      );
+      addClickEventListener(repeatButton, () =>
+        this.jsPsych.finishTrial({ repeat: true })
+      );
+      const videoElement = document.createElement("video");
+      adopt(displayElement, videoElement);
+      videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
+        trial.stimulusUrl
+      );
+      videoElement.onended = () => {
+        continueButton.style.visibility = "visible";
+        repeatButton.style.visibility = "visible";
+      };
+      videoElement.play();
+    }
+  }
+  Plugin.info = {
+    name: "image-video-button-response",
+    parameters: {
+      stimulusUrl: {
+        type: jspsych.ParameterType.VIDEO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus video",
+      },
+      imageUrl: {
+        type: jspsych.ParameterType.IMAGE,
+        pretty_name: "Image URL",
+        default: "",
+        description: "The image",
+      },
+      imageHeight: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+    },
+  };
+  return Plugin;
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function stopwatch(jspsych) {
   class Plugin {
