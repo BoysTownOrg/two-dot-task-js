@@ -76,6 +76,25 @@ function main() {
       correctWord: "Baby",
     },
     {
+      type: twoDotWithVideoPluginClass,
+      stimulusUrl: resourcePath(
+        concatenatePaths("Clear Mask Stimuli", "TwoDot_PIZZA_ROOSTER.mp4")
+      ),
+      feedbackUrl: resourcePath(
+        concatenatePaths("Clear Mask Stimuli", "TwoDotResponse_ROOSTER.mp4")
+      ),
+      imageUrl: resourcePath("Rooster.png"),
+      imageHeight: standardImageHeightPixels,
+      videoHeight: standardImageHeightPixels,
+      firstChoiceOnsetTimeSeconds: 3.01,
+      firstChoiceOffsetTimeSeconds: 3.51,
+      secondChoiceOnsetTimeSeconds: 4.37,
+      secondChoiceOffsetTimeSeconds: 4.87,
+      firstWord: "Pizza",
+      secondWord: "Rooster",
+      correctWord: "Rooster",
+    },
+    {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
       choices: ["Finish"],
