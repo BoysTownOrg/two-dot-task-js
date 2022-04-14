@@ -54,6 +54,23 @@ function twoDotTrialCommonProperties(
   };
 }
 
+function twoDotTrialCommonPropertiesAssumingCommonFileNames(
+  firstWord,
+  secondWord,
+  correctWord
+) {
+  return {
+    ...twoDotTrialCommonProperties(
+      `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`,
+      `TwoDotResponse_${correctWord.toUpperCase()}.mp4`,
+      `${correctWord}.png`
+    ),
+    firstWord,
+    secondWord,
+    correctWord,
+  };
+}
+
 function main() {
   const jsPsych = initJsPsych();
   jsPsych.run([
@@ -76,32 +93,37 @@ function main() {
     repetitionTrial("Repetition_DAEVL.mp4", "Daevl.png"),
     repetitionTrial("Repetition_BINIP.mp4", "Binip.png"),
     {
-      ...twoDotTrialCommonProperties(
-        "TwoDot_BABY_CHEETAH.mp4",
-        "TwoDotResponse_BABY.mp4",
-        "Baby.png"
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Baby",
+        "Cheetah",
+        "Baby"
       ),
       firstChoiceOnsetTimeSeconds: 3.1,
       firstChoiceOffsetTimeSeconds: 3.6,
       secondChoiceOnsetTimeSeconds: 4.43,
       secondChoiceOffsetTimeSeconds: 4.93,
-      firstWord: "Baby",
-      secondWord: "Cheetah",
-      correctWord: "Baby",
     },
     {
-      ...twoDotTrialCommonProperties(
-        "TwoDot_PIZZA_ROOSTER.mp4",
-        "TwoDotResponse_ROOSTER.mp4",
-        "Rooster.png"
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Pizza",
+        "Rooster",
+        "Rooster"
       ),
       firstChoiceOnsetTimeSeconds: 3.01,
       firstChoiceOffsetTimeSeconds: 3.51,
       secondChoiceOnsetTimeSeconds: 4.37,
       secondChoiceOffsetTimeSeconds: 4.87,
-      firstWord: "Pizza",
-      secondWord: "Rooster",
-      correctWord: "Rooster",
+    },
+    {
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Binip",
+        "Topin",
+        "Topin"
+      ),
+      firstChoiceOnsetTimeSeconds: 3,
+      firstChoiceOffsetTimeSeconds: 3.5,
+      secondChoiceOnsetTimeSeconds: 4.36,
+      secondChoiceOffsetTimeSeconds: 4.86,
     },
     {
       type: jsPsychHtmlButtonResponse,
