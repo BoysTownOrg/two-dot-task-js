@@ -463,6 +463,13 @@ function choiceTimesSeconds(trial) {
   ]);
 }
 
+function words(trial) {
+  return new Map([
+    [Choice.first, trial.firstWord],
+    [Choice.second, trial.secondWord],
+  ]);
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function twoDot(jspsych) {
   class Plugin {
@@ -482,10 +489,7 @@ export function twoDot(jspsych) {
         new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, trial.feedbackUrl),
         new TaskPresenter(taskUI),
         choiceTimesSeconds(trial),
-        new Map([
-          [Choice.first, trial.firstWord],
-          [Choice.second, trial.secondWord],
-        ]),
+        words(trial),
         trial.correctWord
       );
       const controller = new TaskController(taskUI, model);
@@ -540,10 +544,7 @@ export function twoDotWithVideo(jspsych) {
         ),
         new TaskPresenter(taskUI),
         choiceTimesSeconds(trial),
-        new Map([
-          [Choice.first, trial.firstWord],
-          [Choice.second, trial.secondWord],
-        ]),
+        words(trial),
         trial.correctWord
       );
       const controller = new TaskController(taskUI, model);
@@ -592,10 +593,7 @@ export function twoDotWithoutFeedback(jspsych) {
         new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
         new TaskPresenter(taskUI),
         choiceTimesSeconds(trial),
-        new Map([
-          [Choice.first, trial.firstWord],
-          [Choice.second, trial.secondWord],
-        ]),
+        words(trial),
         trial.correctWord
       );
       const controller = new TaskController(taskUI, model);
@@ -640,10 +638,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
         new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
         new TaskPresenter(taskUI),
         choiceTimesSeconds(trial),
-        new Map([
-          [Choice.first, trial.firstWord],
-          [Choice.second, trial.secondWord],
-        ]),
+        words(trial),
         trial.correctWord
       );
       const controller = new TaskController(taskUI, model);
