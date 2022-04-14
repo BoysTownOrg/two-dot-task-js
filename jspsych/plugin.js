@@ -563,7 +563,7 @@ export function twoDotWithVideo(jspsych) {
   }
 
   Plugin.info = {
-    name: "two-dot",
+    name: "two-dot-with-video",
     description: "",
     parameters: {
       stimulusUrl: {
@@ -638,6 +638,74 @@ export function twoDotWithoutFeedback(jspsych) {
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
+      },
+      ...twoDotCommonParameters(jspsych),
+    },
+  };
+  return Plugin;
+}
+
+// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
+export function twoDotWithVideoWithoutFeedback(jspsych) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(display_element, trial) {
+      clear(display_element);
+      const videoElement = document.createElement("video");
+      const taskUI = new TaskWithVideoUI(
+        this.jsPsych,
+        display_element,
+        videoElement,
+        trial.imageUrl,
+        trial.imageHeight
+      );
+      const model = new TaskModelWithoutFeedback(
+        new WebVideoPlayer(
+          this.jsPsych,
+          videoElement,
+          trial.stimulusUrl,
+          trial.feedbackUrl
+        ),
+        new TaskPresenter(taskUI),
+        new Map([
+          [
+            Choice.first,
+            {
+              onset: trial.firstChoiceOnsetTimeSeconds,
+              offset: trial.firstChoiceOffsetTimeSeconds,
+            },
+          ],
+          [
+            Choice.second,
+            {
+              onset: trial.secondChoiceOnsetTimeSeconds,
+              offset: trial.secondChoiceOffsetTimeSeconds,
+            },
+          ],
+        ]),
+        new Map([
+          [Choice.first, trial.firstWord],
+          [Choice.second, trial.secondWord],
+        ]),
+        trial.correctWord
+      );
+      const controller = new TaskController(taskUI, model);
+      model.start();
+    }
+  }
+
+  Plugin.info = {
+    name: "two-dot-with-video-without-feedback",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: jspsych.ParameterType.VIDEO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus video",
       },
       ...twoDotCommonParameters(jspsych),
     },
