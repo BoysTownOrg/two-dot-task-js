@@ -663,12 +663,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
         trial.imageHeight
       );
       const model = new TaskModelWithoutFeedback(
-        new WebVideoPlayer(
-          this.jsPsych,
-          videoElement,
-          trial.stimulusUrl,
-          trial.feedbackUrl
-        ),
+        new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
         new TaskPresenter(taskUI),
         new Map([
           [
