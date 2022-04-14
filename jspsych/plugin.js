@@ -470,6 +470,11 @@ function words(trial) {
   ]);
 }
 
+function startController(taskUI, model) {
+  const controller = new TaskController(taskUI, model);
+  model.start();
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function twoDot(jspsych) {
   class Plugin {
@@ -485,15 +490,20 @@ export function twoDot(jspsych) {
         trial.imageUrl,
         trial.imageHeight
       );
-      const model = new TaskModel(
-        new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, trial.feedbackUrl),
-        new TaskPresenter(taskUI),
-        choiceTimesSeconds(trial),
-        words(trial),
-        trial.correctWord
+      startController(
+        taskUI,
+        new TaskModel(
+          new WebAudioPlayer(
+            this.jsPsych,
+            trial.stimulusUrl,
+            trial.feedbackUrl
+          ),
+          new TaskPresenter(taskUI),
+          choiceTimesSeconds(trial),
+          words(trial),
+          trial.correctWord
+        )
       );
-      const controller = new TaskController(taskUI, model);
-      model.start();
     }
   }
 
@@ -535,20 +545,21 @@ export function twoDotWithVideo(jspsych) {
         trial.imageUrl,
         trial.imageHeight
       );
-      const model = new TaskModel(
-        new WebVideoPlayer(
-          this.jsPsych,
-          videoElement,
-          trial.stimulusUrl,
-          trial.feedbackUrl
-        ),
-        new TaskPresenter(taskUI),
-        choiceTimesSeconds(trial),
-        words(trial),
-        trial.correctWord
+      startController(
+        taskUI,
+        new TaskModel(
+          new WebVideoPlayer(
+            this.jsPsych,
+            videoElement,
+            trial.stimulusUrl,
+            trial.feedbackUrl
+          ),
+          new TaskPresenter(taskUI),
+          choiceTimesSeconds(trial),
+          words(trial),
+          trial.correctWord
+        )
       );
-      const controller = new TaskController(taskUI, model);
-      model.start();
     }
   }
 
@@ -589,15 +600,16 @@ export function twoDotWithoutFeedback(jspsych) {
         trial.imageUrl,
         trial.imageHeight
       );
-      const model = new TaskModelWithoutFeedback(
-        new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
-        new TaskPresenter(taskUI),
-        choiceTimesSeconds(trial),
-        words(trial),
-        trial.correctWord
+      startController(
+        taskUI,
+        new TaskModelWithoutFeedback(
+          new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
+          new TaskPresenter(taskUI),
+          choiceTimesSeconds(trial),
+          words(trial),
+          trial.correctWord
+        )
       );
-      const controller = new TaskController(taskUI, model);
-      model.start();
     }
   }
 
@@ -634,15 +646,16 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
         trial.imageUrl,
         trial.imageHeight
       );
-      const model = new TaskModelWithoutFeedback(
-        new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
-        new TaskPresenter(taskUI),
-        choiceTimesSeconds(trial),
-        words(trial),
-        trial.correctWord
+      startController(
+        taskUI,
+        new TaskModelWithoutFeedback(
+          new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
+          new TaskPresenter(taskUI),
+          choiceTimesSeconds(trial),
+          words(trial),
+          trial.correctWord
+        )
       );
-      const controller = new TaskController(taskUI, model);
-      model.start();
     }
   }
 
