@@ -35,6 +35,25 @@ function repetitionTrial(stimulusFileName, imageFileName) {
   };
 }
 
+function twoDotTrialCommonProperties(
+  stimulusFileName,
+  feedbackFileName,
+  imageFileName
+) {
+  return {
+    type: twoDotWithVideoPluginClass,
+    stimulusUrl: resourcePath(
+      concatenatePaths("Clear Mask Stimuli", stimulusFileName)
+    ),
+    feedbackUrl: resourcePath(
+      concatenatePaths("Clear Mask Stimuli", feedbackFileName)
+    ),
+    imageUrl: resourcePath(imageFileName),
+    imageHeight: standardImageHeightPixels,
+    videoHeight: standardImageHeightPixels,
+  };
+}
+
 function main() {
   const jsPsych = initJsPsych();
   jsPsych.run([
@@ -57,16 +76,11 @@ function main() {
     repetitionTrial("Repetition_DAEVL.mp4", "Daevl.png"),
     repetitionTrial("Repetition_BINIP.mp4", "Binip.png"),
     {
-      type: twoDotWithVideoPluginClass,
-      stimulusUrl: resourcePath(
-        concatenatePaths("Clear Mask Stimuli", "TwoDot_BABY_CHEETAH.mp4")
+      ...twoDotTrialCommonProperties(
+        "TwoDot_BABY_CHEETAH.mp4",
+        "TwoDotResponse_BABY.mp4",
+        "Baby.png"
       ),
-      feedbackUrl: resourcePath(
-        concatenatePaths("Clear Mask Stimuli", "TwoDotResponse_BABY.mp4")
-      ),
-      imageUrl: resourcePath("Baby.png"),
-      imageHeight: standardImageHeightPixels,
-      videoHeight: standardImageHeightPixels,
       firstChoiceOnsetTimeSeconds: 3.1,
       firstChoiceOffsetTimeSeconds: 3.6,
       secondChoiceOnsetTimeSeconds: 4.43,
@@ -76,16 +90,11 @@ function main() {
       correctWord: "Baby",
     },
     {
-      type: twoDotWithVideoPluginClass,
-      stimulusUrl: resourcePath(
-        concatenatePaths("Clear Mask Stimuli", "TwoDot_PIZZA_ROOSTER.mp4")
+      ...twoDotTrialCommonProperties(
+        "TwoDot_PIZZA_ROOSTER.mp4",
+        "TwoDotResponse_ROOSTER.mp4",
+        "Rooster.png"
       ),
-      feedbackUrl: resourcePath(
-        concatenatePaths("Clear Mask Stimuli", "TwoDotResponse_ROOSTER.mp4")
-      ),
-      imageUrl: resourcePath("Rooster.png"),
-      imageHeight: standardImageHeightPixels,
-      videoHeight: standardImageHeightPixels,
       firstChoiceOnsetTimeSeconds: 3.01,
       firstChoiceOffsetTimeSeconds: 3.51,
       secondChoiceOnsetTimeSeconds: 4.37,

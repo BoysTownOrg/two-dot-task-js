@@ -247,6 +247,8 @@ class TaskWithVideoUI {
     const gridLayout = document.createElement("div");
     gridLayout.style.display = "grid";
     gridLayout.style.gridTemplateColumns = "1fr 1fr";
+    gridLayout.style.justifyItems = "center";
+    gridLayout.style.alignItems = "center";
     adopt(parent, gridLayout);
     const rightHandSide = document.createElement("div");
     rightHandSide.style.gridColumn = 2;
@@ -255,7 +257,8 @@ class TaskWithVideoUI {
     addTwoDotUI(this, jsPsych, rightHandSide, imageUrl, imageHeight);
     videoElement.style.gridRow = 1;
     videoElement.style.gridColumn = 1;
-    videoElement.height = videoHeight;
+    videoElement.style.width = "45vw";
+    // videoElement.height = videoHeight;
     adopt(gridLayout, videoElement);
   }
 
