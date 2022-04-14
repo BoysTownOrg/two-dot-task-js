@@ -16,7 +16,7 @@ function resourcePath(fileName) {
   return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
 }
 
-function repetitionTrial(stimulusFileName, imageFileName) {
+function imageVideoButtonResponseTrial(stimulusFileName, imageFileName) {
   return {
     timeline: [
       {
@@ -34,22 +34,15 @@ function repetitionTrial(stimulusFileName, imageFileName) {
   };
 }
 
+function repetitionTrial(stimulusFileName, imageFileName) {
+  return imageVideoButtonResponseTrial(stimulusFileName, imageFileName);
+}
+
 function freeRecallTrial(imageFileName) {
-  return {
-    timeline: [
-      {
-        type: imageVideoButtonResponsePluginClass,
-        stimulusUrl: resourcePath(
-          concatenatePaths("Clear Mask Stimuli", "What is this one called-.mp4")
-        ),
-        imageUrl: resourcePath(imageFileName),
-        imageHeight: standardImageHeightPixels,
-      },
-    ],
-    loop_function(data) {
-      return data.values()[0].repeat;
-    },
-  };
+  return imageVideoButtonResponseTrial(
+    "What is this one called-.mp4",
+    imageFileName
+  );
 }
 
 function twoDotTrialCommonProperties(
