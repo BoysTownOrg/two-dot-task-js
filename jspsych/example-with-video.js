@@ -16,6 +16,25 @@ function resourcePath(fileName) {
   return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
 }
 
+function repetitionTrial(stimulusFileName, imageFileName) {
+  return {
+    timeline: [
+      {
+        type: imageVideoButtonResponsePluginClass,
+        stimulusUrl: resourcePath(
+          concatenatePaths("Clear Mask Stimuli", stimulusFileName)
+        ),
+        imageUrl: resourcePath(imageFileName),
+        imageHeight: standardImageHeightPixels,
+        videoHeight: standardImageHeightPixels,
+      },
+    ],
+    loop_function(data) {
+      return data.values()[0].repeat;
+    },
+  };
+}
+
 function main() {
   const jsPsych = initJsPsych();
   jsPsych.run([
@@ -29,38 +48,14 @@ function main() {
       choices: ["Start"],
       button_html: bottomRightButtonHTML,
     },
-    {
-      timeline: [
-        {
-          type: imageVideoButtonResponsePluginClass,
-          stimulusUrl: resourcePath(
-            concatenatePaths("Clear Mask Stimuli", "Repetition_BUTTON.mp4")
-          ),
-          imageUrl: resourcePath("Button.png"),
-          imageHeight: standardImageHeightPixels,
-          videoHeight: standardImageHeightPixels,
-        },
-      ],
-      loop_function(data) {
-        return data.values()[0].repeat;
-      },
-    },
-    {
-      timeline: [
-        {
-          type: imageVideoButtonResponsePluginClass,
-          stimulusUrl: resourcePath(
-            concatenatePaths("Clear Mask Stimuli", "Repetition_BABY.mp4")
-          ),
-          imageUrl: resourcePath("Baby.png"),
-          imageHeight: standardImageHeightPixels,
-          videoHeight: standardImageHeightPixels,
-        },
-      ],
-      loop_function(data) {
-        return data.values()[0].repeat;
-      },
-    },
+    repetitionTrial("Repetition_BUTTON.mp4", "Button.png"),
+    repetitionTrial("Repetition_BABY.mp4", "Baby.png"),
+    repetitionTrial("Repetition_ROOSTER.mp4", "Rooster.png"),
+    repetitionTrial("Repetition_TOPIN.mp4", "Topin.png"),
+    repetitionTrial("Repetition_NEDIG.mp4", "Nedig.png"),
+    repetitionTrial("Repetition_KINIT.mp4", "Kinit.png"),
+    repetitionTrial("Repetition_DAEVL.mp4", "Daevl.png"),
+    repetitionTrial("Repetition_BINIP.mp4", "Binip.png"),
     {
       type: twoDotWithVideoPluginClass,
       stimulusUrl: resourcePath(
