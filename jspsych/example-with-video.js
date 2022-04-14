@@ -43,6 +43,10 @@ function repetitionTrial(stimulusFileName, imageFileName) {
   return imageVideoButtonResponseTrial(stimulusFileName, imageFileName);
 }
 
+function cuedRecallTrial(stimulusFileName, imageFileName) {
+  return imageVideoButtonResponseTrial(stimulusFileName, imageFileName);
+}
+
 function freeRecallTrial(imageFileName) {
   return imageVideoButtonResponseTrial(
     "What is this one called-.mp4",
@@ -238,6 +242,15 @@ function main() {
     freeRecallTrial("Kinit.png"),
     freeRecallTrial("Daevl.png"),
     freeRecallTrial("Binip.png"),
+    // Cued Recall Test
+    cuedRecallTrial("CuedRecall_SEE.mp4", "Seesaw.png"),
+    cuedRecallTrial("CuedRecall_BAY.mp4", "Baby.png"),
+    cuedRecallTrial("CuedRecall_ROO.mp4", "Rooster.png"),
+    cuedRecallTrial("CuedRecall_TO.mp4", "Topin.png"),
+    cuedRecallTrial("CuedRecall_NE.mp4", "Nedig.png"),
+    cuedRecallTrial("CuedRecall_KI.mp4", "Kinit.png"),
+    cuedRecallTrial("CuedRecall_DAE.mp4", "Daevl.png"),
+    cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
