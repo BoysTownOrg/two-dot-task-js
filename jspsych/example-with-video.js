@@ -34,7 +34,23 @@ function main() {
         {
           type: imageVideoButtonResponsePluginClass,
           stimulusUrl: resourcePath(
-            concatenatePaths("Clear Mask Stimuli", "CuedRecall_BAY.mp4")
+            concatenatePaths("Clear Mask Stimuli", "Repetition_BUTTON.mp4")
+          ),
+          imageUrl: resourcePath("Button.png"),
+          imageHeight: standardImageHeightPixels,
+          videoHeight: standardImageHeightPixels,
+        },
+      ],
+      loop_function(data) {
+        return data.values()[0].repeat;
+      },
+    },
+    {
+      timeline: [
+        {
+          type: imageVideoButtonResponsePluginClass,
+          stimulusUrl: resourcePath(
+            concatenatePaths("Clear Mask Stimuli", "Repetition_BABY.mp4")
           ),
           imageUrl: resourcePath("Baby.png"),
           imageHeight: standardImageHeightPixels,
