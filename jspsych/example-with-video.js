@@ -16,13 +16,18 @@ function resourcePath(fileName) {
   return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
 }
 
+function resourcePathInDirectory(directory, fileName) {
+  return resourcePath(concatenatePaths(directory, fileName));
+}
+
 function imageVideoButtonResponseTrial(stimulusFileName, imageFileName) {
   return {
     timeline: [
       {
         type: imageVideoButtonResponsePluginClass,
-        stimulusUrl: resourcePath(
-          concatenatePaths("Clear Mask Stimuli", stimulusFileName)
+        stimulusUrl: resourcePathInDirectory(
+          "Clear Mask Stimuli",
+          stimulusFileName
         ),
         imageUrl: resourcePath(imageFileName),
         imageHeight: standardImageHeightPixels,
@@ -52,11 +57,13 @@ function twoDotTrialCommonProperties(
 ) {
   return {
     type: twoDotWithVideoPluginClass,
-    stimulusUrl: resourcePath(
-      concatenatePaths("Clear Mask Stimuli", stimulusFileName)
+    stimulusUrl: resourcePathInDirectory(
+      "Clear Mask Stimuli",
+      stimulusFileName
     ),
-    feedbackUrl: resourcePath(
-      concatenatePaths("Clear Mask Stimuli", feedbackFileName)
+    feedbackUrl: resourcePathInDirectory(
+      "Clear Mask Stimuli",
+      feedbackFileName
     ),
     imageUrl: resourcePath(imageFileName),
     imageHeight: standardImageHeightPixels,
