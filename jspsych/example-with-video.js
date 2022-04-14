@@ -34,6 +34,24 @@ function repetitionTrial(stimulusFileName, imageFileName) {
   };
 }
 
+function freeRecallTrial(imageFileName) {
+  return {
+    timeline: [
+      {
+        type: imageVideoButtonResponsePluginClass,
+        stimulusUrl: resourcePath(
+          concatenatePaths("Clear Mask Stimuli", "What is this one called-.mp4")
+        ),
+        imageUrl: resourcePath(imageFileName),
+        imageHeight: standardImageHeightPixels,
+      },
+    ],
+    loop_function(data) {
+      return data.values()[0].repeat;
+    },
+  };
+}
+
 function twoDotTrialCommonProperties(
   stimulusFileName,
   feedbackFileName,
@@ -211,6 +229,15 @@ function main() {
       ),
       ...twoDotTimingPropertiesAssumingSameLengthWords(2.78, 4.14),
     },
+    // ...
+    // Free Recall Test
+    freeRecallTrial("Baby.png"),
+    freeRecallTrial("Rooster.png"),
+    freeRecallTrial("Topin.png"),
+    freeRecallTrial("Nedig.png"),
+    freeRecallTrial("Kinit.png"),
+    freeRecallTrial("Daevl.png"),
+    freeRecallTrial("Binip.png"),
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
