@@ -202,6 +202,15 @@ function main() {
       ),
       ...twoDotTimingPropertiesAssumingSameLengthWords(3.02, 4.41),
     },
+    // Training Block 4
+    {
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Topin",
+        "Nedig",
+        "Topin"
+      ),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(2.78, 4.14),
+    },
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
