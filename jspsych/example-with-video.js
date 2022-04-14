@@ -126,6 +126,50 @@ function main() {
       secondChoiceOffsetTimeSeconds: 4.86,
     },
     {
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Daevl",
+        "Nedig",
+        "Nedig"
+      ),
+      firstChoiceOnsetTimeSeconds: 3.21,
+      firstChoiceOffsetTimeSeconds: 3.71,
+      secondChoiceOnsetTimeSeconds: 4.71,
+      secondChoiceOffsetTimeSeconds: 5.21,
+    },
+    {
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Kinit",
+        "Topin",
+        "Kinit"
+      ),
+      firstChoiceOnsetTimeSeconds: 3.14,
+      firstChoiceOffsetTimeSeconds: 3.64,
+      secondChoiceOnsetTimeSeconds: 4.46,
+      secondChoiceOffsetTimeSeconds: 4.96,
+    },
+    {
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Daevl",
+        "Kinit",
+        "Daevl"
+      ),
+      firstChoiceOnsetTimeSeconds: 3.19,
+      firstChoiceOffsetTimeSeconds: 3.69,
+      secondChoiceOnsetTimeSeconds: 4.72,
+      secondChoiceOffsetTimeSeconds: 5.22,
+    },
+    {
+      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+        "Nedig",
+        "Binip",
+        "Binip"
+      ),
+      firstChoiceOnsetTimeSeconds: 2.93,
+      firstChoiceOffsetTimeSeconds: 3.43,
+      secondChoiceOnsetTimeSeconds: 4.33,
+      secondChoiceOffsetTimeSeconds: 4.83,
+    },
+    {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
       choices: ["Finish"],
