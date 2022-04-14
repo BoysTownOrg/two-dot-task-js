@@ -234,14 +234,7 @@ class TaskUI {
 }
 
 class TaskWithVideoUI {
-  constructor(
-    jsPsych,
-    parent,
-    videoElement,
-    imageUrl,
-    imageHeight,
-    videoHeight
-  ) {
+  constructor(jsPsych, parent, videoElement, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
     const gridLayout = document.createElement("div");
@@ -258,7 +251,6 @@ class TaskWithVideoUI {
     videoElement.style.gridRow = 1;
     videoElement.style.gridColumn = 1;
     videoElement.style.width = "45vw";
-    // videoElement.height = videoHeight;
     adopt(gridLayout, videoElement);
   }
 
@@ -533,8 +525,7 @@ export function twoDotWithVideo(jspsych) {
         display_element,
         videoElement,
         trial.imageUrl,
-        trial.imageHeight,
-        trial.videoHeight
+        trial.imageHeight
       );
       const model = new TaskModel(
         new WebVideoPlayer(
@@ -586,12 +577,6 @@ export function twoDotWithVideo(jspsych) {
         pretty_name: "Feedback URL",
         default: "",
         description: "The feedback video",
-      },
-      videoHeight: {
-        type: jspsych.ParameterType.INT,
-        pretty_name: "Video height",
-        default: null,
-        description: "The video height in pixels",
       },
       ...twoDotCommonParameters(jspsych),
     },
@@ -771,7 +756,6 @@ export function imageVideoButtonResponse(jspsych) {
         repeatButton
       );
       const videoElement = document.createElement("video");
-      // videoElement.height = trial.videoHeight;
       videoElement.style.width = "45vw";
       videoElement.style.gridRow = 1;
       videoElement.style.gridColumn = 1;
@@ -806,12 +790,6 @@ export function imageVideoButtonResponse(jspsych) {
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
-      },
-      videoHeight: {
-        type: jspsych.ParameterType.INT,
-        pretty_name: "Video height",
-        default: null,
-        description: "The video height in pixels",
       },
     },
   };

@@ -26,7 +26,6 @@ function repetitionTrial(stimulusFileName, imageFileName) {
         ),
         imageUrl: resourcePath(imageFileName),
         imageHeight: standardImageHeightPixels,
-        videoHeight: standardImageHeightPixels,
       },
     ],
     loop_function(data) {
@@ -50,7 +49,6 @@ function twoDotTrialCommonProperties(
     ),
     imageUrl: resourcePath(imageFileName),
     imageHeight: standardImageHeightPixels,
-    videoHeight: standardImageHeightPixels,
   };
 }
 
