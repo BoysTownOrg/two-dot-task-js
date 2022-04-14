@@ -750,6 +750,8 @@ export function imageVideoButtonResponse(jspsych) {
       const gridLayout = document.createElement("div");
       gridLayout.style.display = "grid";
       gridLayout.style.gridTemplateColumns = "1fr 1fr";
+      gridLayout.style.justifyItems = "center";
+      gridLayout.style.alignItems = "center";
       adopt(displayElement, gridLayout);
       const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       image.style.gridRow = 1;
@@ -766,7 +768,8 @@ export function imageVideoButtonResponse(jspsych) {
         repeatButton
       );
       const videoElement = document.createElement("video");
-      videoElement.height = trial.videoHeight;
+      // videoElement.height = trial.videoHeight;
+      videoElement.style.width = "45vw";
       videoElement.style.gridRow = 1;
       videoElement.style.gridColumn = 1;
       adopt(gridLayout, videoElement);
