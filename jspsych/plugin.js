@@ -444,6 +444,25 @@ function twoDotCommonParameters(jspsych) {
   };
 }
 
+function choiceTimesSeconds(trial) {
+  return new Map([
+    [
+      Choice.first,
+      {
+        onset: trial.firstChoiceOnsetTimeSeconds,
+        offset: trial.firstChoiceOffsetTimeSeconds,
+      },
+    ],
+    [
+      Choice.second,
+      {
+        onset: trial.secondChoiceOnsetTimeSeconds,
+        offset: trial.secondChoiceOffsetTimeSeconds,
+      },
+    ],
+  ]);
+}
+
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function twoDot(jspsych) {
   class Plugin {
@@ -462,22 +481,7 @@ export function twoDot(jspsych) {
       const model = new TaskModel(
         new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, trial.feedbackUrl),
         new TaskPresenter(taskUI),
-        new Map([
-          [
-            Choice.first,
-            {
-              onset: trial.firstChoiceOnsetTimeSeconds,
-              offset: trial.firstChoiceOffsetTimeSeconds,
-            },
-          ],
-          [
-            Choice.second,
-            {
-              onset: trial.secondChoiceOnsetTimeSeconds,
-              offset: trial.secondChoiceOffsetTimeSeconds,
-            },
-          ],
-        ]),
+        choiceTimesSeconds(trial),
         new Map([
           [Choice.first, trial.firstWord],
           [Choice.second, trial.secondWord],
@@ -535,22 +539,7 @@ export function twoDotWithVideo(jspsych) {
           trial.feedbackUrl
         ),
         new TaskPresenter(taskUI),
-        new Map([
-          [
-            Choice.first,
-            {
-              onset: trial.firstChoiceOnsetTimeSeconds,
-              offset: trial.firstChoiceOffsetTimeSeconds,
-            },
-          ],
-          [
-            Choice.second,
-            {
-              onset: trial.secondChoiceOnsetTimeSeconds,
-              offset: trial.secondChoiceOffsetTimeSeconds,
-            },
-          ],
-        ]),
+        choiceTimesSeconds(trial),
         new Map([
           [Choice.first, trial.firstWord],
           [Choice.second, trial.secondWord],
@@ -602,22 +591,7 @@ export function twoDotWithoutFeedback(jspsych) {
       const model = new TaskModelWithoutFeedback(
         new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
         new TaskPresenter(taskUI),
-        new Map([
-          [
-            Choice.first,
-            {
-              onset: trial.firstChoiceOnsetTimeSeconds,
-              offset: trial.firstChoiceOffsetTimeSeconds,
-            },
-          ],
-          [
-            Choice.second,
-            {
-              onset: trial.secondChoiceOnsetTimeSeconds,
-              offset: trial.secondChoiceOffsetTimeSeconds,
-            },
-          ],
-        ]),
+        choiceTimesSeconds(trial),
         new Map([
           [Choice.first, trial.firstWord],
           [Choice.second, trial.secondWord],
@@ -665,22 +639,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
       const model = new TaskModelWithoutFeedback(
         new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
         new TaskPresenter(taskUI),
-        new Map([
-          [
-            Choice.first,
-            {
-              onset: trial.firstChoiceOnsetTimeSeconds,
-              offset: trial.firstChoiceOffsetTimeSeconds,
-            },
-          ],
-          [
-            Choice.second,
-            {
-              onset: trial.secondChoiceOnsetTimeSeconds,
-              offset: trial.secondChoiceOffsetTimeSeconds,
-            },
-          ],
-        ]),
+        choiceTimesSeconds(trial),
         new Map([
           [Choice.first, trial.firstWord],
           [Choice.second, trial.secondWord],
