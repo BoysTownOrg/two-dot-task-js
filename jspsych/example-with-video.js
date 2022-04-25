@@ -205,6 +205,10 @@ function gameTransition(n) {
   return { timeline: [gameTrial(n), gameTrial(n + 1)] };
 }
 
+function repetitionTrialAssumingCommonFileNames(word) {
+  return repetitionTrial(`Repetition_${word.toUpperCase()}.mp4`, `${word}.png`);
+}
+
 function main() {
   const jsPsych = initJsPsych();
   jsPsych.run([
@@ -220,14 +224,14 @@ function main() {
     },
     gameTrial(0),
     // Training Block 1
-    repetitionTrial("Repetition_BUTTON.mp4", "Button.png"),
-    repetitionTrial("Repetition_BABY.mp4", "Baby.png"),
-    repetitionTrial("Repetition_ROOSTER.mp4", "Rooster.png"),
-    repetitionTrial("Repetition_TOPIN.mp4", "Topin.png"),
-    repetitionTrial("Repetition_NEDIG.mp4", "Nedig.png"),
-    repetitionTrial("Repetition_KINIT.mp4", "Kinit.png"),
-    repetitionTrial("Repetition_DAEVL.mp4", "Daevl.png"),
-    repetitionTrial("Repetition_BINIP.mp4", "Binip.png"),
+    repetitionTrialAssumingCommonFileNames("Button"),
+    repetitionTrialAssumingCommonFileNames("Baby"),
+    repetitionTrialAssumingCommonFileNames("Rooster"),
+    repetitionTrialAssumingCommonFileNames("Topin"),
+    repetitionTrialAssumingCommonFileNames("Nedig"),
+    repetitionTrialAssumingCommonFileNames("Kinit"),
+    repetitionTrialAssumingCommonFileNames("Daevl"),
+    repetitionTrialAssumingCommonFileNames("Binip"),
     gameTransition(0),
     // Training Block 2
     twoDotTrial("Baby", "Cheetah", "Baby", 3.1, 4.43),
