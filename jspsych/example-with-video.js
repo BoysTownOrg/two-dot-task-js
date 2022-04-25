@@ -250,6 +250,12 @@ function main() {
       text: 'Take a 5 minute break. Press "Continue" when finished.',
       alarmTimeSeconds: 300,
     },
+    // Free Recall Test (Re-test)
+    freeRecallTrial("Topin.png"),
+    freeRecallTrial("Nedig.png"),
+    freeRecallTrial("Kinit.png"),
+    freeRecallTrial("Daevl.png"),
+    freeRecallTrial("Binip.png"),
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
