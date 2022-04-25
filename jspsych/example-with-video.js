@@ -14,6 +14,7 @@ function concatenatePaths(a, b) {
 const standardImageHeightPixels = 400;
 const bottomRightButtonHTML =
   '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
+const clearMaskStimuliDirectory = "Clear Mask Stimuli";
 
 function resourcePath(fileName) {
   return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
@@ -29,7 +30,7 @@ function imageVideoButtonResponseTrial(stimulusFileName, imageFileName) {
       {
         type: imageVideoButtonResponsePluginClass,
         stimulusUrl: resourcePathInDirectory(
-          "Clear Mask Stimuli",
+          clearMaskStimuliDirectory,
           stimulusFileName
         ),
         imageUrl: resourcePath(imageFileName),
@@ -89,11 +90,11 @@ function twoDotTrialCommonProperties(
   return {
     type: twoDotWithVideoPluginClass,
     stimulusUrl: resourcePathInDirectory(
-      "Clear Mask Stimuli",
+      clearMaskStimuliDirectory,
       stimulusFileName
     ),
     feedbackUrl: resourcePathInDirectory(
-      "Clear Mask Stimuli",
+      clearMaskStimuliDirectory,
       feedbackFileName
     ),
     imageUrl: resourcePath(imageFileName),
@@ -105,6 +106,10 @@ function twoDotStimulusFileName(firstWord, secondWord) {
   return `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`;
 }
 
+function twoDotImageFileName(word) {
+  return `${word}.png`;
+}
+
 function twoDotTrialCommonPropertiesAssumingCommonFileNames(
   firstWord,
   secondWord,
@@ -114,7 +119,7 @@ function twoDotTrialCommonPropertiesAssumingCommonFileNames(
     ...twoDotTrialCommonProperties(
       twoDotStimulusFileName(firstWord, secondWord),
       `TwoDotResponse_${correctWord.toUpperCase()}.mp4`,
-      `${correctWord}.png`
+      twoDotImageFileName(correctWord)
     ),
     firstWord,
     secondWord,
@@ -130,10 +135,10 @@ function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
   return {
     type: twoDotWithVideoWithoutFeedbackPluginClass,
     stimulusUrl: resourcePathInDirectory(
-      "Clear Mask Stimuli",
+      clearMaskStimuliDirectory,
       twoDotStimulusFileName(firstWord, secondWord)
     ),
-    imageUrl: resourcePath(`${correctWord}.png`),
+    imageUrl: resourcePath(twoDotImageFileName(correctWord)),
     imageHeight: standardImageHeightPixels,
     firstWord,
     secondWord,
