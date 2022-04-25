@@ -61,7 +61,12 @@ function repetitionTrial(stimulusFileName, imageFileName) {
 }
 
 function cuedRecallTrial(stimulusFileName, imageFileName) {
-  return imageVideoButtonResponseTrial(stimulusFileName, imageFileName);
+  return {
+    timeline: [
+      blankScreen(),
+      imageVideoButtonResponseTrial(stimulusFileName, imageFileName),
+    ],
+  };
 }
 
 function freeRecallTrial(imageFileName) {
