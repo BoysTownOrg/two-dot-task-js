@@ -3,6 +3,8 @@ import * as pluginClasses from "./plugin.js";
 const imageVideoButtonResponsePluginClass =
   pluginClasses.imageVideoButtonResponse(jsPsychModule);
 const twoDotWithVideoPluginClass = pluginClasses.twoDotWithVideo(jsPsychModule);
+const twoDotWithVideoWithoutFeedbackPluginClass =
+  pluginClasses.twoDotWithVideoWithoutFeedback(jsPsychModule);
 const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
 
 function concatenatePaths(a, b) {
@@ -262,6 +264,20 @@ function main() {
     cuedRecallTrial("CuedRecall_KI.mp4", "Kinit.png"),
     cuedRecallTrial("CuedRecall_DAE.mp4", "Daevl.png"),
     cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
+    // 2-Dot Test (Re-test)
+    {
+      type: twoDotWithVideoWithoutFeedbackPluginClass,
+      stimulusUrl: resourcePathInDirectory(
+        "Clear Mask Stimuli",
+        `TwoDot_${"Topin".toUpperCase()}_${"Binip".toUpperCase()}.mp4`
+      ),
+      imageUrl: resourcePath(`${"Binip"}.png`),
+      imageHeight: standardImageHeightPixels,
+      firstWord: "Topin",
+      secondWord: "Binip",
+      correctWord: "Binip",
+      ...twoDotTimingPropertiesAssumingSameLengthWords(3.02, 4.41),
+    },
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
