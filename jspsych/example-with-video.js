@@ -94,6 +94,25 @@ function twoDotTrialCommonPropertiesAssumingCommonFileNames(
   };
 }
 
+function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+  firstWord,
+  secondWord,
+  correctWord
+) {
+  return {
+    type: twoDotWithVideoWithoutFeedbackPluginClass,
+    stimulusUrl: resourcePathInDirectory(
+      "Clear Mask Stimuli",
+      `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`
+    ),
+    imageUrl: resourcePath(`${correctWord}.png`),
+    imageHeight: standardImageHeightPixels,
+    firstWord,
+    secondWord,
+    correctWord,
+  };
+}
+
 function twoDotTimingPropertiesAssumingSameLengthWords(
   firstOnset,
   secondOnset
@@ -266,17 +285,12 @@ function main() {
     cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
     // 2-Dot Test (Re-test)
     {
-      type: twoDotWithVideoWithoutFeedbackPluginClass,
-      stimulusUrl: resourcePathInDirectory(
-        "Clear Mask Stimuli",
-        `TwoDot_${"Topin".toUpperCase()}_${"Binip".toUpperCase()}.mp4`
+      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+        "Kinit",
+        "Topin",
+        "Kinit"
       ),
-      imageUrl: resourcePath(`${"Binip"}.png`),
-      imageHeight: standardImageHeightPixels,
-      firstWord: "Topin",
-      secondWord: "Binip",
-      correctWord: "Binip",
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.02, 4.41),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(3.14, 4.46),
     },
     {
       type: jsPsychHtmlButtonResponse,
