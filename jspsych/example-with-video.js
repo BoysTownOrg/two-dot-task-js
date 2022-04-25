@@ -225,14 +225,6 @@ function main() {
       ...twoDotTimingPropertiesAssumingSameLengthWords(3.02, 4.41),
     },
     // Training Block 4
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Topin",
-        "Nedig",
-        "Topin"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(2.78, 4.14),
-    },
     // ...
     // Free Recall Test
     freeRecallTrial("Baby.png"),
