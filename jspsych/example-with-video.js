@@ -61,10 +61,20 @@ function cuedRecallTrial(stimulusFileName, imageFileName) {
 }
 
 function freeRecallTrial(imageFileName) {
-  return imageVideoButtonResponseTrial(
-    "What is this one called-.mp4",
-    imageFileName
-  );
+  return {
+    timeline: [
+      {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "",
+        choices: ["Continue"],
+        button_html: bottomRightButtonHTML,
+      },
+      imageVideoButtonResponseTrial(
+        "What is this one called-.mp4",
+        imageFileName
+      ),
+    ],
+  };
 }
 
 function twoDotTrialCommonProperties(
