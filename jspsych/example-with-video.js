@@ -292,14 +292,7 @@ function main() {
       ),
       ...twoDotTimingPropertiesAssumingSameLengthWords(3.14, 4.46),
     },
-    {
-      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-        "Nedig",
-        "Topin",
-        "Nedig"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(2.86, 4.38),
-    },
+    // ...
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
