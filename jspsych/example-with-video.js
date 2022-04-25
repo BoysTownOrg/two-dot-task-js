@@ -223,7 +223,7 @@ function main() {
     // Training Block 3
     twoDotTrial("Topin", "Daevl", "Topin", 3.14, 4.62),
     twoDotTrial("Nedig", "Kinit", "Nedig", 2.96, 4.36),
-    twoDotTrial("Binip", "Kinit", "Binip", 3.09, 4.58),
+    twoDotTrial("Binip", "Kinit", "Kinit", 3.09, 4.58),
     twoDotTrial("Daevl", "Nedig", "Daevl", 3.21, 4.71),
     twoDotTrial("Topin", "Binip", "Binip", 3.02, 4.41),
     // Training Block 4
