@@ -190,6 +190,17 @@ function twoDotTrial(
   };
 }
 
+function gameTrial(n) {
+  return {
+    type: jsPsychImageButtonResponse,
+    stimulus: resourcePath(`game${n + 1}.jpg`),
+    stimulus_height: standardImageHeightPixels,
+    choices: ["Continue"],
+    prompt: "",
+    button_html: bottomRightButtonHTML,
+  };
+}
+
 function main() {
   const jsPsych = initJsPsych();
   jsPsych.run([
@@ -203,14 +214,7 @@ function main() {
       choices: ["Start"],
       button_html: bottomRightButtonHTML,
     },
-    {
-      type: jsPsychImageButtonResponse,
-      stimulus: resourcePath(`game${1}.jpg`),
-      stimulus_height: standardImageHeightPixels,
-      choices: ["Continue"],
-      prompt: "",
-      button_html: bottomRightButtonHTML,
-    },
+    gameTrial(0),
     // Training Block 1
     repetitionTrial("Repetition_BUTTON.mp4", "Button.png"),
     repetitionTrial("Repetition_BABY.mp4", "Baby.png"),
@@ -220,22 +224,8 @@ function main() {
     repetitionTrial("Repetition_KINIT.mp4", "Kinit.png"),
     repetitionTrial("Repetition_DAEVL.mp4", "Daevl.png"),
     repetitionTrial("Repetition_BINIP.mp4", "Binip.png"),
-    {
-      type: jsPsychImageButtonResponse,
-      stimulus: resourcePath(`game${1}.jpg`),
-      stimulus_height: standardImageHeightPixels,
-      choices: ["Continue"],
-      prompt: "",
-      button_html: bottomRightButtonHTML,
-    },
-    {
-      type: jsPsychImageButtonResponse,
-      stimulus: resourcePath(`game${2}.jpg`),
-      stimulus_height: standardImageHeightPixels,
-      choices: ["Continue"],
-      prompt: "",
-      button_html: bottomRightButtonHTML,
-    },
+    gameTrial(0),
+    gameTrial(1),
     // Training Block 2
     twoDotTrial("Baby", "Cheetah", "Baby", 3.1, 4.43),
     twoDotTrial("Pizza", "Rooster", "Rooster", 3.01, 4.37),
@@ -244,12 +234,16 @@ function main() {
     twoDotTrial("Kinit", "Topin", "Kinit", 3.14, 4.46),
     twoDotTrial("Daevl", "Kinit", "Daevl", 3.19, 4.72),
     twoDotTrial("Nedig", "Binip", "Binip", 2.93, 4.33),
+    gameTrial(1),
+    gameTrial(2),
     // Training Block 3
     twoDotTrial("Topin", "Daevl", "Topin", 3.14, 4.62),
     twoDotTrial("Nedig", "Kinit", "Nedig", 2.96, 4.36),
     twoDotTrial("Binip", "Kinit", "Kinit", 3.09, 4.58),
     twoDotTrial("Daevl", "Nedig", "Daevl", 3.21, 4.71),
     twoDotTrial("Topin", "Binip", "Binip", 3.02, 4.41),
+    gameTrial(2),
+    gameTrial(3),
     // Training Block 4
     // ...
     // Free Recall Test
@@ -260,6 +254,8 @@ function main() {
     freeRecallTrial("Kinit.png"),
     freeRecallTrial("Daevl.png"),
     freeRecallTrial("Binip.png"),
+    gameTrial(3),
+    gameTrial(4),
     // Cued Recall Test
     cuedRecallTrial("CuedRecall_SEE.mp4", "Seesaw.png"),
     cuedRecallTrial("CuedRecall_BAY.mp4", "Baby.png"),
@@ -269,6 +265,8 @@ function main() {
     cuedRecallTrial("CuedRecall_KI.mp4", "Kinit.png"),
     cuedRecallTrial("CuedRecall_DAE.mp4", "Daevl.png"),
     cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
+    gameTrial(4),
+    gameTrial(5),
     // 5-Minute Break
     {
       type: stopwatchPluginClass,
