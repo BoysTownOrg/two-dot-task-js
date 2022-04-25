@@ -144,12 +144,26 @@ function twoDotTrial(
   secondOnset
 ) {
   return {
-    ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-      firstWord,
-      secondWord,
-      correctWord
-    ),
-    ...twoDotTimingPropertiesAssumingSameLengthWords(firstOnset, secondOnset),
+    timeline: [
+      {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "",
+        choices: [""],
+        button_html:
+          '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
+      },
+      {
+        ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+          firstWord,
+          secondWord,
+          correctWord
+        ),
+        ...twoDotTimingPropertiesAssumingSameLengthWords(
+          firstOnset,
+          secondOnset
+        ),
+      },
+    ],
   };
 }
 
