@@ -272,18 +272,21 @@ function main() {
       text: 'Take a 5 minute break. Press "Continue" when finished.',
       alarmTimeSeconds: 300,
     },
+    gameTrial(6),
     // Free Recall Test (Re-test)
     freeRecallTrial("Topin.png"),
     freeRecallTrial("Nedig.png"),
     freeRecallTrial("Kinit.png"),
     freeRecallTrial("Daevl.png"),
     freeRecallTrial("Binip.png"),
+    gameTransition(6),
     // Cued Recall Test (Re-test)
     cuedRecallTrial("CuedRecall_TO.mp4", "Topin.png"),
     cuedRecallTrial("CuedRecall_NE.mp4", "Nedig.png"),
     cuedRecallTrial("CuedRecall_KI.mp4", "Kinit.png"),
     cuedRecallTrial("CuedRecall_DAE.mp4", "Daevl.png"),
     cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
+    gameTransition(7),
     // 2-Dot Test (Re-test)
     {
       ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
@@ -294,6 +297,7 @@ function main() {
       ...twoDotTimingPropertiesAssumingSameLengthWords(3.14, 4.46),
     },
     // ...
+    gameTransition(8),
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
