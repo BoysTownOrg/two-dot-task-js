@@ -3,6 +3,7 @@ import * as pluginClasses from "./plugin.js";
 const imageVideoButtonResponsePluginClass =
   pluginClasses.imageVideoButtonResponse(jsPsychModule);
 const twoDotWithVideoPluginClass = pluginClasses.twoDotWithVideo(jsPsychModule);
+const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
@@ -243,6 +244,12 @@ function main() {
     cuedRecallTrial("CuedRecall_KI.mp4", "Kinit.png"),
     cuedRecallTrial("CuedRecall_DAE.mp4", "Daevl.png"),
     cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
+    // 5-Minute Break
+    {
+      type: stopwatchPluginClass,
+      text: 'Take a 5 minute break. Press "Continue" when finished.',
+      alarmTimeSeconds: 300,
+    },
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
