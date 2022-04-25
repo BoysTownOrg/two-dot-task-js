@@ -288,9 +288,17 @@ function main() {
       ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
         "Kinit",
         "Topin",
-        "Kinit"
+        "Topin"
       ),
       ...twoDotTimingPropertiesAssumingSameLengthWords(3.14, 4.46),
+    },
+    {
+      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+        "Nedig",
+        "Topin",
+        "Nedig"
+      ),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(2.86, 4.38),
     },
     {
       type: jsPsychHtmlButtonResponse,
