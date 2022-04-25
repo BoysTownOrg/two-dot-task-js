@@ -43,7 +43,17 @@ function imageVideoButtonResponseTrial(stimulusFileName, imageFileName) {
 }
 
 function repetitionTrial(stimulusFileName, imageFileName) {
-  return imageVideoButtonResponseTrial(stimulusFileName, imageFileName);
+  return {
+    timeline: [
+      {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "",
+        choices: ["Continue"],
+        button_html: bottomRightButtonHTML,
+      },
+      imageVideoButtonResponseTrial(stimulusFileName, imageFileName),
+    ],
+  };
 }
 
 function cuedRecallTrial(stimulusFileName, imageFileName) {
