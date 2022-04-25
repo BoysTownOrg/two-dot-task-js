@@ -87,6 +87,10 @@ function twoDotTrialCommonProperties(
   };
 }
 
+function twoDotStimulusFileName(firstWord, secondWord) {
+  return `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`;
+}
+
 function twoDotTrialCommonPropertiesAssumingCommonFileNames(
   firstWord,
   secondWord,
@@ -94,7 +98,7 @@ function twoDotTrialCommonPropertiesAssumingCommonFileNames(
 ) {
   return {
     ...twoDotTrialCommonProperties(
-      `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`,
+      twoDotStimulusFileName(firstWord, secondWord),
       `TwoDotResponse_${correctWord.toUpperCase()}.mp4`,
       `${correctWord}.png`
     ),
@@ -113,7 +117,7 @@ function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
     type: twoDotWithVideoWithoutFeedbackPluginClass,
     stimulusUrl: resourcePathInDirectory(
       "Clear Mask Stimuli",
-      `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`
+      twoDotStimulusFileName(firstWord, secondWord)
     ),
     imageUrl: resourcePath(`${correctWord}.png`),
     imageHeight: standardImageHeightPixels,
