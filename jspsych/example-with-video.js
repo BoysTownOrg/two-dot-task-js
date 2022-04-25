@@ -136,6 +136,23 @@ function twoDotTimingPropertiesAssumingSameLengthWords(
   };
 }
 
+function twoDotTrial(
+  firstWord,
+  secondWord,
+  correctWord,
+  firstOnset,
+  secondOnset
+) {
+  return {
+    ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
+      firstWord,
+      secondWord,
+      correctWord
+    ),
+    ...twoDotTimingPropertiesAssumingSameLengthWords(firstOnset, secondOnset),
+  };
+}
+
 function main() {
   const jsPsych = initJsPsych();
   jsPsych.run([
@@ -159,103 +176,19 @@ function main() {
     repetitionTrial("Repetition_DAEVL.mp4", "Daevl.png"),
     repetitionTrial("Repetition_BINIP.mp4", "Binip.png"),
     // Training Block 2
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Baby",
-        "Cheetah",
-        "Baby"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.1, 4.43),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Pizza",
-        "Rooster",
-        "Rooster"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.01, 4.37),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Binip",
-        "Topin",
-        "Topin"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3, 4.36),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Daevl",
-        "Nedig",
-        "Nedig"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.21, 4.71),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Kinit",
-        "Topin",
-        "Kinit"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.14, 4.46),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Daevl",
-        "Kinit",
-        "Daevl"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.19, 4.72),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Nedig",
-        "Binip",
-        "Binip"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(2.93, 4.33),
-    },
+    twoDotTrial("Baby", "Cheetah", "Baby", 3.1, 4.43),
+    twoDotTrial("Pizza", "Rooster", "Rooster", 3.01, 4.37),
+    twoDotTrial("Binip", "Topin", "Topin", 3, 4.36),
+    twoDotTrial("Daevl", "Nedig", "Nedig", 3.21, 4.71),
+    twoDotTrial("Kinit", "Topin", "Kinit", 3.14, 4.46),
+    twoDotTrial("Daevl", "Kinit", "Daevl", 3.19, 4.72),
+    twoDotTrial("Nedig", "Binip", "Binip", 2.93, 4.33),
     // Training Block 3
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Topin",
-        "Daevl",
-        "Topin"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.14, 4.62),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Nedig",
-        "Kinit",
-        "Nedig"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(2.96, 4.36),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Binip",
-        "Kinit",
-        "Binip"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.09, 4.58),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Daevl",
-        "Nedig",
-        "Daevl"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.21, 4.71),
-    },
-    {
-      ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-        "Topin",
-        "Binip",
-        "Binip"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.02, 4.41),
-    },
+    twoDotTrial("Topin", "Daevl", "Topin", 3.14, 4.62),
+    twoDotTrial("Nedig", "Kinit", "Nedig", 2.96, 4.36),
+    twoDotTrial("Binip", "Kinit", "Binip", 3.09, 4.58),
+    twoDotTrial("Daevl", "Nedig", "Daevl", 3.21, 4.71),
+    twoDotTrial("Topin", "Binip", "Binip", 3.02, 4.41),
     // Training Block 4
     // ...
     // Free Recall Test
