@@ -203,6 +203,14 @@ function main() {
       choices: ["Start"],
       button_html: bottomRightButtonHTML,
     },
+    {
+      type: jsPsychImageButtonResponse,
+      stimulus: resourcePath(`game${1}.jpg`),
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+      button_html: bottomRightButtonHTML,
+    },
     // Training Block 1
     repetitionTrial("Repetition_BUTTON.mp4", "Button.png"),
     repetitionTrial("Repetition_BABY.mp4", "Baby.png"),
@@ -212,6 +220,22 @@ function main() {
     repetitionTrial("Repetition_KINIT.mp4", "Kinit.png"),
     repetitionTrial("Repetition_DAEVL.mp4", "Daevl.png"),
     repetitionTrial("Repetition_BINIP.mp4", "Binip.png"),
+    {
+      type: jsPsychImageButtonResponse,
+      stimulus: resourcePath(`game${1}.jpg`),
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+      button_html: bottomRightButtonHTML,
+    },
+    {
+      type: jsPsychImageButtonResponse,
+      stimulus: resourcePath(`game${2}.jpg`),
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+      button_html: bottomRightButtonHTML,
+    },
     // Training Block 2
     twoDotTrial("Baby", "Cheetah", "Baby", 3.1, 4.43),
     twoDotTrial("Pizza", "Rooster", "Rooster", 3.01, 4.37),
