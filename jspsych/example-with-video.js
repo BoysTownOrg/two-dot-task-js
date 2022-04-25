@@ -106,7 +106,7 @@ function twoDotStimulusFileName(firstWord, secondWord) {
   return `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`;
 }
 
-function twoDotImageFileName(word) {
+function imageFileNameFromWord(word) {
   return `${word}.png`;
 }
 
@@ -119,7 +119,7 @@ function twoDotTrialCommonPropertiesAssumingCommonFileNames(
     ...twoDotTrialCommonProperties(
       twoDotStimulusFileName(firstWord, secondWord),
       `TwoDotResponse_${correctWord.toUpperCase()}.mp4`,
-      twoDotImageFileName(correctWord)
+      imageFileNameFromWord(correctWord)
     ),
     firstWord,
     secondWord,
@@ -138,7 +138,7 @@ function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
       clearMaskStimuliDirectory,
       twoDotStimulusFileName(firstWord, secondWord)
     ),
-    imageUrl: resourcePath(twoDotImageFileName(correctWord)),
+    imageUrl: resourcePath(imageFileNameFromWord(correctWord)),
     imageHeight: standardImageHeightPixels,
     firstWord,
     secondWord,
@@ -206,7 +206,10 @@ function gameTransition(n) {
 }
 
 function repetitionTrialAssumingCommonFileNames(word) {
-  return repetitionTrial(`Repetition_${word.toUpperCase()}.mp4`, `${word}.png`);
+  return repetitionTrial(
+    `Repetition_${word.toUpperCase()}.mp4`,
+    imageFileNameFromWord(word)
+  );
 }
 
 function main() {
@@ -252,23 +255,23 @@ function main() {
     // Training Block 4
     // ...
     // Free Recall Test
-    freeRecallTrial("Baby.png"),
-    freeRecallTrial("Rooster.png"),
-    freeRecallTrial("Topin.png"),
-    freeRecallTrial("Nedig.png"),
-    freeRecallTrial("Kinit.png"),
-    freeRecallTrial("Daevl.png"),
-    freeRecallTrial("Binip.png"),
+    freeRecallTrial(imageFileNameFromWord("Baby")),
+    freeRecallTrial(imageFileNameFromWord("Rooster")),
+    freeRecallTrial(imageFileNameFromWord("Topin")),
+    freeRecallTrial(imageFileNameFromWord("Nedig")),
+    freeRecallTrial(imageFileNameFromWord("Kinit")),
+    freeRecallTrial(imageFileNameFromWord("Daevl")),
+    freeRecallTrial(imageFileNameFromWord("Binip")),
     gameTransition(3),
     // Cued Recall Test
-    cuedRecallTrial("CuedRecall_SEE.mp4", "Seesaw.png"),
-    cuedRecallTrial("CuedRecall_BAY.mp4", "Baby.png"),
-    cuedRecallTrial("CuedRecall_ROO.mp4", "Rooster.png"),
-    cuedRecallTrial("CuedRecall_TO.mp4", "Topin.png"),
-    cuedRecallTrial("CuedRecall_NE.mp4", "Nedig.png"),
-    cuedRecallTrial("CuedRecall_KI.mp4", "Kinit.png"),
-    cuedRecallTrial("CuedRecall_DAE.mp4", "Daevl.png"),
-    cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
+    cuedRecallTrial("CuedRecall_SEE.mp4", imageFileNameFromWord("Seesaw")),
+    cuedRecallTrial("CuedRecall_BAY.mp4", imageFileNameFromWord("Baby")),
+    cuedRecallTrial("CuedRecall_ROO.mp4", imageFileNameFromWord("Rooster")),
+    cuedRecallTrial("CuedRecall_TO.mp4", imageFileNameFromWord("Topin")),
+    cuedRecallTrial("CuedRecall_NE.mp4", imageFileNameFromWord("Nedig")),
+    cuedRecallTrial("CuedRecall_KI.mp4", imageFileNameFromWord("Kinit")),
+    cuedRecallTrial("CuedRecall_DAE.mp4", imageFileNameFromWord("Daevl")),
+    cuedRecallTrial("CuedRecall_BI.mp4", imageFileNameFromWord("Binip")),
     gameTransition(4),
     // 5-Minute Break
     {
@@ -278,18 +281,18 @@ function main() {
     },
     gameTrial(6),
     // Free Recall Test (Re-test)
-    freeRecallTrial("Topin.png"),
-    freeRecallTrial("Nedig.png"),
-    freeRecallTrial("Kinit.png"),
-    freeRecallTrial("Daevl.png"),
-    freeRecallTrial("Binip.png"),
+    freeRecallTrial(imageFileNameFromWord("Topin")),
+    freeRecallTrial(imageFileNameFromWord("Nedig")),
+    freeRecallTrial(imageFileNameFromWord("Kinit")),
+    freeRecallTrial(imageFileNameFromWord("Daevl")),
+    freeRecallTrial(imageFileNameFromWord("Binip")),
     gameTransition(6),
     // Cued Recall Test (Re-test)
-    cuedRecallTrial("CuedRecall_TO.mp4", "Topin.png"),
-    cuedRecallTrial("CuedRecall_NE.mp4", "Nedig.png"),
-    cuedRecallTrial("CuedRecall_KI.mp4", "Kinit.png"),
-    cuedRecallTrial("CuedRecall_DAE.mp4", "Daevl.png"),
-    cuedRecallTrial("CuedRecall_BI.mp4", "Binip.png"),
+    cuedRecallTrial("CuedRecall_TO.mp4", imageFileNameFromWord("Topin")),
+    cuedRecallTrial("CuedRecall_NE.mp4", imageFileNameFromWord("Nedig")),
+    cuedRecallTrial("CuedRecall_KI.mp4", imageFileNameFromWord("Kinit")),
+    cuedRecallTrial("CuedRecall_DAE.mp4", imageFileNameFromWord("Daevl")),
+    cuedRecallTrial("CuedRecall_BI.mp4", imageFileNameFromWord("Binip")),
     gameTransition(7),
     // 2-Dot Test (Re-test)
     {
