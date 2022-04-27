@@ -230,8 +230,15 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
   const condition = conditionSelect.options.item(
     conditionSelect.selectedIndex
   ).textContent;
-  const clearMaskStimuliDirectory = "Clear Mask Stimuli";
-  const stimuliDirectory = clearMaskStimuliDirectory;
+  let stimuliDirectory = "";
+  switch (condition) {
+    case "Disposable Mask AV":
+      stimuliDirectory = "Disposable Mask Stimuli";
+      break;
+    case "Clear Mask AV":
+    default:
+      stimuliDirectory = "Clear Mask Stimuli";
+  }
   const jsPsych = initJsPsych();
   jsPsych.run([
     {
