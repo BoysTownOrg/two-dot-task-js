@@ -70,6 +70,7 @@ function repetitionTrial(stimuliDirectory, stimulusFileName, imageFileName) {
 
 function cuedRecallTrialAssumingCommonFilenames(
   stimuliDirectory,
+  stimulusExtension,
   stimulusCue,
   imageFileName
 ) {
@@ -78,20 +79,20 @@ function cuedRecallTrialAssumingCommonFilenames(
       blankScreen(),
       imageVideoButtonResponseTrial(
         stimuliDirectory,
-        `CuedRecall_${stimulusCue.toUpperCase()}.mp4`,
+        `CuedRecall_${stimulusCue.toUpperCase()}.${stimulusExtension}`,
         imageFileName
       ),
     ],
   };
 }
 
-function freeRecallTrial(stimuliDirectory, imageFileName) {
+function freeRecallTrial(stimuliDirectory, stimulusExtension, imageFileName) {
   return {
     timeline: [
       blankScreen(),
       imageVideoButtonResponseTrial(
         stimuliDirectory,
-        "What is this one called-.mp4",
+        `What is this one called-.${stimulusExtension}`,
         imageFileName
       ),
     ],
@@ -113,8 +114,8 @@ function twoDotTrialCommonProperties(
   };
 }
 
-function twoDotStimulusFileName(firstWord, secondWord) {
-  return `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.mp4`;
+function twoDotStimulusFileName(stimulusExtension, firstWord, secondWord) {
+  return `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.${stimulusExtension}`;
 }
 
 function imageFileNameFromWord(word) {
@@ -123,6 +124,7 @@ function imageFileNameFromWord(word) {
 
 function twoDotTrialCommonPropertiesAssumingCommonFileNames(
   stimuliDirectory,
+  stimulusExtension,
   firstWord,
   secondWord,
   correctWord
@@ -130,8 +132,8 @@ function twoDotTrialCommonPropertiesAssumingCommonFileNames(
   return {
     ...twoDotTrialCommonProperties(
       stimuliDirectory,
-      twoDotStimulusFileName(firstWord, secondWord),
-      `TwoDotResponse_${correctWord.toUpperCase()}.mp4`,
+      twoDotStimulusFileName(stimulusExtension, firstWord, secondWord),
+      `TwoDotResponse_${correctWord.toUpperCase()}.${stimulusExtension}`,
       imageFileNameFromWord(correctWord)
     ),
     firstWord,
@@ -142,6 +144,7 @@ function twoDotTrialCommonPropertiesAssumingCommonFileNames(
 
 function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
   stimuliDirectory,
+  stimulusExtension,
   firstWord,
   secondWord,
   correctWord
@@ -150,7 +153,7 @@ function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
     type: twoDotWithVideoWithoutFeedbackPluginClass,
     stimulusUrl: resourcePathInDirectory(
       stimuliDirectory,
-      twoDotStimulusFileName(firstWord, secondWord)
+      twoDotStimulusFileName(stimulusExtension, firstWord, secondWord)
     ),
     imageUrl: resourcePath(imageFileNameFromWord(correctWord)),
     imageHeight: standardImageHeightPixels,
@@ -175,6 +178,7 @@ function twoDotTimingPropertiesAssumingSameLengthWords(
 
 function twoDotTrial(
   stimuliDirectory,
+  stimulusExtension,
   firstWord,
   secondWord,
   correctWord,
@@ -193,6 +197,7 @@ function twoDotTrial(
       {
         ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
           stimuliDirectory,
+          stimulusExtension,
           firstWord,
           secondWord,
           correctWord
@@ -221,10 +226,14 @@ function gameTransition(n) {
   return { timeline: [gameTrial(n), gameTrial(n + 1)] };
 }
 
-function repetitionTrialAssumingCommonFileNames(stimuliDirectory, word) {
+function repetitionTrialAssumingCommonFileNames(
+  stimuliDirectory,
+  stimulusExtension,
+  word
+) {
   return repetitionTrial(
     stimuliDirectory,
-    `Repetition_${word.toUpperCase()}.mp4`,
+    `Repetition_${word.toUpperCase()}.${stimulusExtension}`,
     imageFileNameFromWord(word)
   );
 }
@@ -237,14 +246,18 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
   const condition = conditionSelect.options.item(
     conditionSelect.selectedIndex
   ).textContent;
+  const videoExtension = "mp4";
   let stimuliDirectory = "";
+  let stimulusExtension = "";
   switch (condition) {
     case disposableMaskConditionText:
       stimuliDirectory = "Disposable Mask Stimuli";
+      stimulusExtension = videoExtension;
       break;
     case clearMaskConditionText:
     default:
       stimuliDirectory = "Clear Mask Stimuli";
+      stimulusExtension = videoExtension;
   }
   const jsPsych = initJsPsych();
   jsPsych.run([
@@ -260,80 +273,244 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     },
     gameTrial(0),
     // Training Block 1
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Button"),
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Baby"),
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Rooster"),
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Topin"),
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Nedig"),
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Kinit"),
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Daevl"),
-    repetitionTrialAssumingCommonFileNames(stimuliDirectory, "Binip"),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Button"
+    ),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Baby"
+    ),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Rooster"
+    ),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Topin"
+    ),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Nedig"
+    ),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Kinit"
+    ),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Daevl"
+    ),
+    repetitionTrialAssumingCommonFileNames(
+      stimuliDirectory,
+      stimulusExtension,
+      "Binip"
+    ),
     gameTransition(0),
     // Training Block 2
-    twoDotTrial(stimuliDirectory, "Baby", "Cheetah", "Baby", 3.1, 4.43),
-    twoDotTrial(stimuliDirectory, "Pizza", "Rooster", "Rooster", 3.01, 4.37),
-    twoDotTrial(stimuliDirectory, "Binip", "Topin", "Topin", 3, 4.36),
-    twoDotTrial(stimuliDirectory, "Daevl", "Nedig", "Nedig", 3.21, 4.71),
-    twoDotTrial(stimuliDirectory, "Kinit", "Topin", "Kinit", 3.14, 4.46),
-    twoDotTrial(stimuliDirectory, "Daevl", "Kinit", "Daevl", 3.19, 4.72),
-    twoDotTrial(stimuliDirectory, "Nedig", "Binip", "Binip", 2.93, 4.33),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Baby",
+      "Cheetah",
+      "Baby",
+      3.1,
+      4.43
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Pizza",
+      "Rooster",
+      "Rooster",
+      3.01,
+      4.37
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Binip",
+      "Topin",
+      "Topin",
+      3,
+      4.36
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Daevl",
+      "Nedig",
+      "Nedig",
+      3.21,
+      4.71
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Kinit",
+      "Topin",
+      "Kinit",
+      3.14,
+      4.46
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Daevl",
+      "Kinit",
+      "Daevl",
+      3.19,
+      4.72
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Nedig",
+      "Binip",
+      "Binip",
+      2.93,
+      4.33
+    ),
     gameTransition(1),
     // Training Block 3
-    twoDotTrial(stimuliDirectory, "Topin", "Daevl", "Topin", 3.14, 4.62),
-    twoDotTrial(stimuliDirectory, "Nedig", "Kinit", "Nedig", 2.96, 4.36),
-    twoDotTrial(stimuliDirectory, "Binip", "Kinit", "Kinit", 3.09, 4.58),
-    twoDotTrial(stimuliDirectory, "Daevl", "Nedig", "Daevl", 3.21, 4.71),
-    twoDotTrial(stimuliDirectory, "Topin", "Binip", "Binip", 3.02, 4.41),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Topin",
+      "Daevl",
+      "Topin",
+      3.14,
+      4.62
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Nedig",
+      "Kinit",
+      "Nedig",
+      2.96,
+      4.36
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Binip",
+      "Kinit",
+      "Kinit",
+      3.09,
+      4.58
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Daevl",
+      "Nedig",
+      "Daevl",
+      3.21,
+      4.71
+    ),
+    twoDotTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Topin",
+      "Binip",
+      "Binip",
+      3.02,
+      4.41
+    ),
     gameTransition(2),
     // Training Block 4
     // ...
     // Free Recall Test
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Baby")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Rooster")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Topin")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Nedig")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Kinit")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Daevl")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Binip")),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Baby")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Rooster")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Topin")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Nedig")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Kinit")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Daevl")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Binip")
+    ),
     gameTransition(3),
     // Cued Recall Test
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "SEE",
       imageFileNameFromWord("Seesaw")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "BAY",
       imageFileNameFromWord("Baby")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "ROO",
       imageFileNameFromWord("Rooster")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "TO",
       imageFileNameFromWord("Topin")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "NE",
       imageFileNameFromWord("Nedig")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "KI",
       imageFileNameFromWord("Kinit")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "DAE",
       imageFileNameFromWord("Daevl")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "BI",
       imageFileNameFromWord("Binip")
     ),
@@ -346,35 +523,60 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     },
     gameTrial(6),
     // Free Recall Test (Re-test)
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Topin")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Nedig")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Kinit")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Daevl")),
-    freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Binip")),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Topin")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Nedig")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Kinit")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Daevl")
+    ),
+    freeRecallTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      imageFileNameFromWord("Binip")
+    ),
     gameTransition(6),
     // Cued Recall Test (Re-test)
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "TO",
       imageFileNameFromWord("Topin")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "NE",
       imageFileNameFromWord("Nedig")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "KI",
       imageFileNameFromWord("Kinit")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "DAE",
       imageFileNameFromWord("Daevl")
     ),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
+      stimulusExtension,
       "BI",
       imageFileNameFromWord("Binip")
     ),
@@ -383,6 +585,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     {
       ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
         stimuliDirectory,
+        stimulusExtension,
         "Kinit",
         "Topin",
         "Topin"
