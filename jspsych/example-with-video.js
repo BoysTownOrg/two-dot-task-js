@@ -68,13 +68,17 @@ function repetitionTrial(stimuliDirectory, stimulusFileName, imageFileName) {
   };
 }
 
-function cuedRecallTrial(stimuliDirectory, stimulusFileName, imageFileName) {
+function cuedRecallTrialAssumingCommonFilenames(
+  stimuliDirectory,
+  stimulusCue,
+  imageFileName
+) {
   return {
     timeline: [
       blankScreen(),
       imageVideoButtonResponseTrial(
         stimuliDirectory,
-        stimulusFileName,
+        `CuedRecall_${stimulusCue.toUpperCase()}.mp4`,
         imageFileName
       ),
     ],
@@ -293,44 +297,44 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Binip")),
     gameTransition(3),
     // Cued Recall Test
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_SEE.mp4",
+      "SEE",
       imageFileNameFromWord("Seesaw")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_BAY.mp4",
+      "BAY",
       imageFileNameFromWord("Baby")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_ROO.mp4",
+      "ROO",
       imageFileNameFromWord("Rooster")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_TO.mp4",
+      "TO",
       imageFileNameFromWord("Topin")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_NE.mp4",
+      "NE",
       imageFileNameFromWord("Nedig")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_KI.mp4",
+      "KI",
       imageFileNameFromWord("Kinit")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_DAE.mp4",
+      "DAE",
       imageFileNameFromWord("Daevl")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_BI.mp4",
+      "BI",
       imageFileNameFromWord("Binip")
     ),
     gameTransition(4),
@@ -349,29 +353,29 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     freeRecallTrial(stimuliDirectory, imageFileNameFromWord("Binip")),
     gameTransition(6),
     // Cued Recall Test (Re-test)
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_TO.mp4",
+      "TO",
       imageFileNameFromWord("Topin")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_NE.mp4",
+      "NE",
       imageFileNameFromWord("Nedig")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_KI.mp4",
+      "KI",
       imageFileNameFromWord("Kinit")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_DAE.mp4",
+      "DAE",
       imageFileNameFromWord("Daevl")
     ),
-    cuedRecallTrial(
+    cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
-      "CuedRecall_BI.mp4",
+      "BI",
       imageFileNameFromWord("Binip")
     ),
     gameTransition(7),
