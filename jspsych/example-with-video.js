@@ -240,6 +240,8 @@ function repetitionTrialAssumingCommonFileNames(
 
 const clearMaskConditionText = "Clear Mask AV";
 const disposableMaskConditionText = "Disposable Mask AV";
+const noMaskAuditoryOnlyConditionText = "No Mask AO";
+const clearMaskAuditoryOnlyConditionText = "Clear Mask AO";
 
 function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
   document.body.removeChild(page);
@@ -247,9 +249,18 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     conditionSelect.selectedIndex
   ).textContent;
   const videoExtension = "mp4";
+  const audioExtension = "wav";
   let stimuliDirectory = "";
   let stimulusExtension = "";
   switch (condition) {
+    case noMaskAuditoryOnlyConditionText:
+      stimuliDirectory = "No Mask AO";
+      stimulusExtension = audioExtension;
+      break;
+    case clearMaskAuditoryOnlyConditionText:
+      stimuliDirectory = "Clear Mask AO";
+      stimulusExtension = audioExtension;
+      break;
     case disposableMaskConditionText:
       stimuliDirectory = "Disposable Mask Stimuli";
       stimulusExtension = videoExtension;
@@ -621,8 +632,10 @@ function main() {
     clearMaskConditionText;
   createChildElement(conditionSelect, "option").textContent =
     disposableMaskConditionText;
-  createChildElement(conditionSelect, "option").textContent = "No Mask AO";
-  createChildElement(conditionSelect, "option").textContent = "Clear Mask AO";
+  createChildElement(conditionSelect, "option").textContent =
+    noMaskAuditoryOnlyConditionText;
+  createChildElement(conditionSelect, "option").textContent =
+    clearMaskAuditoryOnlyConditionText;
   const confirmButton = createChildElement(page, "button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
