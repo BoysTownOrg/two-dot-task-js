@@ -225,6 +225,9 @@ function repetitionTrialAssumingCommonFileNames(stimuliDirectory, word) {
   );
 }
 
+const clearMaskConditionText = "Clear Mask AV";
+const disposableMaskConditionText = "Disposable Mask AV";
+
 function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
   document.body.removeChild(page);
   const condition = conditionSelect.options.item(
@@ -232,10 +235,10 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
   ).textContent;
   let stimuliDirectory = "";
   switch (condition) {
-    case "Disposable Mask AV":
+    case disposableMaskConditionText:
       stimuliDirectory = "Disposable Mask Stimuli";
       break;
-    case "Clear Mask AV":
+    case clearMaskConditionText:
     default:
       stimuliDirectory = "Clear Mask Stimuli";
   }
@@ -407,9 +410,10 @@ function main() {
   );
   conditionLabel.textContent = "Condition";
   const conditionSelect = createChildElement(conditionLabel, "select");
-  createChildElement(conditionSelect, "option").textContent = "Clear Mask AV";
   createChildElement(conditionSelect, "option").textContent =
-    "Disposable Mask AV";
+    clearMaskConditionText;
+  createChildElement(conditionSelect, "option").textContent =
+    disposableMaskConditionText;
   createChildElement(conditionSelect, "option").textContent = "No Mask AO";
   createChildElement(conditionSelect, "option").textContent = "Clear Mask AO";
   const confirmButton = createChildElement(page, "button");
