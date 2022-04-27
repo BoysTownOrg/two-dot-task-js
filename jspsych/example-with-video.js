@@ -212,7 +212,11 @@ function repetitionTrialAssumingCommonFileNames(word) {
   );
 }
 
-function main() {
+function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
+  document.body.removeChild(page);
+  const condition = conditionSelect.options.item(
+    conditionSelect.selectedIndex
+  ).textContent;
   const jsPsych = initJsPsych();
   jsPsych.run([
     {
@@ -312,6 +316,32 @@ function main() {
       button_html: bottomRightButtonHTML,
     },
   ]);
+}
+
+function createChildElement(parent, tag) {
+  const child = document.createElement(tag);
+  parent.append(child);
+  return child;
+}
+
+function main() {
+  const page = createChildElement(document.body, "div");
+  const conditionLabel = createChildElement(
+    createChildElement(page, "div"),
+    "label"
+  );
+  conditionLabel.textContent = "Condition";
+  const conditionSelect = createChildElement(conditionLabel, "select");
+  createChildElement(conditionSelect, "option").textContent = "Clear Mask AV";
+  createChildElement(conditionSelect, "option").textContent =
+    "Disposable Mask AV";
+  createChildElement(conditionSelect, "option").textContent = "No Mask AO";
+  createChildElement(conditionSelect, "option").textContent = "Clear Mask AO";
+  const confirmButton = createChildElement(page, "button");
+  confirmButton.textContent = "Confirm";
+  confirmButton.addEventListener("click", () => {
+    notifyThatConfirmButtonHasBeenClicked(page, conditionSelect);
+  });
 }
 
 main();
