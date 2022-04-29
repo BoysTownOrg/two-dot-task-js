@@ -271,6 +271,17 @@ function repetitionTrialAssumingCommonFileNames(
   );
 }
 
+function repetitionTrialWithoutAudio(word) {
+  return {
+    type: jsPsychImageButtonResponse,
+    stimulus: resourcePath(imageFileNameFromWord(word)),
+    stimulus_height: standardImageHeightPixels,
+    choices: ["Continue"],
+    prompt: "",
+    button_html: bottomRightButtonHTML,
+  };
+}
+
 const clearMaskConditionText = "Clear Mask AV";
 const disposableMaskConditionText = "Disposable Mask AV";
 const noMaskAuditoryOnlyConditionText = "No Mask AO";
@@ -317,14 +328,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     },
     gameTrial(0),
     // Training Block 1
-    {
-      type: jsPsychImageButtonResponse,
-      stimulus: resourcePath("Button.png"),
-      stimulus_height: standardImageHeightPixels,
-      choices: ["Continue"],
-      prompt: "",
-      button_html: bottomRightButtonHTML,
-    },
+    repetitionTrialWithoutAudio("Button"),
     repetitionTrialAssumingCommonFileNames(
       stimuliDirectory,
       stimulusExtension,
@@ -513,14 +517,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ),
     gameTransition(3),
     // Cued Recall Test
-    {
-      type: jsPsychImageButtonResponse,
-      stimulus: resourcePath("Seesaw.png"),
-      stimulus_height: standardImageHeightPixels,
-      choices: ["Continue"],
-      prompt: "",
-      button_html: bottomRightButtonHTML,
-    },
+    repetitionTrialWithoutAudio("Seesaw"),
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
       stimulusExtension,
