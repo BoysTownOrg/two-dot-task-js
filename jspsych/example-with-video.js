@@ -271,7 +271,7 @@ function repetitionTrialAssumingCommonFileNames(
   );
 }
 
-function repetitionTrialWithoutAudio(word) {
+function imageWithoutAudioTrial(word) {
   return {
     type: jsPsychImageButtonResponse,
     stimulus: resourcePath(imageFileNameFromWord(word)),
@@ -280,6 +280,14 @@ function repetitionTrialWithoutAudio(word) {
     prompt: "",
     button_html: bottomRightButtonHTML,
   };
+}
+
+function repetitionTrialWithoutAudio(word) {
+  return imageWithoutAudioTrial(word);
+}
+
+function cuedRecallTrialWithoutAudio(word) {
+  return imageWithoutAudioTrial(word);
 }
 
 function repetitionBlock(stimuliDirectory, stimulusExtension, words) {
@@ -301,6 +309,19 @@ function freeRecallBlock(stimuliDirectory, stimulusExtension, words) {
         stimuliDirectory,
         stimulusExtension,
         imageFileNameFromWord(word)
+      )
+    ),
+  };
+}
+
+function cuedRecallBlock(stimuliDirectory, stimulusExtension, wordsWithCue) {
+  return {
+    timeline: wordsWithCue.map((wordWithCue) =>
+      cuedRecallTrialAssumingCommonFilenames(
+        stimuliDirectory,
+        stimulusExtension,
+        wordWithCue.cue,
+        imageFileNameFromWord(wordWithCue.word)
       )
     ),
   };
@@ -487,49 +508,16 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ]),
     gameTransition(3),
     // Cued Recall Test
-    repetitionTrialWithoutAudio("Seesaw"),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "BAY",
-      imageFileNameFromWord("Baby")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "ROO",
-      imageFileNameFromWord("Rooster")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "TO",
-      imageFileNameFromWord("Topin")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "NE",
-      imageFileNameFromWord("Nedig")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "KI",
-      imageFileNameFromWord("Kinit")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "DAE",
-      imageFileNameFromWord("Daevl")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "BI",
-      imageFileNameFromWord("Binip")
-    ),
+    cuedRecallTrialWithoutAudio("Seesaw"),
+    cuedRecallBlock(stimuliDirectory, stimulusExtension, [
+      { word: "Baby", cue: "BAY" },
+      { word: "Rooster", cue: "ROO" },
+      { word: "Topin", cue: "TO" },
+      { word: "Nedig", cue: "NE" },
+      { word: "Kinit", cue: "KI" },
+      { word: "Daevl", cue: "DAE" },
+      { word: "Binip", cue: "BI" },
+    ]),
     gameTransition(4),
     // 5-Minute Break
     {
