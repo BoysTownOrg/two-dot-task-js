@@ -536,36 +536,13 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ]),
     gameTransition(6),
     // Cued Recall Test (Re-test)
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "TO",
-      imageFileNameFromWord("Topin")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "NE",
-      imageFileNameFromWord("Nedig")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "KI",
-      imageFileNameFromWord("Kinit")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "DAE",
-      imageFileNameFromWord("Daevl")
-    ),
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "BI",
-      imageFileNameFromWord("Binip")
-    ),
+    cuedRecallBlock(stimuliDirectory, stimulusExtension, [
+      { word: "Topin", cue: "TO" },
+      { word: "Nedig", cue: "NE" },
+      { word: "Kinit", cue: "KI" },
+      { word: "Daevl", cue: "DAE" },
+      { word: "Binip", cue: "BI" },
+    ]),
     gameTransition(7),
     // 2-Dot Test (Re-test)
     twoDotWithoutFeedbackTrial(
