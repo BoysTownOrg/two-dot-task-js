@@ -454,51 +454,43 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ]),
     gameTransition(1),
     // Training Block 3
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Topin",
-      "Daevl",
-      "Topin",
-      3.14,
-      4.62
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Nedig",
-      "Kinit",
-      "Nedig",
-      2.96,
-      4.36
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Binip",
-      "Kinit",
-      "Kinit",
-      3.09,
-      4.58
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Daevl",
-      "Nedig",
-      "Daevl",
-      3.21,
-      4.71
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Topin",
-      "Binip",
-      "Binip",
-      3.02,
-      4.41
-    ),
+    twoDotBlock(stimuliDirectory, stimulusExtension, [
+      {
+        firstWord: "Topin",
+        secondWord: "Daevl",
+        correctWord: "Topin",
+        firstOnset: 3.14,
+        secondOnset: 4.62,
+      },
+      {
+        firstWord: "Nedig",
+        secondWord: "Kinit",
+        correctWord: "Nedig",
+        firstOnset: 2.96,
+        secondOnset: 4.36,
+      },
+      {
+        firstWord: "Binip",
+        secondWord: "Kinit",
+        correctWord: "Kinit",
+        firstOnset: 3.09,
+        secondOnset: 4.58,
+      },
+      {
+        firstWord: "Daevl",
+        secondWord: "Nedig",
+        correctWord: "Daevl",
+        firstOnset: 3.21,
+        secondOnset: 4.71,
+      },
+      {
+        firstWord: "Topin",
+        secondWord: "Binip",
+        correctWord: "Binip",
+        firstOnset: 3.02,
+        secondOnset: 4.41,
+      },
+    ]),
     gameTransition(2),
     // Free Recall Test
     freeRecallBlock(stimuliDirectory, stimulusExtension, [
