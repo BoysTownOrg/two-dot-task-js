@@ -602,11 +602,51 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
       ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
         stimuliDirectory,
         stimulusExtension,
-        "Kinit",
         "Topin",
+        "Nedig",
         "Topin"
       ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.14, 4.46),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(2.78, 4.14),
+    },
+    {
+      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+        stimuliDirectory,
+        stimulusExtension,
+        "Binip",
+        "Nedig",
+        "Nedig"
+      ),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(3.07, 4.49),
+    },
+    {
+      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+        stimuliDirectory,
+        stimulusExtension,
+        "Daevl",
+        "Kinit",
+        "Kinit"
+      ),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(2.95, 4.42),
+    },
+    {
+      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+        stimuliDirectory,
+        stimulusExtension,
+        "Daevl",
+        "Topin",
+        "Daevl"
+      ),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(3.07, 4.46),
+    },
+    {
+      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+        stimuliDirectory,
+        stimulusExtension,
+        "Kinit",
+        "Binip",
+        "Binip"
+      ),
+      ...twoDotTimingPropertiesAssumingSameLengthWords(3.13, 4.54),
     },
     // ...
     gameTransition(8),
