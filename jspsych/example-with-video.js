@@ -176,6 +176,16 @@ function twoDotTimingPropertiesAssumingSameLengthWords(
   };
 }
 
+function greenCircleTrial() {
+  return {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: "",
+    choices: [""],
+    button_html:
+      '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
+  };
+}
+
 function twoDotTrial(
   stimuliDirectory,
   stimulusExtension,
@@ -187,13 +197,7 @@ function twoDotTrial(
 ) {
   return {
     timeline: [
-      {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: "",
-        choices: [""],
-        button_html:
-          '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
-      },
+      greenCircleTrial(),
       {
         ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
           stimuliDirectory,
@@ -222,13 +226,7 @@ function twoDotWithoutFeedbackTrial(
 ) {
   return {
     timeline: [
-      {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: "",
-        choices: [""],
-        button_html:
-          '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
-      },
+      greenCircleTrial(),
       {
         ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
           stimuliDirectory,
