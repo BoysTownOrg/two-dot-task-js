@@ -284,11 +284,14 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     },
     gameTrial(0),
     // Training Block 1
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Button"
-    ),
+    {
+      type: jsPsychImageButtonResponse,
+      stimulus: resourcePath("Button.png"),
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+      button_html: bottomRightButtonHTML,
+    },
     repetitionTrialAssumingCommonFileNames(
       stimuliDirectory,
       stimulusExtension,
