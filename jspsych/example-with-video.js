@@ -282,6 +282,18 @@ function repetitionTrialWithoutAudio(word) {
   };
 }
 
+function repetitionBlock(stimuliDirectory, stimulusExtension, words) {
+  return {
+    timeline: words.map((word) =>
+      repetitionTrialAssumingCommonFileNames(
+        stimuliDirectory,
+        stimulusExtension,
+        word
+      )
+    ),
+  };
+}
+
 const clearMaskConditionText = "Clear Mask AV";
 const disposableMaskConditionText = "Disposable Mask AV";
 const noMaskAuditoryOnlyConditionText = "No Mask AO";
@@ -329,41 +341,15 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     gameTrial(0),
     // Training Block 1
     repetitionTrialWithoutAudio("Button"),
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Baby"
-    ),
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Rooster"
-    ),
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Topin"
-    ),
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Nedig"
-    ),
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Kinit"
-    ),
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Daevl"
-    ),
-    repetitionTrialAssumingCommonFileNames(
-      stimuliDirectory,
-      stimulusExtension,
-      "Binip"
-    ),
+    repetitionBlock(stimuliDirectory, stimulusExtension, [
+      "Baby",
+      "Rooster",
+      "Topin",
+      "Nedig",
+      "Kinit",
+      "Daevl",
+      "Binip",
+    ]),
     gameTransition(0),
     // Training Block 2
     twoDotTrial(
@@ -477,8 +463,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
       4.41
     ),
     gameTransition(2),
-    // Training Block 4
-    // ...
     // Free Recall Test
     freeRecallTrial(
       stimuliDirectory,
@@ -628,11 +612,51 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ),
     gameTransition(7),
     // 2-Dot Test (Re-test)
-    twoDotWithoutFeedbackTrial("Topin", "Nedig", "Topin", 2.78, 4.14),
-    twoDotWithoutFeedbackTrial("Binip", "Nedig", "Nedig", 3.07, 4.49),
-    twoDotWithoutFeedbackTrial("Daevl", "Kinit", "Kinit", 2.95, 4.42),
-    twoDotWithoutFeedbackTrial("Daevl", "Topin", "Daevl", 3.07, 4.46),
-    twoDotWithoutFeedbackTrial("Kinit", "Binip", "Binip", 3.13, 4.54),
+    twoDotWithoutFeedbackTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Topin",
+      "Nedig",
+      "Topin",
+      2.78,
+      4.14
+    ),
+    twoDotWithoutFeedbackTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Binip",
+      "Nedig",
+      "Nedig",
+      3.07,
+      4.49
+    ),
+    twoDotWithoutFeedbackTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Daevl",
+      "Kinit",
+      "Kinit",
+      2.95,
+      4.42
+    ),
+    twoDotWithoutFeedbackTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Daevl",
+      "Topin",
+      "Daevl",
+      3.07,
+      4.46
+    ),
+    twoDotWithoutFeedbackTrial(
+      stimuliDirectory,
+      stimulusExtension,
+      "Kinit",
+      "Binip",
+      "Binip",
+      3.13,
+      4.54
+    ),
     gameTransition(8),
     {
       type: jsPsychHtmlButtonResponse,
