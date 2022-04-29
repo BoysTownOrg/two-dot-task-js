@@ -480,12 +480,14 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ),
     gameTransition(3),
     // Cued Recall Test
-    cuedRecallTrialAssumingCommonFilenames(
-      stimuliDirectory,
-      stimulusExtension,
-      "SEE",
-      imageFileNameFromWord("Seesaw")
-    ),
+    {
+      type: jsPsychImageButtonResponse,
+      stimulus: resourcePath("Seesaw.png"),
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+      button_html: bottomRightButtonHTML,
+    },
     cuedRecallTrialAssumingCommonFilenames(
       stimuliDirectory,
       stimulusExtension,
