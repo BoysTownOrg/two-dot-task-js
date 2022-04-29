@@ -294,6 +294,18 @@ function repetitionBlock(stimuliDirectory, stimulusExtension, words) {
   };
 }
 
+function freeRecallBlock(stimuliDirectory, stimulusExtension, words) {
+  return {
+    timeline: words.map((word) =>
+      freeRecallTrial(
+        stimuliDirectory,
+        stimulusExtension,
+        imageFileNameFromWord(word)
+      )
+    ),
+  };
+}
+
 const clearMaskConditionText = "Clear Mask AV";
 const disposableMaskConditionText = "Disposable Mask AV";
 const noMaskAuditoryOnlyConditionText = "No Mask AO";
@@ -464,41 +476,15 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ),
     gameTransition(2),
     // Free Recall Test
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Baby")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Rooster")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Topin")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Nedig")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Kinit")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Daevl")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Binip")
-    ),
+    freeRecallBlock(stimuliDirectory, stimulusExtension, [
+      "Baby",
+      "Rooster",
+      "Topin",
+      "Nedig",
+      "Kinit",
+      "Daevl",
+      "Binip",
+    ]),
     gameTransition(3),
     // Cued Recall Test
     repetitionTrialWithoutAudio("Seesaw"),
