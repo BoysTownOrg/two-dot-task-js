@@ -262,12 +262,12 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
       stimulusExtension = audioExtension;
       break;
     case disposableMaskConditionText:
-      stimuliDirectory = "Disposable Mask Stimuli";
+      stimuliDirectory = "Disposable Mask AV";
       stimulusExtension = videoExtension;
       break;
     case clearMaskConditionText:
     default:
-      stimuliDirectory = "Clear Mask Stimuli";
+      stimuliDirectory = "Clear Mask AV";
       stimulusExtension = videoExtension;
   }
   const jsPsych = initJsPsych();
