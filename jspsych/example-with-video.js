@@ -327,6 +327,22 @@ function cuedRecallBlock(stimuliDirectory, stimulusExtension, wordsWithCue) {
   };
 }
 
+function twoDotBlock(stimuliDirectory, stimulusExtension, twoDotParameters) {
+  return {
+    timeline: twoDotParameters.map((parameters) =>
+      twoDotTrial(
+        stimuliDirectory,
+        stimulusExtension,
+        parameters.firstWord,
+        parameters.secondWord,
+        parameters.correctWord,
+        parameters.firstOnset,
+        parameters.secondOnset
+      )
+    ),
+  };
+}
+
 const clearMaskConditionText = "Clear Mask AV";
 const disposableMaskConditionText = "Disposable Mask AV";
 const noMaskAuditoryOnlyConditionText = "No Mask AO";
@@ -385,69 +401,57 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ]),
     gameTransition(0),
     // Training Block 2
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Baby",
-      "Cheetah",
-      "Baby",
-      3.1,
-      4.43
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Pizza",
-      "Rooster",
-      "Rooster",
-      3.01,
-      4.37
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Binip",
-      "Topin",
-      "Topin",
-      3,
-      4.36
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Daevl",
-      "Nedig",
-      "Nedig",
-      3.21,
-      4.71
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Kinit",
-      "Topin",
-      "Kinit",
-      3.14,
-      4.46
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Daevl",
-      "Kinit",
-      "Daevl",
-      3.19,
-      4.72
-    ),
-    twoDotTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      "Nedig",
-      "Binip",
-      "Binip",
-      2.93,
-      4.33
-    ),
+    twoDotBlock(stimuliDirectory, stimulusExtension, [
+      {
+        firstWord: "Baby",
+        secondWord: "Cheetah",
+        correctWord: "Baby",
+        firstOnset: 3.1,
+        secondOnset: 4.43,
+      },
+      {
+        firstWord: "Pizza",
+        secondWord: "Rooster",
+        correctWord: "Rooster",
+        firstOnset: 3.01,
+        secondOnset: 4.37,
+      },
+      {
+        firstWord: "Binip",
+        secondWord: "Topin",
+        correctWord: "Topin",
+        firstOnset: 3,
+        secondOnset: 4.36,
+      },
+      {
+        firstWord: "Daevl",
+        secondWord: "Nedig",
+        correctWord: "Nedig",
+        firstOnset: 3.21,
+        secondOnset: 4.71,
+      },
+      {
+        firstWord: "Kinit",
+        secondWord: "Topin",
+        correctWord: "Kinit",
+        firstOnset: 3.14,
+        secondOnset: 4.46,
+      },
+      {
+        firstWord: "Daevl",
+        secondWord: "Kinit",
+        correctWord: "Daevl",
+        firstOnset: 3.19,
+        secondOnset: 4.72,
+      },
+      {
+        firstWord: "Nedig",
+        secondWord: "Binip",
+        correctWord: "Binip",
+        firstOnset: 2.93,
+        secondOnset: 4.33,
+      },
+    ]),
     gameTransition(1),
     // Training Block 3
     twoDotTrial(
