@@ -1,5 +1,4 @@
 import * as pluginClasses from "./plugin.js";
-import { parse, TrialType } from "../lib/parsing-trial-set.js";
 
 const twoDotPluginClass = pluginClasses.twoDot(jsPsychModule);
 const twoDotWithoutFeedbackPluginClass =
@@ -268,83 +267,6 @@ function parseTrialOrderFileLine(
       default:
     }
   }
-}
-
-function convertToJsPsychTrials(trialSet) {
-  const trials = [];
-  let gameTransitionCount = 0;
-  for (const trial of trialSet)
-    switch (trial.type) {
-      case TrialType.initialGame:
-        pushGameTrial(trials, 0);
-        gameTransitionCount = 0;
-        break;
-      case TrialType.blank:
-        pushBlankTrial(trials);
-        break;
-      case TrialType.image:
-        trials.push({
-          type: jsPsychImageButtonResponse,
-          stimulus: resourcePath(trial.imageFileName),
-          stimulus_height: standardImageHeightPixels,
-          choices: ["Continue"],
-          prompt: "",
-          button_html: bottomRightButtonHTML,
-        });
-        break;
-      case TrialType.imageWithAudio:
-        trials.push({
-          timeline: [
-            {
-              type: imageAudioButtonResponsePluginClass,
-              stimulusUrl: resourcePath(trial.audioFileName),
-              imageUrl: resourcePath(trial.imageFileName),
-              imageHeight: standardImageHeightPixels,
-            },
-          ],
-          loop_function(data) {
-            return data.values()[0].repeat;
-          },
-        });
-        break;
-      case TrialType.gameTransition:
-        pushTwoConsecutiveGameTrials(trials, gameTransitionCount);
-        gameTransitionCount += 1;
-        break;
-      case TrialType.greenCircle:
-        pushGreenCircleTrial(trials);
-        break;
-      case TrialType.twoDot:
-        pushTwoDotTrial(
-          trials,
-          trial.stimulusFileName,
-          trial.feedbackAudioFileName,
-          resourcePath(trial.imageFileName),
-          trial.firstWord,
-          trial.secondWord,
-          trial.correctWord
-        );
-        break;
-      case TrialType.twoDotWithoutFeedback:
-        pushTwoDotWithoutFeedbackTrial(
-          trials,
-          trial.stimulusFileName,
-          resourcePath(trial.imageFileName),
-          trial.firstWord,
-          trial.secondWord,
-          trial.correctWord
-        );
-        break;
-      case TrialType.break:
-        trials.push({
-          type: stopwatchPluginClass,
-          text: 'Take a 5 minute break. Press "Continue" when finished.',
-          alarmTimeSeconds: 300,
-        });
-        break;
-      default:
-    }
-  return trials;
 }
 
 function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
