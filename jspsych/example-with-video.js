@@ -211,6 +211,41 @@ function twoDotTrial(
   };
 }
 
+function twoDotWithoutFeedbackTrial(
+  stimuliDirectory,
+  stimulusExtension,
+  firstWord,
+  secondWord,
+  correctWord,
+  firstOnset,
+  secondOnset
+) {
+  return {
+    timeline: [
+      {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: "",
+        choices: [""],
+        button_html:
+          '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
+      },
+      {
+        ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
+          stimuliDirectory,
+          stimulusExtension,
+          firstWord,
+          secondWord,
+          correctWord
+        ),
+        ...twoDotTimingPropertiesAssumingSameLengthWords(
+          firstOnset,
+          secondOnset
+        ),
+      },
+    ],
+  };
+}
+
 function gameTrial(n) {
   return {
     type: jsPsychImageButtonResponse,
@@ -598,57 +633,11 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     ),
     gameTransition(7),
     // 2-Dot Test (Re-test)
-    {
-      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-        stimuliDirectory,
-        stimulusExtension,
-        "Topin",
-        "Nedig",
-        "Topin"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(2.78, 4.14),
-    },
-    {
-      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-        stimuliDirectory,
-        stimulusExtension,
-        "Binip",
-        "Nedig",
-        "Nedig"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.07, 4.49),
-    },
-    {
-      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-        stimuliDirectory,
-        stimulusExtension,
-        "Daevl",
-        "Kinit",
-        "Kinit"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(2.95, 4.42),
-    },
-    {
-      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-        stimuliDirectory,
-        stimulusExtension,
-        "Daevl",
-        "Topin",
-        "Daevl"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.07, 4.46),
-    },
-    {
-      ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-        stimuliDirectory,
-        stimulusExtension,
-        "Kinit",
-        "Binip",
-        "Binip"
-      ),
-      ...twoDotTimingPropertiesAssumingSameLengthWords(3.13, 4.54),
-    },
-    // ...
+    twoDotWithoutFeedbackTrial("Topin", "Nedig", "Topin", 2.78, 4.14),
+    twoDotWithoutFeedbackTrial("Binip", "Nedig", "Nedig", 3.07, 4.49),
+    twoDotWithoutFeedbackTrial("Daevl", "Kinit", "Kinit", 2.95, 4.42),
+    twoDotWithoutFeedbackTrial("Daevl", "Topin", "Daevl", 3.07, 4.46),
+    twoDotWithoutFeedbackTrial("Kinit", "Binip", "Binip", 3.13, 4.54),
     gameTransition(8),
     {
       type: jsPsychHtmlButtonResponse,
