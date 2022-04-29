@@ -527,31 +527,13 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     },
     gameTrial(6),
     // Free Recall Test (Re-test)
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Topin")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Nedig")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Kinit")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Daevl")
-    ),
-    freeRecallTrial(
-      stimuliDirectory,
-      stimulusExtension,
-      imageFileNameFromWord("Binip")
-    ),
+    freeRecallBlock(stimuliDirectory, stimulusExtension, [
+      "Topin",
+      "Nedig",
+      "Kinit",
+      "Daevl",
+      "Binip",
+    ]),
     gameTransition(6),
     // Cued Recall Test (Re-test)
     cuedRecallTrialAssumingCommonFilenames(
