@@ -1,4 +1,7 @@
-import { createTaskPresenter } from "../lib/TaskPresenter.js";
+import {
+  createTaskPresenter,
+  createTaskPresenterWithDelayedFinish,
+} from "../lib/TaskPresenter.js";
 
 class TaskViewStub {
   constructor() {
@@ -92,6 +95,15 @@ class TaskViewStub {
   finish(result) {
     this.finishedResult_ = result;
   }
+
+  finishWithDelaySeconds(result, t) {
+    this.finishedResult_ = result;
+    this.finishDelaySeconds_ = t;
+  }
+
+  finishDelaySeconds() {
+    return this.finishDelaySeconds_;
+  }
 }
 
 describe("TaskPresenter", () => {
@@ -153,5 +165,16 @@ describe("TaskPresenter", () => {
   it("should show cursor when either choice selected", function () {
     this.presenter.notifyThatSecondChoiceIsSelected();
     expect(this.view.cursorShown()).toBeTrue();
+  });
+});
+
+describe("TaskPresenterWithDelayedFinish", () => {
+  it("initially hides cursor", () => {
+    const view = new TaskViewStub();
+    const delaySeconds = 1;
+    const presenter = createTaskPresenterWithDelayedFinish(view, delaySeconds);
+    presenter.notifyThatTaskIsFinished({ choice: "second" });
+    expect(view.finishedResult()).toEqual({ choice: "second" });
+    expect(view.finishDelaySeconds()).toEqual(1);
   });
 });
