@@ -757,6 +757,54 @@ export function imageAudioButtonResponse(jspsych) {
   return Plugin;
 }
 
+export function imageVideoPlaceholderButtonResponse(jspsych) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(displayElement, trial) {
+      clear(displayElement);
+      const gridLayout = document.createElement("div");
+      gridLayout.style.display = "grid";
+      gridLayout.style.gridTemplateColumns = "1fr 1fr";
+      gridLayout.style.justifyItems = "center";
+      gridLayout.style.alignItems = "center";
+      adopt(displayElement, gridLayout);
+      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
+      image.style.gridRow = 1;
+      image.style.gridColumn = 2;
+      adopt(gridLayout, image);
+      const buttonGroup = buttonGroupElement();
+      adopt(displayElement, buttonGroup);
+      const continueButton = buttonElement();
+      const continueButtonContainer = buttonContainerElement();
+      adopt(continueButtonContainer, continueButton);
+      continueButton.textContent = "Continue";
+      adopt(buttonGroup, continueButtonContainer);
+      addClickEventListener(continueButton, () => this.jsPsych.finishTrial());
+    }
+  }
+  Plugin.info = {
+    name: "image-video-placeholder-button-response",
+    parameters: {
+      imageUrl: {
+        type: jspsych.ParameterType.IMAGE,
+        pretty_name: "Image URL",
+        default: "",
+        description: "The image",
+      },
+      imageHeight: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+    },
+  };
+  return Plugin;
+}
+
 export function imageVideoButtonResponse(jspsych) {
   class Plugin {
     constructor(jsPsych) {

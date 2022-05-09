@@ -6,6 +6,8 @@ const twoDotWithVideoPluginClass = pluginClasses.twoDotWithVideo(jsPsychModule);
 const twoDotWithVideoWithoutFeedbackPluginClass =
   pluginClasses.twoDotWithVideoWithoutFeedback(jsPsychModule);
 const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
+const imageVideoPlaceholderButtonResponsePluginClass =
+  pluginClasses.imageVideoPlaceholderButtonResponse(jsPsychModule);
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
@@ -272,12 +274,9 @@ function repetitionTrialAssumingCommonFileNames(
 
 function imageWithoutAudioTrial(word) {
   return {
-    type: jsPsychImageButtonResponse,
-    stimulus: resourcePath(imageFileNameFromWord(word)),
-    stimulus_height: standardImageHeightPixels,
-    choices: ["Continue"],
-    prompt: "",
-    button_html: bottomRightButtonHTML,
+    type: imageVideoPlaceholderButtonResponsePluginClass,
+    imageUrl: resourcePath(imageFileNameFromWord(word)),
+    imageHeight: standardImageHeightPixels,
   };
 }
 
