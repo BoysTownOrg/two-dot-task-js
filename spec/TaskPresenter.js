@@ -1,4 +1,4 @@
-import { TaskPresenter } from "../lib/TaskPresenter.js";
+import { createTaskPresenter } from "../lib/TaskPresenter.js";
 
 class TaskViewStub {
   constructor() {
@@ -97,7 +97,7 @@ class TaskViewStub {
 describe("TaskPresenter", () => {
   beforeEach(function () {
     this.view = new TaskViewStub();
-    this.presenter = new TaskPresenter(this.view);
+    this.presenter = createTaskPresenter(this.view);
   });
 
   it("initially hides cursor", function () {

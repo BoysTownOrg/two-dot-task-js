@@ -5,7 +5,7 @@ import {
   createTaskModelWithoutFeedback,
 } from "../lib/TaskModel.js";
 import { TaskController } from "../lib/TaskController.js";
-import { TaskPresenter } from "../lib/TaskPresenter.js";
+import { createTaskPresenter } from "../lib/TaskPresenter.js";
 
 function addEventListener(element, event, f) {
   element.addEventListener(event, f);
@@ -517,7 +517,7 @@ export function twoDot(jspsych) {
             trial.stimulusUrl,
             trial.feedbackUrl
           ),
-          new TaskPresenter(taskUI),
+          createTaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord
@@ -573,7 +573,7 @@ export function twoDotWithVideo(jspsych) {
             trial.stimulusUrl,
             trial.feedbackUrl
           ),
-          new TaskPresenter(taskUI),
+          createTaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord,
@@ -624,7 +624,7 @@ export function twoDotWithoutFeedback(jspsych) {
         taskUI,
         createTaskModelWithoutFeedback(
           new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
-          new TaskPresenter(taskUI),
+          createTaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord
@@ -670,7 +670,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
         taskUI,
         createTaskModelWithoutFeedback(
           new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
-          new TaskPresenter(taskUI),
+          createTaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord
