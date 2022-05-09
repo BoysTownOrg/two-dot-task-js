@@ -1,6 +1,7 @@
 import {
   Choice,
   createTaskModel,
+  createTaskModelWithDelayedFeedback,
   createTaskModelWithoutFeedback,
 } from "../lib/TaskModel.js";
 
@@ -18,6 +19,14 @@ class AudioPlayerStub {
   playFeedback() {
     this.feedbackPlayed_ = true;
     this.timesFeedbackPlayed_ += 1;
+  }
+
+  playFeedbackAfterSeconds(t) {
+    this.feedbackPlayedAfterSeconds_ = t;
+  }
+
+  feedbackPlayedAfterSeconds() {
+    return this.feedbackPlayedAfterSeconds_;
   }
 
   playStimulus() {
@@ -343,5 +352,30 @@ describe("TaskModelWithoutFeedback", () => {
       word: "foo",
       correct: "no",
     });
+  });
+});
+
+describe("TaskModelWithDelayedFeedback", () => {
+  it("should delay feedback after choice is submitted", () => {
+    const audioPlayer = new AudioPlayerStub();
+    const observer = new TaskModelObserverStub();
+    const feedbackDelaySeconds = 1;
+    const model = createTaskModelWithDelayedFeedback(
+      audioPlayer,
+      observer,
+      new Map([
+        [Choice.first, { onset: 0.12, offset: 0.34 }],
+        [Choice.second, { onset: 0.56, offset: 0.78 }],
+      ]),
+      new Map([
+        [Choice.first, "foo"],
+        [Choice.second, "bar"],
+      ]),
+      "bar",
+      feedbackDelaySeconds
+    );
+    audioPlayer.endStimulusPlayback();
+    model.submit({ choice: Choice.first });
+    expect(audioPlayer.feedbackPlayedAfterSeconds()).toEqual(1);
   });
 });
