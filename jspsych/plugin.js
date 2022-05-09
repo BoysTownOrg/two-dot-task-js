@@ -678,7 +678,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
         taskUI,
         createTaskModelWithoutFeedback(
           new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
-          createTaskPresenterWithDelayedFinish(taskUI),
+          createTaskPresenterWithDelayedFinish(taskUI, 1),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord
