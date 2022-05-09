@@ -5,7 +5,10 @@ import {
   createTaskModelWithoutFeedback,
 } from "../lib/TaskModel.js";
 import { TaskController } from "../lib/TaskController.js";
-import { createTaskPresenter } from "../lib/TaskPresenter.js";
+import {
+  createTaskPresenter,
+  createTaskPresenterWithDelayedFinish,
+} from "../lib/TaskPresenter.js";
 
 function addEventListener(element, event, f) {
   element.addEventListener(event, f);
@@ -298,6 +301,11 @@ class TaskWithVideoUI {
 
   finish(result) {
     finish(this, result);
+  }
+
+  finishWithDelaySeconds(result, t) {
+    const milliseconds = t * 1000;
+    this.jsPsych.pluginAPI.setTimeout(() => finish(this, result), milliseconds);
   }
 
   attach(observer) {
@@ -670,7 +678,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
         taskUI,
         createTaskModelWithoutFeedback(
           new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
-          createTaskPresenter(taskUI),
+          createTaskPresenterWithDelayedFinish(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord
