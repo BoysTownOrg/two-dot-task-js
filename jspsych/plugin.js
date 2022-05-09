@@ -233,15 +233,20 @@ class TaskUI {
   }
 }
 
+function videoWithImageGrid() {
+  const gridLayout = document.createElement("div");
+  gridLayout.style.display = "grid";
+  gridLayout.style.gridTemplateColumns = "1fr 1fr";
+  gridLayout.style.justifyItems = "center";
+  gridLayout.style.alignItems = "center";
+  return gridLayout;
+}
+
 class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const gridLayout = document.createElement("div");
-    gridLayout.style.display = "grid";
-    gridLayout.style.gridTemplateColumns = "1fr 1fr";
-    gridLayout.style.justifyItems = "center";
-    gridLayout.style.alignItems = "center";
+    const gridLayout = videoWithImageGrid();
     adopt(parent, gridLayout);
     const rightHandSide = document.createElement("div");
     rightHandSide.style.gridColumn = 2;
@@ -765,11 +770,7 @@ export function imageVideoPlaceholderButtonResponse(jspsych) {
 
     trial(displayElement, trial) {
       clear(displayElement);
-      const gridLayout = document.createElement("div");
-      gridLayout.style.display = "grid";
-      gridLayout.style.gridTemplateColumns = "1fr 1fr";
-      gridLayout.style.justifyItems = "center";
-      gridLayout.style.alignItems = "center";
+      const gridLayout = videoWithImageGrid();
       adopt(displayElement, gridLayout);
       const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       image.style.gridRow = 1;
@@ -813,11 +814,7 @@ export function imageVideoButtonResponse(jspsych) {
 
     trial(displayElement, trial) {
       clear(displayElement);
-      const gridLayout = document.createElement("div");
-      gridLayout.style.display = "grid";
-      gridLayout.style.gridTemplateColumns = "1fr 1fr";
-      gridLayout.style.justifyItems = "center";
-      gridLayout.style.alignItems = "center";
+      const gridLayout = videoWithImageGrid();
       adopt(displayElement, gridLayout);
       const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       image.style.gridRow = 1;
