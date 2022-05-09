@@ -1,7 +1,7 @@
 import {
   Choice,
-  TaskModelWithoutFeedback,
   createTaskModel,
+  createTaskModelWithoutFeedback,
 } from "../lib/TaskModel.js";
 import { TaskController } from "../lib/TaskController.js";
 import { TaskPresenter } from "../lib/TaskPresenter.js";
@@ -607,7 +607,7 @@ export function twoDotWithoutFeedback(jspsych) {
       );
       startController(
         taskUI,
-        new TaskModelWithoutFeedback(
+        createTaskModelWithoutFeedback(
           new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
           new TaskPresenter(taskUI),
           choiceTimesSeconds(trial),
@@ -653,7 +653,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
       );
       startController(
         taskUI,
-        new TaskModelWithoutFeedback(
+        createTaskModelWithoutFeedback(
           new WebVideoPlayer(this.jsPsych, videoElement, trial.stimulusUrl, ""),
           new TaskPresenter(taskUI),
           choiceTimesSeconds(trial),
