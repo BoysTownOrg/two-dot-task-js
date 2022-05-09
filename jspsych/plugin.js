@@ -1,6 +1,7 @@
 import {
   Choice,
   createTaskModel,
+  createTaskModelWithDelayedFeedback,
   createTaskModelWithoutFeedback,
 } from "../lib/TaskModel.js";
 import { TaskController } from "../lib/TaskController.js";
@@ -368,6 +369,19 @@ class WebVideoPlayer {
     this.videoElement.play();
   }
 
+  playFeedbackAfterSeconds(t) {
+    const milliseconds = t * 1000;
+    this.jsPsych.pluginAPI.setTimeout(() => {
+      this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
+        this.feedbackUrl
+      );
+      this.videoElement.onended = () => {
+        this.observer.notifyThatFeedbackHasEnded();
+      };
+      this.videoElement.play();
+    }, milliseconds);
+  }
+
   playStimulus() {
     this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
       this.stimulusUrl
@@ -552,7 +566,7 @@ export function twoDotWithVideo(jspsych) {
       );
       startController(
         taskUI,
-        createTaskModel(
+        createTaskModelWithDelayedFeedback(
           new WebVideoPlayer(
             this.jsPsych,
             videoElement,
@@ -562,7 +576,8 @@ export function twoDotWithVideo(jspsych) {
           new TaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
-          trial.correctWord
+          trial.correctWord,
+          1
         )
       );
     }
