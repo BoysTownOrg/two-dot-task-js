@@ -1,7 +1,7 @@
 import {
-  TaskModel,
   TaskModelWithoutFeedback,
   Choice,
+  createTaskModel,
 } from "../lib/TaskModel.js";
 
 class AudioPlayerStub {
@@ -158,7 +158,7 @@ describe("TaskModel", () => {
   beforeEach(function () {
     this.audioPlayer = new AudioPlayerStub();
     this.observer = new TaskModelObserverStub();
-    this.model = new TaskModel(
+    this.model = createTaskModel(
       this.audioPlayer,
       this.observer,
       new Map([
