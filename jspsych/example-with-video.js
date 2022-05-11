@@ -346,7 +346,7 @@ const disposableMaskConditionText = "Disposable Mask AV";
 const noMaskAuditoryOnlyConditionText = "No Mask AO";
 const clearMaskAuditoryOnlyConditionText = "Clear Mask AO";
 
-function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
+function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
   document.body.removeChild(page);
   const condition = conditionSelect.options.item(
     conditionSelect.selectedIndex
@@ -373,7 +373,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
       stimuliDirectory = "Clear Mask AV";
       stimulusExtension = videoExtension;
   }
-  const jsPsych = initJsPsych();
   jsPsych.run([
     {
       type: jsPsychPreload,
@@ -600,7 +599,7 @@ function createChildElement(parent, tag) {
   return child;
 }
 
-function main() {
+function selectConditionBeforeRunning(jsPsych) {
   const page = createChildElement(document.body, "div");
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
@@ -619,8 +618,13 @@ function main() {
   const confirmButton = createChildElement(page, "button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
-    notifyThatConfirmButtonHasBeenClicked(page, conditionSelect);
+    notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych);
   });
+}
+
+function main() {
+  const jsPsych = initJsPsych();
+  selectConditionBeforeRunning(jsPsych);
 }
 
 main();
