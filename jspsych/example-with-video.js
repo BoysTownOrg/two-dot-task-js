@@ -13,7 +13,7 @@ function concatenatePaths(a, b) {
   return `${a}/${b}`;
 }
 
-const standardImageHeightPixels = 400;
+const standardImageHeightPixels = 350;
 const bottomRightButtonHTML =
   '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
 

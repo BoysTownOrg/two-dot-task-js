@@ -243,6 +243,7 @@ function videoWithImageGrid() {
   gridLayout.style.gridTemplateColumns = "1fr 1fr";
   gridLayout.style.justifyItems = "center";
   gridLayout.style.alignItems = "center";
+  gridLayout.style.width = "95vw";
   return gridLayout;
 }
 
