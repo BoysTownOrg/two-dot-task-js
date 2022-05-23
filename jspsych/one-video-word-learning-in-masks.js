@@ -109,7 +109,7 @@ function twoDotTrialCommonProperties(
   return {
     type: twoDotWithVideoPluginClass,
     stimulusUrl: oneVideoPath,
-    feedbackUrl: resourcePathInDirectory(stimuliDirectory, feedbackFileName),
+    feedbackUrl: oneVideoPath,
     imageUrl: resourcePath(imageFileName),
     imageHeight: standardImageHeightPixels,
   };
