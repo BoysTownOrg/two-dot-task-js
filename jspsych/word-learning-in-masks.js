@@ -250,6 +250,7 @@ function gameTrial(n) {
   return {
     type: jsPsychImageButtonResponse,
     stimulus: resourcePath(`game${n + 1}.jpg`),
+    stimulus_height: 540,
     choices: ["Continue"],
     prompt: "",
     button_html: bottomRightButtonHTML,
