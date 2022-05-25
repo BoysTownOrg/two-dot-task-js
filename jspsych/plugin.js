@@ -141,23 +141,14 @@ function imageFromUrlAndHeight(imageUrl, imageHeight) {
   return image;
 }
 
-function addTwoDotUI(ui, jsPsych, parent, imageUrl, imageHeight) {
+function addTwoDotUI(ui, jsPsych, parent, twoDotGrid, imageUrl, imageHeight) {
   const image = imageFromUrlAndHeight(imageUrl, imageHeight);
   adopt(parent, image);
-  const twoDotGrid = divElement();
   twoDotGrid.style.display = "grid";
-  twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
-    250
-  )} ${pixelsString(250)} 1fr`;
-  twoDotGrid.style.gridGap = `${pixelsString(120)}`;
-  ui.firstDot = circleElementWithColor("black");
-  ui.firstDot.style.gridColumn = 2;
   adopt(twoDotGrid, ui.firstDot);
   addClickEventListener(ui.firstDot, () => {
     ui.observer.notifyThatFirstDotHasBeenTouched();
   });
-  ui.secondDot = circleElementWithColor("black");
-  ui.secondDot.style.gridColumn = 3;
   addClickEventListener(ui.secondDot, () => {
     ui.observer.notifyThatSecondDotHasBeenTouched();
   });
@@ -189,7 +180,16 @@ class TaskUI {
   constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    addTwoDotUI(this, jsPsych, parent, imageUrl, imageHeight);
+    const twoDotGrid = divElement();
+    twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
+      250
+    )} ${pixelsString(250)} 1fr`;
+    twoDotGrid.style.gridGap = `${pixelsString(120)}`;
+    this.firstDot = circleElementWithColor("black");
+    this.firstDot.style.gridColumn = 2;
+    this.secondDot = circleElementWithColor("black");
+    this.secondDot.style.gridColumn = 3;
+    addTwoDotUI(this, jsPsych, parent, twoDotGrid, imageUrl, imageHeight);
   }
 
   hideCursor() {
@@ -257,7 +257,20 @@ class TaskWithVideoUI {
     rightHandSide.style.gridColumn = 2;
     rightHandSide.style.gridRow = 1;
     adopt(gridLayout, rightHandSide);
-    addTwoDotUI(this, jsPsych, rightHandSide, imageUrl, imageHeight);
+    const twoDotGrid = divElement();
+    twoDotGrid.style.gridTemplateColumns = "1fr 1fr";
+    this.firstDot = circleElementWithColor("black");
+    this.firstDot.style.gridColumn = 1;
+    this.secondDot = circleElementWithColor("black");
+    this.secondDot.style.gridColumn = 2;
+    addTwoDotUI(
+      this,
+      jsPsych,
+      rightHandSide,
+      twoDotGrid,
+      imageUrl,
+      imageHeight
+    );
     videoElement.style.gridRow = 1;
     videoElement.style.gridColumn = 1;
     videoElement.style.width = "45vw";
