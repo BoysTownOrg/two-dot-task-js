@@ -28,6 +28,7 @@ function resourcePathInDirectory(directory, fileName) {
 function imageHeightFromImageFileName(imageFileName) {
   switch (imageFileName) {
     case "Topin.png":
+    case "Kinit.png":
       return 200;
     default:
       return standardImageHeightPixels;
