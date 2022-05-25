@@ -25,6 +25,15 @@ function resourcePathInDirectory(directory, fileName) {
   return resourcePath(concatenatePaths(directory, fileName));
 }
 
+function imageHeightFromImageFileName(imageFileName) {
+  switch (imageFileName) {
+    case "Topin.png":
+      return 200;
+    default:
+      return standardImageHeightPixels;
+  }
+}
+
 function imageVideoButtonResponseTrial(
   stimuliDirectory,
   stimulusFileName,
@@ -39,7 +48,7 @@ function imageVideoButtonResponseTrial(
           stimulusFileName
         ),
         imageUrl: resourcePath(imageFileName),
-        imageHeight: standardImageHeightPixels,
+        imageHeight: imageHeightFromImageFileName(imageFileName),
       },
     ],
     loop_function(data) {
