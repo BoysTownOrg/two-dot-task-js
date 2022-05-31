@@ -141,8 +141,7 @@ function imageFromUrlAndHeight(imageUrl, imageHeight) {
   return image;
 }
 
-function addTwoDotUI(ui, jsPsych, parent, twoDotGrid, imageUrl, imageHeight) {
-  const image = imageFromUrlAndHeight(imageUrl, imageHeight);
+function addTwoDotUI(ui, jsPsych, parent, twoDotGrid, image) {
   adopt(parent, image);
   twoDotGrid.style.display = "grid";
   adopt(twoDotGrid, ui.firstDot);
@@ -189,7 +188,11 @@ class TaskUI {
     this.firstDot.style.gridColumn = 2;
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.gridColumn = 3;
-    addTwoDotUI(this, jsPsych, parent, twoDotGrid, imageUrl, imageHeight);
+    const image = new Image();
+    image.src = imageUrl;
+    image.style.height = pixelsString(imageHeight);
+    image.style.width = "auto";
+    addTwoDotUI(this, jsPsych, parent, twoDotGrid, image);
   }
 
   hideCursor() {
@@ -243,7 +246,7 @@ function videoWithImageGrid() {
   gridLayout.style.gridTemplateColumns = "1fr 1fr";
   gridLayout.style.justifyItems = "center";
   gridLayout.style.alignItems = "center";
-  gridLayout.style.width = "95vw";
+  gridLayout.style.width = "100%";
   return gridLayout;
 }
 
@@ -256,24 +259,29 @@ class TaskWithVideoUI {
     const rightHandSide = document.createElement("div");
     rightHandSide.style.gridColumn = 2;
     rightHandSide.style.gridRow = 1;
+    rightHandSide.style.display = "grid";
+    rightHandSide.style.width = "100%";
+    rightHandSide.style.height = "100%";
+    rightHandSide.style.gridTemplateRows = "1fr 1fr";
+    rightHandSide.style.justifyItems = "center";
+    rightHandSide.style.alignItems = "center";
     adopt(gridLayout, rightHandSide);
-    const twoDotGrid = divElement();
-    twoDotGrid.style.gridTemplateColumns = "1fr 1fr";
+    const twoDotGrid = document.createElement("div");
+    twoDotGrid.style.gridRow = 2;
+    twoDotGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.gridColumn = 1;
     this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridColumn = 2;
-    addTwoDotUI(
-      this,
-      jsPsych,
-      rightHandSide,
-      twoDotGrid,
-      imageUrl,
-      imageHeight
-    );
+    this.secondDot.style.gridColumn = 4;
+    const image = new Image();
+    image.src = imageUrl;
+    image.style.maxWidth = "100%";
+    image.style.maxHeight = "75%";
+    image.style.gridRow = 1;
+    addTwoDotUI(this, jsPsych, rightHandSide, twoDotGrid, image);
     videoElement.style.gridRow = 1;
     videoElement.style.gridColumn = 1;
-    videoElement.style.width = "45vw";
+    videoElement.style.width = "100%";
     adopt(gridLayout, videoElement);
   }
 
