@@ -273,10 +273,7 @@ class TaskWithVideoUI {
     this.firstDot.style.gridColumn = 1;
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.gridColumn = 4;
-    const image = new Image();
-    image.src = imageUrl;
-    image.style.maxWidth = "100%";
-    image.style.maxHeight = "75%";
+    const image = imageFromUrlAndHeight(imageUrl, imageHeight);
     image.style.gridRow = 1;
     addTwoDotUI(this, jsPsych, rightHandSide, twoDotGrid, image);
     videoElement.style.gridRow = 1;
