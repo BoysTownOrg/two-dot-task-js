@@ -250,18 +250,29 @@ function videoWithImageGrid() {
   return gridLayout;
 }
 
+function resizableCircleElementWithColor(color) {
+  const circle = document.createElement("div");
+  circle.style.height = "20vh";
+  circle.style.width = "20vh";
+  circle.style.borderRadius = "50%";
+  const borderWidthPixels = 2;
+  circle.style.border = `${pixelsString(borderWidthPixels)} solid black`;
+  circle.style.backgroundColor = color;
+  return circle;
+}
+
 class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    this.firstDot = circleElementWithColor("black");
+    this.firstDot = resizableCircleElementWithColor("black");
     this.firstDot.style.position = "fixed";
     this.firstDot.style.bottom = "30%";
     this.firstDot.style.right = "40%";
     this.firstDot.style.transform = "translate(50%, 50%)";
     adopt(parent, this.firstDot);
 
-    this.secondDot = circleElementWithColor("black");
+    this.secondDot = resizableCircleElementWithColor("black");
     this.secondDot.style.position = "fixed";
     this.secondDot.style.bottom = "30%";
     this.secondDot.style.right = "10%";
