@@ -256,14 +256,14 @@ class TaskWithVideoUI {
     this.jsPsych = jsPsych;
     this.firstDot = circleElementWithColor("black");
     this.firstDot.style.position = "fixed";
-    this.firstDot.style.bottom = "25%";
+    this.firstDot.style.bottom = "30%";
     this.firstDot.style.right = "40%";
     this.firstDot.style.transform = "translate(50%, 50%)";
     adopt(parent, this.firstDot);
 
     this.secondDot = circleElementWithColor("black");
     this.secondDot.style.position = "fixed";
-    this.secondDot.style.bottom = "25%";
+    this.secondDot.style.bottom = "30%";
     this.secondDot.style.right = "10%";
     this.secondDot.style.transform = "translate(50%, 50%)";
     adopt(parent, this.secondDot);
@@ -271,10 +271,10 @@ class TaskWithVideoUI {
     const image = new Image();
     image.src = imageUrl;
     image.style.position = "fixed";
-    image.style.top = "25%";
+    image.style.top = "30%";
     image.style.right = "25%";
     image.style.maxWidth = "50%";
-    image.style.maxHeight = "50%";
+    image.style.maxHeight = "40%";
     image.style.transform = "translate(50%, -50%)";
     adopt(parent, image);
 
