@@ -275,7 +275,7 @@ class TaskWithVideoUI {
     image.style.right = "25%";
     image.style.maxWidth = "50%";
     image.style.maxHeight = "50%";
-    image.style.transform = "translate(50%, 50%)";
+    image.style.transform = "translate(50%, -50%)";
     adopt(parent, image);
 
     addClickEventListener(this.firstDot, () => {
