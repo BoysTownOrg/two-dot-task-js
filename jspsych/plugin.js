@@ -254,32 +254,63 @@ class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const gridLayout = videoWithImageGrid();
-    adopt(parent, gridLayout);
-    const rightHandSide = document.createElement("div");
-    rightHandSide.style.gridColumn = 2;
-    rightHandSide.style.gridRow = 1;
-    rightHandSide.style.display = "grid";
-    rightHandSide.style.width = "100%";
-    rightHandSide.style.height = "100%";
-    rightHandSide.style.gridTemplateRows = "1fr 1fr";
-    rightHandSide.style.justifyItems = "center";
-    rightHandSide.style.alignItems = "center";
-    adopt(gridLayout, rightHandSide);
-    const twoDotGrid = document.createElement("div");
-    twoDotGrid.style.gridRow = 2;
-    twoDotGrid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
     this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridColumn = 1;
+    this.firstDot.style.position = "fixed";
+    this.firstDot.style.bottom = "25%";
+    this.firstDot.style.right = "40%";
+    this.firstDot.style.transform = "translate(50%, 50%)";
+    adopt(parent, this.firstDot);
+
     this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridColumn = 4;
-    const image = imageFromUrlAndHeight(imageUrl, imageHeight);
-    image.style.gridRow = 1;
-    addTwoDotUI(this, jsPsych, rightHandSide, twoDotGrid, image);
-    videoElement.style.gridRow = 1;
-    videoElement.style.gridColumn = 1;
-    videoElement.style.width = "100%";
-    adopt(gridLayout, videoElement);
+    this.secondDot.style.position = "fixed";
+    this.secondDot.style.bottom = "25%";
+    this.secondDot.style.right = "10%";
+    this.secondDot.style.transform = "translate(50%, 50%)";
+    adopt(parent, this.secondDot);
+
+    const image = new Image();
+    image.src = imageUrl;
+    image.style.position = "fixed";
+    image.style.top = "25%";
+    image.style.right = "25%";
+    image.style.maxWidth = "50%";
+    image.style.maxHeight = "50%";
+    image.style.transform = "translate(50%, 50%)";
+    adopt(parent, image);
+
+    addClickEventListener(this.firstDot, () => {
+      this.observer.notifyThatFirstDotHasBeenTouched();
+    });
+    addClickEventListener(this.secondDot, () => {
+      this.observer.notifyThatSecondDotHasBeenTouched();
+    });
+    const endTrialButtons = buttonGroupElement();
+    adopt(parent, endTrialButtons);
+    const continueButtonContainer = buttonContainerElement();
+    this.continueButton = buttonElement();
+    adopt(continueButtonContainer, this.continueButton);
+    this.continueButton.textContent = "Continue";
+    this.continueButton.style.visibility = "hidden";
+    addClickEventListener(this.continueButton, () => {
+      this.observer.notifyThatContinueButtonHasBeenTouched();
+    });
+    const repeatButtonContainer = buttonContainerElement();
+    this.repeatButton = buttonElement();
+    adopt(repeatButtonContainer, this.repeatButton);
+    this.repeatButton.textContent = "Repeat";
+    this.repeatButton.style.visibility = "hidden";
+    adopt(endTrialButtons, repeatButtonContainer);
+    adopt(endTrialButtons, continueButtonContainer);
+    addClickEventListener(this.repeatButton, () => {
+      jsPsych.finishTrial({ repeat: true });
+    });
+
+    videoElement.style.position = "fixed";
+    videoElement.style.left = "25%";
+    videoElement.style.top = "50%";
+    videoElement.style.transform = "translate(-50%, -50%)";
+    videoElement.style.maxWidth = "50%";
+    adopt(parent, videoElement);
   }
 
   hideCursor() {
