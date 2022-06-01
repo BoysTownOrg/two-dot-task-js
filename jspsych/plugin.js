@@ -315,13 +315,22 @@ class TaskWithVideoUI {
     addClickEventListener(this.repeatButton, () => {
       jsPsych.finishTrial({ repeat: true });
     });
+    const videoBackground = document.createElement("div");
+    videoBackground.style.position = "fixed";
+    videoBackground.style.top = "50%";
+    videoBackground.style.left = "25%";
+    videoBackground.style.transform = "translate(-50%, -50%)";
+    videoBackground.style.backgroundColor = "black";
+    videoBackground.style.width = "50vw";
+    videoBackground.style.height = "28.125vw";
+    adopt(parent, videoBackground);
 
     videoElement.style.position = "fixed";
     videoElement.style.left = "25%";
     videoElement.style.top = "50%";
     videoElement.style.transform = "translate(-50%, -50%)";
     videoElement.style.maxWidth = "50%";
-    adopt(parent, videoElement);
+    adopt(videoBackground, videoElement);
   }
 
   hideCursor() {
