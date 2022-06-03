@@ -240,16 +240,6 @@ class TaskUI {
   }
 }
 
-function videoWithImageGrid() {
-  const gridLayout = document.createElement("div");
-  gridLayout.style.display = "grid";
-  gridLayout.style.gridTemplateColumns = "1fr 1fr";
-  gridLayout.style.justifyItems = "center";
-  gridLayout.style.alignItems = "center";
-  gridLayout.style.width = "100%";
-  return gridLayout;
-}
-
 function resizableCircleElementWithColor(color) {
   const circle = document.createElement("div");
   circle.style.height = "20vh";
@@ -863,12 +853,17 @@ export function imageVideoPlaceholderButtonResponse(jspsych) {
 
     trial(displayElement, trial) {
       clear(displayElement);
-      const gridLayout = videoWithImageGrid();
-      adopt(displayElement, gridLayout);
-      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
-      image.style.gridRow = 1;
-      image.style.gridColumn = 2;
-      adopt(gridLayout, image);
+
+      const image = new Image();
+      image.src = trial.imageUrl;
+      image.style.position = "fixed";
+      image.style.top = "50%";
+      image.style.right = "25%";
+      image.style.maxWidth = "50%";
+      image.style.maxHeight = "40%";
+      image.style.transform = "translate(50%, -50%)";
+      adopt(displayElement, image);
+
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const continueButton = buttonElement();
@@ -907,12 +902,17 @@ export function imageVideoButtonResponse(jspsych) {
 
     trial(displayElement, trial) {
       clear(displayElement);
-      const gridLayout = videoWithImageGrid();
-      adopt(displayElement, gridLayout);
-      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
-      image.style.gridRow = 1;
-      image.style.gridColumn = 2;
-      adopt(gridLayout, image);
+
+      const image = new Image();
+      image.src = trial.imageUrl;
+      image.style.position = "fixed";
+      image.style.top = "50%";
+      image.style.right = "25%";
+      image.style.maxWidth = "50%";
+      image.style.maxHeight = "40%";
+      image.style.transform = "translate(50%, -50%)";
+
+      adopt(displayElement, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const continueButton = buttonElement();
@@ -924,10 +924,12 @@ export function imageVideoButtonResponse(jspsych) {
         repeatButton
       );
       const videoElement = document.createElement("video");
-      videoElement.style.width = "45vw";
-      videoElement.style.gridRow = 1;
-      videoElement.style.gridColumn = 1;
-      adopt(gridLayout, videoElement);
+      videoElement.style.position = "fixed";
+      videoElement.style.left = "25%";
+      videoElement.style.top = "50%";
+      videoElement.style.transform = "translate(-50%, -50%)";
+      videoElement.style.maxWidth = "50%";
+      adopt(displayElement, videoElement);
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         trial.stimulusUrl
       );
