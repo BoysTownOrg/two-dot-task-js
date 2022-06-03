@@ -314,8 +314,11 @@ class TaskWithVideoUI {
     videoBackground.style.left = "25%";
     videoBackground.style.transform = "translate(-50%, -50%)";
     videoBackground.style.backgroundColor = "black";
-    videoBackground.style.width = "50vw";
-    videoBackground.style.height = "28.125vw";
+    const videoBackgroundViewportWidth = 50;
+    videoBackground.style.width = `${videoBackgroundViewportWidth}vw`;
+    videoBackground.style.height = `${
+      (1080 * videoBackgroundViewportWidth) / 1920
+    }vw`;
     adopt(parent, videoBackground);
 
     videoElement.style.position = "fixed";
