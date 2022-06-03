@@ -255,17 +255,19 @@ class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
     this.jsPsych = jsPsych;
+    const dotBottom = "30%";
+    const dotHorizontalMarginPercent = 10;
     this.firstDot = resizableCircleElementWithColor("black");
     this.firstDot.style.position = "fixed";
-    this.firstDot.style.bottom = "30%";
-    this.firstDot.style.right = "40%";
+    this.firstDot.style.bottom = dotBottom;
+    this.firstDot.style.right = `${50 - dotHorizontalMarginPercent}%`;
     this.firstDot.style.transform = "translate(50%, 50%)";
     adopt(parent, this.firstDot);
 
     this.secondDot = resizableCircleElementWithColor("black");
     this.secondDot.style.position = "fixed";
-    this.secondDot.style.bottom = "30%";
-    this.secondDot.style.right = "10%";
+    this.secondDot.style.bottom = dotBottom;
+    this.secondDot.style.right = `${dotHorizontalMarginPercent}%`;
     this.secondDot.style.transform = "translate(50%, 50%)";
     adopt(parent, this.secondDot);
 
