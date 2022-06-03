@@ -242,8 +242,9 @@ class TaskUI {
 
 function resizableCircleElementWithColor(color) {
   const circle = document.createElement("div");
-  circle.style.height = "20vh";
-  circle.style.width = "20vh";
+  const circleDiameter = "20vh";
+  circle.style.height = circleDiameter;
+  circle.style.width = circleDiameter;
   circle.style.borderRadius = "50%";
   const borderWidthPixels = 2;
   circle.style.border = `${pixelsString(borderWidthPixels)} solid black`;
