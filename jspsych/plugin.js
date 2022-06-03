@@ -258,6 +258,28 @@ function centerElementAtPercentage(element, x, y) {
   element.style.transform = "translate(50%, 50%)";
 }
 
+function addVideoWithBackground(parent, videoElement) {
+  const videoBackground = document.createElement("div");
+  videoBackground.style.position = "fixed";
+  videoBackground.style.top = "50%";
+  videoBackground.style.left = "25%";
+  videoBackground.style.transform = "translate(-50%, -50%)";
+  videoBackground.style.backgroundColor = "black";
+  const videoBackgroundViewportWidth = 50;
+  videoBackground.style.width = `${videoBackgroundViewportWidth}vw`;
+  videoBackground.style.height = `${
+    (1080 * videoBackgroundViewportWidth) / 1920
+  }vw`;
+  adopt(parent, videoBackground);
+
+  videoElement.style.position = "fixed";
+  videoElement.style.top = "50%";
+  videoElement.style.left = "50%";
+  videoElement.style.transform = "translate(-50%, -50%)";
+  videoElement.style.maxWidth = "100%";
+  adopt(videoBackground, videoElement);
+}
+
 class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
@@ -319,25 +341,7 @@ class TaskWithVideoUI {
     addClickEventListener(this.repeatButton, () => {
       jsPsych.finishTrial({ repeat: true });
     });
-    const videoBackground = document.createElement("div");
-    videoBackground.style.position = "fixed";
-    videoBackground.style.top = "50%";
-    videoBackground.style.left = "25%";
-    videoBackground.style.transform = "translate(-50%, -50%)";
-    videoBackground.style.backgroundColor = "black";
-    const videoBackgroundViewportWidth = 50;
-    videoBackground.style.width = `${videoBackgroundViewportWidth}vw`;
-    videoBackground.style.height = `${
-      (1080 * videoBackgroundViewportWidth) / 1920
-    }vw`;
-    adopt(parent, videoBackground);
-
-    videoElement.style.position = "fixed";
-    videoElement.style.top = "50%";
-    videoElement.style.left = "50%";
-    videoElement.style.transform = "translate(-50%, -50%)";
-    videoElement.style.maxWidth = "100%";
-    adopt(videoBackground, videoElement);
+    addVideoWithBackground(parent, videoElement);
   }
 
   hideCursor() {
@@ -936,13 +940,10 @@ export function imageVideoButtonResponse(jspsych) {
         continueButton,
         repeatButton
       );
+
       const videoElement = document.createElement("video");
-      videoElement.style.position = "fixed";
-      videoElement.style.left = "25%";
-      videoElement.style.top = "50%";
-      videoElement.style.transform = "translate(-50%, -50%)";
-      videoElement.style.maxWidth = "50%";
-      adopt(displayElement, videoElement);
+      addVideoWithBackground(displayElement, videoElement);
+
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         trial.stimulusUrl
       );
