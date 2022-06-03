@@ -274,10 +274,11 @@ class TaskWithVideoUI {
     const image = new Image();
     image.src = imageUrl;
     image.style.position = "fixed";
-    image.style.top = "30%";
+    const imageTopPercent = 30;
+    image.style.top = `${imageTopPercent}%`;
     image.style.right = "25%";
     image.style.maxWidth = "50%";
-    image.style.maxHeight = "40%";
+    image.style.maxHeight = `${(50 - imageTopPercent) * 2}%`;
     image.style.transform = "translate(50%, -50%)";
     adopt(parent, image);
 
