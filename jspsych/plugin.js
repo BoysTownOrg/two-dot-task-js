@@ -849,6 +849,18 @@ export function imageAudioButtonResponse(jspsych) {
   return Plugin;
 }
 
+function centerRightImage(trial) {
+  const image = new Image();
+  image.src = trial.imageUrl;
+  image.style.position = "fixed";
+  image.style.top = "50%";
+  image.style.right = "25%";
+  image.style.maxWidth = "50%";
+  image.style.maxHeight = "40%";
+  image.style.transform = "translate(50%, -50%)";
+  return image;
+}
+
 export function imageVideoPlaceholderButtonResponse(jspsych) {
   class Plugin {
     constructor(jsPsych) {
@@ -858,14 +870,7 @@ export function imageVideoPlaceholderButtonResponse(jspsych) {
     trial(displayElement, trial) {
       clear(displayElement);
 
-      const image = new Image();
-      image.src = trial.imageUrl;
-      image.style.position = "fixed";
-      image.style.top = "50%";
-      image.style.right = "25%";
-      image.style.maxWidth = "50%";
-      image.style.maxHeight = "40%";
-      image.style.transform = "translate(50%, -50%)";
+      const image = centerRightImage(trial);
       adopt(displayElement, image);
 
       const buttonGroup = buttonGroupElement();
@@ -901,16 +906,9 @@ export function imageVideoButtonResponse(jspsych) {
     trial(displayElement, trial) {
       clear(displayElement);
 
-      const image = new Image();
-      image.src = trial.imageUrl;
-      image.style.position = "fixed";
-      image.style.top = "50%";
-      image.style.right = "25%";
-      image.style.maxWidth = "50%";
-      image.style.maxHeight = "40%";
-      image.style.transform = "translate(50%, -50%)";
-
+      const image = centerRightImage(trial);
       adopt(displayElement, image);
+
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
       const continueButton = buttonElement();
