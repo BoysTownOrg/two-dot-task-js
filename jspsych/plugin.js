@@ -252,24 +252,34 @@ function resizableCircleElementWithColor(color) {
   return circle;
 }
 
+function centerElementAtPercentage(element, x, y) {
+  element.style.bottom = `${x}%`;
+  element.style.right = `${y}%`;
+  element.style.transform = "translate(50%, 50%)";
+}
+
 class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const dotBottom = "30%";
+    const dotBottomPercent = 30;
     const dotHorizontalMarginPercent = 10;
     this.firstDot = resizableCircleElementWithColor("black");
     this.firstDot.style.position = "fixed";
-    this.firstDot.style.bottom = dotBottom;
-    this.firstDot.style.right = `${50 - dotHorizontalMarginPercent}%`;
-    this.firstDot.style.transform = "translate(50%, 50%)";
+    centerElementAtPercentage(
+      this.firstDot,
+      dotBottomPercent,
+      50 - dotHorizontalMarginPercent
+    );
     adopt(parent, this.firstDot);
 
     this.secondDot = resizableCircleElementWithColor("black");
     this.secondDot.style.position = "fixed";
-    this.secondDot.style.bottom = dotBottom;
-    this.secondDot.style.right = `${dotHorizontalMarginPercent}%`;
-    this.secondDot.style.transform = "translate(50%, 50%)";
+    centerElementAtPercentage(
+      this.secondDot,
+      dotBottomPercent,
+      dotHorizontalMarginPercent
+    );
     adopt(parent, this.secondDot);
 
     const image = new Image();
