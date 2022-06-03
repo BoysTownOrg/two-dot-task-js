@@ -24,16 +24,6 @@ function resourcePathInDirectory(directory, fileName) {
   return resourcePath(concatenatePaths(directory, fileName));
 }
 
-function imageHeightFromImageFileName(imageFileName) {
-  switch (imageFileName) {
-    case "Topin.png":
-    case "Kinit.png":
-      return 200;
-    default:
-      return 350;
-  }
-}
-
 function imageVideoButtonResponseTrial(
   stimuliDirectory,
   stimulusFileName,
@@ -48,7 +38,6 @@ function imageVideoButtonResponseTrial(
           stimulusFileName
         ),
         imageUrl: resourcePath(imageFileName),
-        imageHeight: imageHeightFromImageFileName(imageFileName),
       },
     ],
     loop_function(data) {
@@ -121,7 +110,6 @@ function twoDotTrialCommonProperties(
     stimulusUrl: resourcePathInDirectory(stimuliDirectory, stimulusFileName),
     feedbackUrl: resourcePathInDirectory(stimuliDirectory, feedbackFileName),
     imageUrl: resourcePath(imageFileName),
-    imageHeight: imageHeightFromImageFileName(imageFileName),
   };
 }
 
@@ -168,7 +156,6 @@ function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
       twoDotStimulusFileName(stimulusExtension, firstWord, secondWord)
     ),
     imageUrl: resourcePath(imageFileName),
-    imageHeight: imageHeightFromImageFileName(imageFileName),
     firstWord,
     secondWord,
     correctWord,
@@ -288,7 +275,6 @@ function imageWithoutAudioTrial(word) {
   return {
     type: imageVideoPlaceholderButtonResponsePluginClass,
     imageUrl: resourcePath(imageFileName),
-    imageHeight: imageHeightFromImageFileName(imageFileName),
   };
 }
 

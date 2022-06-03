@@ -252,7 +252,7 @@ function resizableCircleElementWithColor(color) {
 }
 
 class TaskWithVideoUI {
-  constructor(jsPsych, parent, videoElement, imageUrl, imageHeight) {
+  constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
     this.jsPsych = jsPsych;
     this.firstDot = resizableCircleElementWithColor("black");
@@ -480,12 +480,6 @@ function twoDotCommonParameters(jspsych) {
       default: "",
       description: "The image",
     },
-    imageHeight: {
-      type: jspsych.ParameterType.INT,
-      pretty_name: "Image height",
-      default: null,
-      description: "The image height in pixels",
-    },
     firstChoiceOnsetTimeSeconds: {
       type: jspsych.ParameterType.FLOAT,
       pretty_name: "First choice onset time",
@@ -610,6 +604,12 @@ export function twoDot(jspsych) {
         default: "",
         description: "The feedback audio",
       },
+      imageHeight: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
       ...twoDotCommonParameters(jspsych),
     },
   };
@@ -629,8 +629,7 @@ export function twoDotWithVideo(jspsych) {
         this.jsPsych,
         display_element,
         videoElement,
-        trial.imageUrl,
-        trial.imageHeight
+        trial.imageUrl
       );
       startController(
         taskUI,
@@ -711,6 +710,12 @@ export function twoDotWithoutFeedback(jspsych) {
         default: "",
         description: "The stimulus audio",
       },
+      imageHeight: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
       ...twoDotCommonParameters(jspsych),
     },
   };
@@ -731,8 +736,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
         this.jsPsych,
         display_element,
         videoElement,
-        trial.imageUrl,
-        trial.imageHeight
+        trial.imageUrl
       );
       startController(
         taskUI,
@@ -883,12 +887,6 @@ export function imageVideoPlaceholderButtonResponse(jspsych) {
         default: "",
         description: "The image",
       },
-      imageHeight: {
-        type: jspsych.ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
-      },
     },
   };
   return Plugin;
@@ -954,12 +952,6 @@ export function imageVideoButtonResponse(jspsych) {
         pretty_name: "Image URL",
         default: "",
         description: "The image",
-      },
-      imageHeight: {
-        type: jspsych.ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
       },
     },
   };
