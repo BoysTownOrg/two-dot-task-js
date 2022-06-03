@@ -316,9 +316,9 @@ class TaskWithVideoUI {
     adopt(parent, videoBackground);
 
     videoElement.style.position = "fixed";
-    videoBackground.style.top = "50%";
-    videoBackground.style.left = "50%";
-    videoBackground.style.transform = "translate(-50%, -50%)";
+    videoElement.style.top = "50%";
+    videoElement.style.left = "50%";
+    videoElement.style.transform = "translate(-50%, -50%)";
     videoElement.style.maxWidth = "100%";
     adopt(videoBackground, videoElement);
   }
