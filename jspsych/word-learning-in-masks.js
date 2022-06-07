@@ -26,7 +26,8 @@ function resourcePathInDirectory(directory, fileName) {
   return resourcePath(concatenatePaths(directory, fileName));
 }
 
-function imageVideoButtonResponseTrial(
+function repeatableStimulusWithImageTrial(
+  pluginClass,
   stimuliDirectory,
   stimulusFileName,
   imageFileName
@@ -34,7 +35,7 @@ function imageVideoButtonResponseTrial(
   return {
     timeline: [
       {
-        type: imageVideoButtonResponsePluginClass,
+        type: pluginClass,
         stimulusUrl: resourcePathInDirectory(
           stimuliDirectory,
           stimulusFileName
@@ -48,26 +49,30 @@ function imageVideoButtonResponseTrial(
   };
 }
 
+function imageVideoButtonResponseTrial(
+  stimuliDirectory,
+  stimulusFileName,
+  imageFileName
+) {
+  return repeatableStimulusWithImageTrial(
+    imageVideoButtonResponsePluginClass,
+    stimuliDirectory,
+    stimulusFileName,
+    imageFileName
+  );
+}
+
 function visualRepetitionTrial(
   stimuliDirectory,
   stimulusFileName,
   imageFileName
 ) {
-  return {
-    timeline: [
-      {
-        type: visualRepetitionTrialPluginClass,
-        stimulusUrl: resourcePathInDirectory(
-          stimuliDirectory,
-          stimulusFileName
-        ),
-        imageUrl: resourcePath(imageFileName),
-      },
-    ],
-    loop_function(data) {
-      return data.values()[0].repeat;
-    },
-  };
+  return repeatableStimulusWithImageTrial(
+    visualRepetitionTrialPluginClass,
+    stimuliDirectory,
+    stimulusFileName,
+    imageFileName
+  );
 }
 
 function blankScreen() {
