@@ -2,6 +2,8 @@ import * as pluginClasses from "./plugin.js";
 
 const imageVideoButtonResponsePluginClass =
   pluginClasses.imageVideoButtonResponse(jsPsychModule);
+const visualRepetitionTrialPluginClass =
+  pluginClasses.visualRepetitionTrial(jsPsychModule);
 const twoDotWithVideoPluginClass = pluginClasses.twoDotWithVideo(jsPsychModule);
 const twoDotWithVideoWithoutFeedbackPluginClass =
   pluginClasses.twoDotWithVideoWithoutFeedback(jsPsychModule);
@@ -46,6 +48,28 @@ function imageVideoButtonResponseTrial(
   };
 }
 
+function visualRepetitionTrial(
+  stimuliDirectory,
+  stimulusFileName,
+  imageFileName
+) {
+  return {
+    timeline: [
+      {
+        type: visualRepetitionTrialPluginClass,
+        stimulusUrl: resourcePathInDirectory(
+          stimuliDirectory,
+          stimulusFileName
+        ),
+        imageUrl: resourcePath(imageFileName),
+      },
+    ],
+    loop_function(data) {
+      return data.values()[0].repeat;
+    },
+  };
+}
+
 function blankScreen() {
   return {
     type: jsPsychHtmlButtonResponse,
@@ -59,11 +83,7 @@ function repetitionTrial(stimuliDirectory, stimulusFileName, imageFileName) {
   return {
     timeline: [
       blankScreen(),
-      imageVideoButtonResponseTrial(
-        stimuliDirectory,
-        stimulusFileName,
-        imageFileName
-      ),
+      visualRepetitionTrial(stimuliDirectory, stimulusFileName, imageFileName),
     ],
   };
 }
