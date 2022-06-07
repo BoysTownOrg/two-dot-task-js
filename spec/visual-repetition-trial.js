@@ -33,10 +33,6 @@ class ImagePresenterStub {
     this.imageShownCount_ += 1;
   }
 
-  attach(observer) {
-    this.observer = observer;
-  }
-
   imageShownCount() {
     return this.imageShownCount_;
   }
