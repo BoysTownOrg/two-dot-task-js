@@ -85,4 +85,23 @@ describe("visual repetition trial", () => {
     updatePlayerTimeSeconds(player, 3.2);
     expect(presenter.imageShownCount()).toBe(1);
   });
+
+  it("should be able to run multiple trials", () => {
+    const player = new AudioPlayerStub();
+    const presenter = new ImagePresenterStub();
+    const imageOnsetSeconds = 3;
+    runVisualRepetitionTrial(player, presenter, imageOnsetSeconds);
+    updatePlayerTimeSeconds(player, 2.9);
+    expect(presenter.imageShownCount()).toBe(0);
+    updatePlayerTimeSeconds(player, 3.1);
+    expect(presenter.imageShownCount()).toBe(1);
+
+    const player2 = new AudioPlayerStub();
+    const presenter2 = new ImagePresenterStub();
+    runVisualRepetitionTrial(player2, presenter2, imageOnsetSeconds);
+    updatePlayerTimeSeconds(player2, 2.9);
+    expect(presenter2.imageShownCount()).toBe(0);
+    updatePlayerTimeSeconds(player2, 3.1);
+    expect(presenter2.imageShownCount()).toBe(1);
+  });
 });
