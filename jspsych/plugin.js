@@ -9,6 +9,7 @@ import {
   createTaskPresenter,
   createTaskPresenterWithDelayedFinish,
 } from "../lib/TaskPresenter.js";
+import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
 
 function addEventListener(element, event, f) {
   element.addEventListener(event, f);
@@ -951,6 +952,94 @@ export function imageVideoButtonResponse(jspsych) {
         continueButton.style.visibility = "visible";
         repeatButton.style.visibility = "visible";
       };
+      videoElement.play();
+    }
+  }
+  Plugin.info = {
+    name: "image-video-button-response",
+    parameters: {
+      stimulusUrl: {
+        type: jspsych.ParameterType.VIDEO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus video",
+      },
+      imageUrl: {
+        type: jspsych.ParameterType.IMAGE,
+        pretty_name: "Image URL",
+        default: "",
+        description: "The image",
+      },
+    },
+  };
+  return Plugin;
+}
+
+class VisualRepetitionTrialImagePresenter {
+  constructor(imageElement) {
+    this.imageElement = imageElement;
+  }
+
+  showImage() {
+    this.imageElement.style.visibility = "visible";
+  }
+}
+
+class VisualRepetitionTrialAudioPlayer {
+  constructor(videoElement) {
+    this.videoElement = videoElement;
+  }
+
+  currentTimeSeconds() {
+    return this.videoElement.currentTime;
+  }
+
+  attachTimeUpdateHandler(handler) {
+    this.videoElement.ontimeupdate = () => {
+      handler();
+    };
+  }
+}
+
+export function visualRepetitionTrial(jspsych) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(displayElement, trial) {
+      clear(displayElement);
+
+      const image = centerRightImage(trial);
+      adopt(displayElement, image);
+      image.style.visibility = "hidden";
+
+      const buttonGroup = buttonGroupElement();
+      adopt(displayElement, buttonGroup);
+      const continueButton = buttonElement();
+      const repeatButton = buttonElement();
+      initializeRepeatableTrial(
+        this.jsPsych,
+        buttonGroup,
+        continueButton,
+        repeatButton
+      );
+
+      const videoElement = document.createElement("video");
+      addVideoWithBackground(displayElement, videoElement);
+
+      videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
+        trial.stimulusUrl
+      );
+      videoElement.onended = () => {
+        continueButton.style.visibility = "visible";
+        repeatButton.style.visibility = "visible";
+      };
+
+      const player = new VisualRepetitionTrialAudioPlayer(videoElement);
+      const presenter = new VisualRepetitionTrialImagePresenter(image);
+      runVisualRepetitionTrial(player, presenter, 1);
+
       videoElement.play();
     }
   }
