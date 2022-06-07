@@ -50,26 +50,26 @@ class ImagePresenterStub {
   }
 }
 
+function updatePlayerTimeSeconds(player, t) {
+  player.setCurrentTimeSeconds(t);
+  player.updateTime();
+}
+
 describe("visual repetition trial", () => {
   it("should show image when player advances to image onset time", () => {
     const player = new AudioPlayerStub();
     const presenter = new ImagePresenterStub();
     const imageOnsetSeconds = 3;
     runVisualRepetitionTrial(player, presenter, imageOnsetSeconds);
-    player.setCurrentTimeSeconds(1);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 1);
     expect(presenter.imageShown()).toBeFalse();
-    player.setCurrentTimeSeconds(2);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 2);
     expect(presenter.imageShown()).toBeFalse();
-    player.setCurrentTimeSeconds(2.5);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 2.5);
     expect(presenter.imageShown()).toBeFalse();
-    player.setCurrentTimeSeconds(2.9);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 2.9);
     expect(presenter.imageShown()).toBeFalse();
-    player.setCurrentTimeSeconds(3);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 3);
     expect(presenter.imageShown()).toBeTrue();
   });
 
@@ -78,14 +78,11 @@ describe("visual repetition trial", () => {
     const presenter = new ImagePresenterStub();
     const imageOnsetSeconds = 3;
     runVisualRepetitionTrial(player, presenter, imageOnsetSeconds);
-    player.setCurrentTimeSeconds(2.9);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 2.9);
     expect(presenter.imageShownCount()).toBe(0);
-    player.setCurrentTimeSeconds(3.1);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 3.1);
     expect(presenter.imageShownCount()).toBe(1);
-    player.setCurrentTimeSeconds(3.2);
-    player.updateTime();
+    updatePlayerTimeSeconds(player, 3.2);
     expect(presenter.imageShownCount()).toBe(1);
   });
 });
