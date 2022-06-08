@@ -916,6 +916,20 @@ export function imageVideoPlaceholderButtonResponse(jspsych) {
   return Plugin;
 }
 
+function videoElementThatShowsButtons(
+  displayElement,
+  continueButton,
+  repeatButton
+) {
+  const videoElement = document.createElement("video");
+  addVideoWithBackground(displayElement, videoElement);
+  videoElement.onended = () => {
+    continueButton.style.visibility = "visible";
+    repeatButton.style.visibility = "visible";
+  };
+  return videoElement;
+}
+
 export function imageVideoButtonResponse(jspsych) {
   class Plugin {
     constructor(jsPsych) {
@@ -939,16 +953,15 @@ export function imageVideoButtonResponse(jspsych) {
         repeatButton
       );
 
-      const videoElement = document.createElement("video");
-      addVideoWithBackground(displayElement, videoElement);
+      const videoElement = videoElementThatShowsButtons(
+        displayElement,
+        continueButton,
+        repeatButton
+      );
 
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         trial.stimulusUrl
       );
-      videoElement.onended = () => {
-        continueButton.style.visibility = "visible";
-        repeatButton.style.visibility = "visible";
-      };
       videoElement.play();
     }
   }
@@ -1012,16 +1025,15 @@ export function visualRepetitionTrial(jspsych) {
         repeatButton
       );
 
-      const videoElement = document.createElement("video");
-      addVideoWithBackground(displayElement, videoElement);
+      const videoElement = videoElementThatShowsButtons(
+        displayElement,
+        continueButton,
+        repeatButton
+      );
 
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         trial.stimulusUrl
       );
-      videoElement.onended = () => {
-        continueButton.style.visibility = "visible";
-        repeatButton.style.visibility = "visible";
-      };
 
       const player = new VisualRepetitionTrialAudioPlayer(videoElement);
       const presenter = new VisualRepetitionTrialImagePresenter(image);
