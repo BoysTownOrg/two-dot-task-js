@@ -1031,7 +1031,7 @@ export function visualRepetitionTrial(jspsych) {
     }
   }
   Plugin.info = {
-    name: "image-video-button-response",
+    name: "visual-repetition-trial",
     parameters: {
       ...videoStimulusParameter(jspsych),
       ...imageParameter(jspsych),
