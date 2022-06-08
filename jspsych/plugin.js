@@ -494,7 +494,7 @@ class WebVideoPlayer {
   }
 }
 
-function twoDotCommonParameters(jspsych) {
+function imageParameter(jspsych) {
   return {
     imageUrl: {
       type: jspsych.ParameterType.IMAGE,
@@ -502,6 +502,12 @@ function twoDotCommonParameters(jspsych) {
       default: "",
       description: "The image",
     },
+  };
+}
+
+function twoDotCommonParameters(jspsych) {
+  return {
+    ...imageParameter(jspsych),
     firstChoiceOnsetTimeSeconds: {
       type: jspsych.ParameterType.FLOAT,
       pretty_name: "First choice onset time",
@@ -854,12 +860,7 @@ export function imageAudioButtonResponse(jspsych) {
         default: "",
         description: "The stimulus audio",
       },
-      imageUrl: {
-        type: jspsych.ParameterType.IMAGE,
-        pretty_name: "Image URL",
-        default: "",
-        description: "The image",
-      },
+      ...imageParameter(jspsych),
       imageHeight: {
         type: jspsych.ParameterType.INT,
         pretty_name: "Image height",
@@ -908,12 +909,7 @@ export function imageVideoPlaceholderButtonResponse(jspsych) {
   Plugin.info = {
     name: "image-video-placeholder-button-response",
     parameters: {
-      imageUrl: {
-        type: jspsych.ParameterType.IMAGE,
-        pretty_name: "Image URL",
-        default: "",
-        description: "The image",
-      },
+      ...imageParameter(jspsych),
     },
   };
   return Plugin;
@@ -964,12 +960,7 @@ export function imageVideoButtonResponse(jspsych) {
         default: "",
         description: "The stimulus video",
       },
-      imageUrl: {
-        type: jspsych.ParameterType.IMAGE,
-        pretty_name: "Image URL",
-        default: "",
-        description: "The image",
-      },
+      ...imageParameter(jspsych),
     },
   };
   return Plugin;
@@ -1052,12 +1043,7 @@ export function visualRepetitionTrial(jspsych) {
         default: "",
         description: "The stimulus video",
       },
-      imageUrl: {
-        type: jspsych.ParameterType.IMAGE,
-        pretty_name: "Image URL",
-        default: "",
-        description: "The image",
-      },
+      ...imageParameter(jspsych),
     },
   };
   return Plugin;
