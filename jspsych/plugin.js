@@ -644,6 +644,17 @@ export function twoDot(jspsych) {
   return Plugin;
 }
 
+function videoStimulusParameter(jspsych) {
+  return {
+    stimulusUrl: {
+      type: jspsych.ParameterType.VIDEO,
+      pretty_name: "Stimulus URL",
+      default: "",
+      description: "The stimulus video",
+    },
+  };
+}
+
 export function twoDotWithVideo(jspsych) {
   class Plugin {
     constructor(jsPsych) {
@@ -682,12 +693,7 @@ export function twoDotWithVideo(jspsych) {
     name: "two-dot-with-video",
     description: "",
     parameters: {
-      stimulusUrl: {
-        type: jspsych.ParameterType.VIDEO,
-        pretty_name: "Stimulus URL",
-        default: "",
-        description: "The stimulus video",
-      },
+      ...videoStimulusParameter(jspsych),
       feedbackUrl: {
         type: jspsych.ParameterType.VIDEO,
         pretty_name: "Feedback URL",
@@ -783,12 +789,7 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
     name: "two-dot-with-video-without-feedback",
     description: "",
     parameters: {
-      stimulusUrl: {
-        type: jspsych.ParameterType.VIDEO,
-        pretty_name: "Stimulus URL",
-        default: "",
-        description: "The stimulus video",
-      },
+      ...videoStimulusParameter(jspsych),
       ...twoDotCommonParameters(jspsych),
     },
   };
@@ -954,12 +955,7 @@ export function imageVideoButtonResponse(jspsych) {
   Plugin.info = {
     name: "image-video-button-response",
     parameters: {
-      stimulusUrl: {
-        type: jspsych.ParameterType.VIDEO,
-        pretty_name: "Stimulus URL",
-        default: "",
-        description: "The stimulus video",
-      },
+      ...videoStimulusParameter(jspsych),
       ...imageParameter(jspsych),
     },
   };
@@ -1037,12 +1033,7 @@ export function visualRepetitionTrial(jspsych) {
   Plugin.info = {
     name: "image-video-button-response",
     parameters: {
-      stimulusUrl: {
-        type: jspsych.ParameterType.VIDEO,
-        pretty_name: "Stimulus URL",
-        default: "",
-        description: "The stimulus video",
-      },
+      ...videoStimulusParameter(jspsych),
       ...imageParameter(jspsych),
     },
   };
