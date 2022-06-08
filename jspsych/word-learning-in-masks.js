@@ -473,6 +473,17 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       },
     ]),
     gameTransition(1),
+    // Repeat Block 1 without button
+    repetitionBlock(stimuliDirectory, stimulusExtension, [
+      "Baby",
+      "Rooster",
+      "Topin",
+      "Nedig",
+      "Kinit",
+      "Daevl",
+      "Binip",
+    ]),
+    gameTransition(2),
     // Training Block 3
     twoDotBlock(stimuliDirectory, stimulusExtension, [
       {
@@ -511,7 +522,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
         secondOnset: 4.41,
       },
     ]),
-    gameTransition(2),
+    gameTransition(3),
     // Free Recall Test
     freeRecallBlock(stimuliDirectory, stimulusExtension, [
       "Baby",
@@ -522,7 +533,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       "Daevl",
       "Binip",
     ]),
-    gameTransition(3),
+    gameTransition(4),
     // Cued Recall Test
     cuedRecallTrialWithoutAudio("Seesaw"),
     cuedRecallBlock(stimuliDirectory, stimulusExtension, [
@@ -534,14 +545,14 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       { word: "Daevl", cue: "DAE" },
       { word: "Binip", cue: "BI" },
     ]),
-    gameTransition(4),
+    gameTransition(5),
     // 5-Minute Break
     {
       type: stopwatchPluginClass,
       text: 'Take a 5 minute break. Press "Continue" when finished.',
       alarmTimeSeconds: 300,
     },
-    gameTrial(6),
+    gameTrial(7),
     // Free Recall Test (Re-test)
     freeRecallBlock(stimuliDirectory, stimulusExtension, [
       "Topin",
@@ -550,7 +561,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       "Daevl",
       "Binip",
     ]),
-    gameTransition(6),
+    gameTransition(7),
     // Cued Recall Test (Re-test)
     cuedRecallBlock(stimuliDirectory, stimulusExtension, [
       { word: "Topin", cue: "TO" },
@@ -559,7 +570,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       { word: "Daevl", cue: "DAE" },
       { word: "Binip", cue: "BI" },
     ]),
-    gameTransition(7),
+    gameTransition(8),
     // 2-Dot Test (Re-test)
     twoDotWithoutFeedbackTrial(
       stimuliDirectory,
@@ -606,7 +617,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       3.13,
       4.54
     ),
-    gameTransition(8),
+    gameTransition(9),
     {
       type: jsPsychHtmlButtonResponse,
       stimulus: 'The test is done. Press "Finish" to complete. Thank you.',
