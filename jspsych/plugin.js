@@ -1037,7 +1037,7 @@ export function visualRepetitionTrial(jspsych) {
 
       const player = new VisualRepetitionTrialAudioPlayer(videoElement);
       const presenter = new VisualRepetitionTrialImagePresenter(image);
-      runVisualRepetitionTrial(player, presenter, 1);
+      runVisualRepetitionTrial(player, presenter, 1.5);
 
       videoElement.play();
     }
