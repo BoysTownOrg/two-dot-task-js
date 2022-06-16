@@ -243,7 +243,7 @@ class TaskUI {
 
 function resizableCircleElementWithColor(color) {
   const circle = document.createElement("div");
-  const circleDiameter = "20vh";
+  const circleDiameter = "17.5vh";
   circle.style.height = circleDiameter;
   circle.style.width = circleDiameter;
   circle.style.borderRadius = "50%";
@@ -286,7 +286,7 @@ class TaskWithVideoUI {
     this.parent = parent;
     this.jsPsych = jsPsych;
     const dotBottomPercent = 30;
-    const dotHorizontalMarginPercent = 10;
+    const dotHorizontalMarginPercent = 12;
     this.firstDot = resizableCircleElementWithColor("black");
     this.firstDot.style.position = "fixed";
     centerElementAtPercentage(
