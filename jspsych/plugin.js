@@ -243,7 +243,7 @@ class TaskUI {
 
 function resizableCircleElementWithColor(color) {
   const circle = document.createElement("div");
-  const circleDiameter = "20vh";
+  const circleDiameter = "17.5vh";
   circle.style.height = circleDiameter;
   circle.style.width = circleDiameter;
   circle.style.borderRadius = "50%";
@@ -281,12 +281,28 @@ function addVideoWithBackground(parent, videoElement) {
   adopt(videoBackground, videoElement);
 }
 
+function centerRightImageFromUrl(url) {
+  const image = new Image();
+  image.src = url;
+  image.style.position = "fixed";
+  image.style.top = "50%";
+  image.style.right = "25%";
+  image.style.maxWidth = "50%";
+  image.style.maxHeight = "40%";
+  image.style.transform = "translate(50%, -50%)";
+  return image;
+}
+
+function centerRightImage(trial) {
+  return centerRightImageFromUrl(trial.imageUrl);
+}
+
 class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const dotBottomPercent = 30;
-    const dotHorizontalMarginPercent = 10;
+    const dotBottomPercent = 20;
+    const dotHorizontalMarginPercent = 12;
     this.firstDot = resizableCircleElementWithColor("black");
     this.firstDot.style.position = "fixed";
     centerElementAtPercentage(
@@ -305,15 +321,7 @@ class TaskWithVideoUI {
     );
     adopt(parent, this.secondDot);
 
-    const image = new Image();
-    image.src = imageUrl;
-    image.style.position = "fixed";
-    const imageTopPercent = 30;
-    image.style.top = `${imageTopPercent}%`;
-    image.style.right = "25%";
-    image.style.maxWidth = "50%";
-    image.style.maxHeight = `${(50 - imageTopPercent) * 2}%`;
-    image.style.transform = "translate(50%, -50%)";
+    const image = centerRightImageFromUrl(imageUrl);
     adopt(parent, image);
 
     addClickEventListener(this.firstDot, () => {
@@ -441,6 +449,18 @@ class WebAudioPlayer {
   }
 }
 
+function playVideo(videoElement) {
+  videoElement.style.visibility = "visible";
+  videoElement.play();
+}
+
+function onVideoEnd(videoElement, f) {
+  videoElement.onended = () => {
+    videoElement.style.visibility = "hidden";
+    f();
+  };
+}
+
 class WebVideoPlayer {
   constructor(jsPsych, videoElement, stimulusUrl, feedbackUrl) {
     this.jsPsych = jsPsych;
@@ -453,10 +473,10 @@ class WebVideoPlayer {
     this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
       this.feedbackUrl
     );
-    this.videoElement.onended = () => {
+    onVideoEnd(this.videoElement, () => {
       this.observer.notifyThatFeedbackHasEnded();
-    };
-    this.videoElement.play();
+    });
+    playVideo(this.videoElement);
   }
 
   playFeedbackAfterSeconds(t) {
@@ -465,10 +485,10 @@ class WebVideoPlayer {
       this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         this.feedbackUrl
       );
-      this.videoElement.onended = () => {
+      onVideoEnd(this.videoElement, () => {
         this.observer.notifyThatFeedbackHasEnded();
-      };
-      this.videoElement.play();
+      });
+      playVideo(this.videoElement);
     }, milliseconds);
   }
 
@@ -479,10 +499,10 @@ class WebVideoPlayer {
     this.videoElement.ontimeupdate = () => {
       notifyThatPlaybackTimeHasUpdated(this.observer);
     };
-    this.videoElement.onended = () => {
+    onVideoEnd(this.videoElement, () => {
       this.observer.notifyThatPlaybackHasEnded();
-    };
-    this.videoElement.play();
+    });
+    playVideo(this.videoElement);
   }
 
   currentTimeSeconds() {
@@ -873,18 +893,6 @@ export function imageAudioButtonResponse(jspsych) {
   return Plugin;
 }
 
-function centerRightImage(trial) {
-  const image = new Image();
-  image.src = trial.imageUrl;
-  image.style.position = "fixed";
-  image.style.top = "50%";
-  image.style.right = "25%";
-  image.style.maxWidth = "50%";
-  image.style.maxHeight = "40%";
-  image.style.transform = "translate(50%, -50%)";
-  return image;
-}
-
 export function imageVideoPlaceholderButtonResponse(jspsych) {
   class Plugin {
     constructor(jsPsych) {
@@ -923,10 +931,10 @@ function videoElementThatShowsButtons(
 ) {
   const videoElement = document.createElement("video");
   addVideoWithBackground(displayElement, videoElement);
-  videoElement.onended = () => {
+  onVideoEnd(videoElement, () => {
     continueButton.style.visibility = "visible";
     repeatButton.style.visibility = "visible";
-  };
+  });
   return videoElement;
 }
 
@@ -962,7 +970,7 @@ export function imageVideoButtonResponse(jspsych) {
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         trial.stimulusUrl
       );
-      videoElement.play();
+      playVideo(videoElement);
     }
   }
   Plugin.info = {
@@ -1039,7 +1047,7 @@ export function visualRepetitionTrial(jspsych) {
       const presenter = new VisualRepetitionTrialImagePresenter(image);
       runVisualRepetitionTrial(player, presenter, 1.5);
 
-      videoElement.play();
+      playVideo(videoElement);
     }
   }
   Plugin.info = {
