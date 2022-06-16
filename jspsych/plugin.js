@@ -449,6 +449,18 @@ class WebAudioPlayer {
   }
 }
 
+function playVideo(videoElement) {
+  videoElement.style.visibility = "visible";
+  videoElement.play();
+}
+
+function onVideoEnd(videoElement, f) {
+  videoElement.onended = () => {
+    videoElement.style.visibility = "hidden";
+    f();
+  };
+}
+
 class WebVideoPlayer {
   constructor(jsPsych, videoElement, stimulusUrl, feedbackUrl) {
     this.jsPsych = jsPsych;
@@ -461,10 +473,10 @@ class WebVideoPlayer {
     this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
       this.feedbackUrl
     );
-    this.videoElement.onended = () => {
+    onVideoEnd(this.videoElement, () => {
       this.observer.notifyThatFeedbackHasEnded();
-    };
-    this.videoElement.play();
+    });
+    playVideo(this.videoElement);
   }
 
   playFeedbackAfterSeconds(t) {
@@ -473,10 +485,10 @@ class WebVideoPlayer {
       this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         this.feedbackUrl
       );
-      this.videoElement.onended = () => {
+      onVideoEnd(this.videoElement, () => {
         this.observer.notifyThatFeedbackHasEnded();
-      };
-      this.videoElement.play();
+      });
+      playVideo(this.videoElement);
     }, milliseconds);
   }
 
@@ -487,10 +499,10 @@ class WebVideoPlayer {
     this.videoElement.ontimeupdate = () => {
       notifyThatPlaybackTimeHasUpdated(this.observer);
     };
-    this.videoElement.onended = () => {
+    onVideoEnd(this.videoElement, () => {
       this.observer.notifyThatPlaybackHasEnded();
-    };
-    this.videoElement.play();
+    });
+    playVideo(this.videoElement);
   }
 
   currentTimeSeconds() {
@@ -919,10 +931,10 @@ function videoElementThatShowsButtons(
 ) {
   const videoElement = document.createElement("video");
   addVideoWithBackground(displayElement, videoElement);
-  videoElement.onended = () => {
+  onVideoEnd(videoElement, () => {
     continueButton.style.visibility = "visible";
     repeatButton.style.visibility = "visible";
-  };
+  });
   return videoElement;
 }
 
@@ -958,7 +970,7 @@ export function imageVideoButtonResponse(jspsych) {
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
         trial.stimulusUrl
       );
-      videoElement.play();
+      playVideo(videoElement);
     }
   }
   Plugin.info = {
@@ -1035,7 +1047,7 @@ export function visualRepetitionTrial(jspsych) {
       const presenter = new VisualRepetitionTrialImagePresenter(image);
       runVisualRepetitionTrial(player, presenter, 1.5);
 
-      videoElement.play();
+      playVideo(videoElement);
     }
   }
   Plugin.info = {
