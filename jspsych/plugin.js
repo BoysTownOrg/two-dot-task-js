@@ -281,6 +281,22 @@ function addVideoWithBackground(parent, videoElement) {
   adopt(videoBackground, videoElement);
 }
 
+function centerRightImageFromUrl(url) {
+  const image = new Image();
+  image.src = url;
+  image.style.position = "fixed";
+  image.style.top = "50%";
+  image.style.right = "25%";
+  image.style.maxWidth = "50%";
+  image.style.maxHeight = "40%";
+  image.style.transform = "translate(50%, -50%)";
+  return image;
+}
+
+function centerRightImage(trial) {
+  return centerRightImageFromUrl(trial.imageUrl);
+}
+
 class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
@@ -305,15 +321,7 @@ class TaskWithVideoUI {
     );
     adopt(parent, this.secondDot);
 
-    const image = new Image();
-    image.src = imageUrl;
-    image.style.position = "fixed";
-    const imageTopPercent = 30;
-    image.style.top = `${imageTopPercent}%`;
-    image.style.right = "25%";
-    image.style.maxWidth = "50%";
-    image.style.maxHeight = `${(50 - imageTopPercent) * 2}%`;
-    image.style.transform = "translate(50%, -50%)";
+    const image = centerRightImageFromUrl(imageUrl);
     adopt(parent, image);
 
     addClickEventListener(this.firstDot, () => {
@@ -871,18 +879,6 @@ export function imageAudioButtonResponse(jspsych) {
     },
   };
   return Plugin;
-}
-
-function centerRightImage(trial) {
-  const image = new Image();
-  image.src = trial.imageUrl;
-  image.style.position = "fixed";
-  image.style.top = "50%";
-  image.style.right = "25%";
-  image.style.maxWidth = "50%";
-  image.style.maxHeight = "40%";
-  image.style.transform = "translate(50%, -50%)";
-  return image;
 }
 
 export function imageVideoPlaceholderButtonResponse(jspsych) {
