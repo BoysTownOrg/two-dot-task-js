@@ -301,7 +301,7 @@ class TaskWithVideoUI {
   constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const dotBottomPercent = 30;
+    const dotBottomPercent = 20;
     const dotHorizontalMarginPercent = 12;
     this.firstDot = resizableCircleElementWithColor("black");
     this.firstDot.style.position = "fixed";
