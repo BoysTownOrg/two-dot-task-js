@@ -473,10 +473,8 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       },
     ]),
     gameTransition(1),
-    // Repeat Block 1 without button
+    // Repeat Block 1 without button, baby and rooster
     repetitionBlock(stimuliDirectory, stimulusExtension, [
-      "Baby",
-      "Rooster",
       "Topin",
       "Nedig",
       "Kinit",
