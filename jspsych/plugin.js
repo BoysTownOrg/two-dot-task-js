@@ -283,6 +283,7 @@ function addVideoWithBackground(parent, videoElement) {
 
 function centerRightImageFromUrl(url) {
   const image = new Image();
+  image.decoding = "sync";
   image.src = url;
   image.style.position = "fixed";
   image.style.top = "50%";
