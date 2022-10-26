@@ -369,6 +369,19 @@ const disposableMaskConditionText = "Disposable Mask AV";
 const noMaskAuditoryOnlyConditionText = "No Mask AO";
 const clearMaskAuditoryOnlyConditionText = "Clear Mask AO";
 
+function auditoryOnlyStimuliDirectory(condition) {
+  switch (condition) {
+    case clearMaskAuditoryOnlyConditionText:
+    case clearMaskConditionText:
+      return "Clear Mask AO";
+    case noMaskAuditoryOnlyConditionText:
+      return "No Mask AO";
+    case disposableMaskConditionText:
+    default:
+      return "Disposable Mask AO";
+  }
+}
+
 function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
   document.body.removeChild(page);
   const condition = conditionSelect.options.item(
@@ -421,20 +434,30 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(0),
     // Training Block 2
+    twoDotTrial("No Mask AO", "wav", "Baby", "Cheetah", "Baby", 3.1, 4.43),
+    twoDotTrial(
+      auditoryOnlyStimuliDirectory(condition),
+      "wav",
+      "Pizza",
+      "Rooster",
+      "Rooster",
+      3.01,
+      4.37
+    ),
     twoDotBlock(stimuliDirectory, stimulusExtension, [
-      {
-        firstWord: "Baby",
-        secondWord: "Cheetah",
-        correctWord: "Baby",
-        firstOnset: 3.1,
-        secondOnset: 4.43,
-      },
       {
         firstWord: "Pizza",
         secondWord: "Rooster",
         correctWord: "Rooster",
         firstOnset: 3.01,
         secondOnset: 4.37,
+      },
+      {
+        firstWord: "Baby",
+        secondWord: "Cheetah",
+        correctWord: "Baby",
+        firstOnset: 3.1,
+        secondOnset: 4.43,
       },
       {
         firstWord: "Binip",
