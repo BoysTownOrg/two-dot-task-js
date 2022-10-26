@@ -369,13 +369,16 @@ const disposableMaskConditionText = "Disposable Mask AV";
 const noMaskAuditoryOnlyConditionText = "No Mask AO";
 const clearMaskAuditoryOnlyConditionText = "Clear Mask AO";
 
+const noMaskAuditoryOnlyDirectory = "No Mask AO";
+const clearMaskAuditoryOnlyDirectory = "Clear Mask AO";
+
 function auditoryOnlyStimuliDirectory(condition) {
   switch (condition) {
     case clearMaskAuditoryOnlyConditionText:
     case clearMaskConditionText:
-      return "Clear Mask AO";
+      return clearMaskAuditoryOnlyDirectory;
     case noMaskAuditoryOnlyConditionText:
-      return "No Mask AO";
+      return noMaskAuditoryOnlyDirectory;
     case disposableMaskConditionText:
     default:
       return "Disposable Mask AO";
@@ -393,11 +396,11 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
   let stimulusExtension = "";
   switch (condition) {
     case noMaskAuditoryOnlyConditionText:
-      stimuliDirectory = "No Mask AO";
+      stimuliDirectory = noMaskAuditoryOnlyDirectory;
       stimulusExtension = audioExtension;
       break;
     case clearMaskAuditoryOnlyConditionText:
-      stimuliDirectory = "Clear Mask AO";
+      stimuliDirectory = clearMaskAuditoryOnlyDirectory;
       stimulusExtension = audioExtension;
       break;
     case disposableMaskConditionText:
@@ -434,7 +437,15 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(0),
     // Training Block 2
-    twoDotTrial("No Mask AO", "wav", "Baby", "Cheetah", "Baby", 3.1, 4.43),
+    twoDotTrial(
+      noMaskAuditoryOnlyDirectory,
+      "wav",
+      "Baby",
+      "Cheetah",
+      "Baby",
+      3.1,
+      4.43
+    ),
     twoDotTrial(
       auditoryOnlyStimuliDirectory(condition),
       "wav",
