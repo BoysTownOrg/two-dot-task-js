@@ -510,7 +510,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(1),
     // Repeat Block 1 without button, baby and rooster
-    blankScreen(),
     repetitionBlock(stimuliDirectory, stimulusExtension, [
       "Topin",
       "Nedig",
@@ -559,7 +558,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(3),
     // Free Recall Test
-    blankScreen(),
     freeRecallBlock(stimuliDirectory, stimulusExtension, [
       "Baby",
       "Rooster",
@@ -591,7 +589,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     },
     gameTrial(7),
     // Free Recall Test (Re-test)
-    blankScreen(),
     freeRecallBlock(stimuliDirectory, stimulusExtension, [
       "Topin",
       "Nedig",
@@ -601,7 +598,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(7),
     // Cued Recall Test (Re-test)
-    blankScreen(),
     cuedRecallBlock(stimuliDirectory, stimulusExtension, [
       { word: "Topin", cue: "TO" },
       { word: "Nedig", cue: "NE" },
