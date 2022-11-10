@@ -211,7 +211,7 @@ function greenCircleTrial() {
   };
 }
 
-function twoDotTrial(
+function twoAlternativeForcedChoiceTrial(
   stimuliDirectory,
   stimulusExtension,
   firstWord,
@@ -222,20 +222,12 @@ function twoDotTrial(
 ) {
   return {
     timeline: [
-      greenCircleTrial(),
-      {
-        ...twoDotTrialCommonPropertiesAssumingCommonFileNames(
-          stimuliDirectory,
-          stimulusExtension,
-          firstWord,
-          secondWord,
-          correctWord,
-        ),
-        ...twoDotTimingPropertiesAssumingSameLengthWords(
-          firstOnset,
-          secondOnset,
-        ),
-      },
+      blankScreen(),
+      imageVideoButtonResponseTrial(
+        stimuliDirectory,
+        twoDotStimulusFileName(stimulusExtension, firstWord, secondWord),
+        imageFileNameFromWord(correctWord),
+      ),
     ],
   };
 }
@@ -349,10 +341,14 @@ function cuedRecallBlock(stimuliDirectory, stimulusExtension, wordsWithCue) {
   };
 }
 
-function twoDotBlock(stimuliDirectory, stimulusExtension, twoDotParameters) {
+function twoAlternativeForcedChoiceBlock(
+  stimuliDirectory,
+  stimulusExtension,
+  twoDotParameters,
+) {
   return {
     timeline: twoDotParameters.map((parameters) =>
-      twoDotTrial(
+      twoAlternativeForcedChoiceTrial(
         stimuliDirectory,
         stimulusExtension,
         parameters.firstWord,
@@ -439,7 +435,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(0),
     // Training Block 2
-    twoDotTrial(
+    twoAlternativeForcedChoiceTrial(
       noMaskAuditoryOnlyDirectory,
       "wav",
       "Baby",
@@ -448,7 +444,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       3.1,
       4.43,
     ),
-    twoDotTrial(
+    twoAlternativeForcedChoiceTrial(
       auditoryOnlyStimuliDirectory(condition),
       "wav",
       "Pizza",
@@ -457,7 +453,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
       3.01,
       4.37,
     ),
-    twoDotBlock(stimuliDirectory, stimulusExtension, [
+    twoAlternativeForcedChoiceBlock(stimuliDirectory, stimulusExtension, [
       {
         firstWord: "Pizza",
         secondWord: "Rooster",
@@ -519,7 +515,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(2),
     // Training Block 3
-    twoDotBlock(stimuliDirectory, stimulusExtension, [
+    twoAlternativeForcedChoiceBlock(stimuliDirectory, stimulusExtension, [
       {
         firstWord: "Topin",
         secondWord: "Daevl",
