@@ -984,6 +984,40 @@ export function imageVideoButtonResponse(jspsych) {
   return Plugin;
 }
 
+export function imageVideoNoResponse(jspsych) {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(displayElement, trial) {
+      clear(displayElement);
+
+      const image = centerRightImage(trial);
+      adopt(displayElement, image);
+
+      const videoElement = document.createElement("video");
+      addVideoWithBackground(displayElement, videoElement);
+      onVideoEnd(videoElement, () => {
+        this.jsPsych.finishTrial();
+      });
+
+      videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
+        trial.stimulusUrl
+      );
+      playVideo(videoElement);
+    }
+  }
+  Plugin.info = {
+    name: "image-video-no-response",
+    parameters: {
+      ...videoStimulusParameter(jspsych),
+      ...imageParameter(jspsych),
+    },
+  };
+  return Plugin;
+}
+
 class VisualRepetitionTrialImagePresenter {
   constructor(imageElement) {
     this.imageElement = imageElement;
