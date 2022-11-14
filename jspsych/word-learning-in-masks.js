@@ -8,9 +8,6 @@ const imageVideoNoResponsePluginClass = pluginClasses.imageVideoNoResponse(
 const visualRepetitionTrialPluginClass = pluginClasses.visualRepetitionTrial(
   jsPsychModule,
 );
-const twoDotWithVideoPluginClass = pluginClasses.twoDotWithVideo(jsPsychModule);
-const twoDotWithVideoWithoutFeedbackPluginClass = pluginClasses
-  .twoDotWithVideoWithoutFeedback(jsPsychModule);
 const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
 const imageVideoPlaceholderButtonResponsePluginClass = pluginClasses
   .imageVideoPlaceholderButtonResponse(jsPsychModule);
@@ -128,90 +125,16 @@ function freeRecallTrial(stimuliDirectory, stimulusExtension, imageFileName) {
   };
 }
 
-function twoDotTrialCommonProperties(
-  stimuliDirectory,
-  stimulusFileName,
-  feedbackFileName,
-  imageFileName,
+function twoAlternativeStimulusFileName(
+  stimulusExtension,
+  firstWord,
+  secondWord,
 ) {
-  return {
-    type: twoDotWithVideoPluginClass,
-    stimulusUrl: resourcePathInDirectory(stimuliDirectory, stimulusFileName),
-    feedbackUrl: resourcePathInDirectory(stimuliDirectory, feedbackFileName),
-    imageUrl: resourcePath(imageFileName),
-  };
-}
-
-function twoDotStimulusFileName(stimulusExtension, firstWord, secondWord) {
   return `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.${stimulusExtension}`;
 }
 
 function imageFileNameFromWord(word) {
   return `${word}.png`;
-}
-
-function twoDotTrialCommonPropertiesAssumingCommonFileNames(
-  stimuliDirectory,
-  stimulusExtension,
-  firstWord,
-  secondWord,
-  correctWord,
-) {
-  return {
-    ...twoDotTrialCommonProperties(
-      stimuliDirectory,
-      twoDotStimulusFileName(stimulusExtension, firstWord, secondWord),
-      `TwoDotResponse_${correctWord.toUpperCase()}.${stimulusExtension}`,
-      imageFileNameFromWord(correctWord),
-    ),
-    firstWord,
-    secondWord,
-    correctWord,
-  };
-}
-
-function twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-  stimuliDirectory,
-  stimulusExtension,
-  firstWord,
-  secondWord,
-  correctWord,
-) {
-  const imageFileName = imageFileNameFromWord(correctWord);
-  return {
-    type: twoDotWithVideoWithoutFeedbackPluginClass,
-    stimulusUrl: resourcePathInDirectory(
-      stimuliDirectory,
-      twoDotStimulusFileName(stimulusExtension, firstWord, secondWord),
-    ),
-    imageUrl: resourcePath(imageFileName),
-    firstWord,
-    secondWord,
-    correctWord,
-  };
-}
-
-function twoDotTimingPropertiesAssumingSameLengthWords(
-  firstOnset,
-  secondOnset,
-) {
-  const length = 0.5;
-  return {
-    firstChoiceOnsetTimeSeconds: firstOnset,
-    firstChoiceOffsetTimeSeconds: firstOnset + length,
-    secondChoiceOnsetTimeSeconds: secondOnset,
-    secondChoiceOffsetTimeSeconds: secondOnset + length,
-  };
-}
-
-function greenCircleTrial() {
-  return {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: "",
-    choices: [""],
-    button_html:
-      '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
-  };
 }
 
 function twoAlternativeForcedChoiceBeforeFeedback(
@@ -226,7 +149,11 @@ function twoAlternativeForcedChoiceBeforeFeedback(
       blankScreen(),
       imageVideoButtonResponseTrial(
         stimuliDirectory,
-        twoDotStimulusFileName(stimulusExtension, firstWord, secondWord),
+        twoAlternativeStimulusFileName(
+          stimulusExtension,
+          firstWord,
+          secondWord,
+        ),
         imageFileNameFromWord(correctWord),
       ),
     ],
@@ -239,8 +166,6 @@ function twoAlternativeForcedChoiceTrial(
   firstWord,
   secondWord,
   correctWord,
-  firstOnset,
-  secondOnset,
 ) {
   return {
     timeline: [
@@ -258,35 +183,6 @@ function twoAlternativeForcedChoiceTrial(
           `TwoDotResponse_${correctWord.toUpperCase()}.${stimulusExtension}`,
         ),
         imageUrl: resourcePath(imageFileNameFromWord(correctWord)),
-      },
-    ],
-  };
-}
-
-function twoDotWithoutFeedbackTrial(
-  stimuliDirectory,
-  stimulusExtension,
-  firstWord,
-  secondWord,
-  correctWord,
-  firstOnset,
-  secondOnset,
-) {
-  return {
-    timeline: [
-      greenCircleTrial(),
-      {
-        ...twoDotWithoutFeedbackTrialCommonPropertiesAssumingCommonFileNames(
-          stimuliDirectory,
-          stimulusExtension,
-          firstWord,
-          secondWord,
-          correctWord,
-        ),
-        ...twoDotTimingPropertiesAssumingSameLengthWords(
-          firstOnset,
-          secondOnset,
-        ),
       },
     ],
   };
@@ -385,8 +281,24 @@ function twoAlternativeForcedChoiceBlock(
         parameters.firstWord,
         parameters.secondWord,
         parameters.correctWord,
-        parameters.firstOnset,
-        parameters.secondOnset,
+      )
+    ),
+  };
+}
+
+function twoAlternativeForcedChoiceWithoutFeedbackBlock(
+  stimuliDirectory,
+  stimulusExtension,
+  twoDotParameters,
+) {
+  return {
+    timeline: twoDotParameters.map((parameters) =>
+      twoAlternativeForcedChoiceBeforeFeedback(
+        stimuliDirectory,
+        stimulusExtension,
+        parameters.firstWord,
+        parameters.secondWord,
+        parameters.correctWord,
       )
     ),
   };
@@ -399,19 +311,6 @@ const clearMaskAuditoryOnlyConditionText = "Clear Mask AO";
 
 const noMaskAuditoryOnlyDirectory = "No Mask AO";
 const clearMaskAuditoryOnlyDirectory = "Clear Mask AO";
-
-function auditoryOnlyStimuliDirectory(condition) {
-  switch (condition) {
-    case clearMaskAuditoryOnlyConditionText:
-    case clearMaskConditionText:
-      return clearMaskAuditoryOnlyDirectory;
-    case noMaskAuditoryOnlyConditionText:
-      return noMaskAuditoryOnlyDirectory;
-    case disposableMaskConditionText:
-    default:
-      return "Disposable Mask AO";
-  }
-}
 
 function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
   document.body.removeChild(page);
@@ -471,50 +370,36 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
         firstWord: "Pizza",
         secondWord: "Rooster",
         correctWord: "Rooster",
-        firstOnset: 3.01,
-        secondOnset: 4.37,
       },
       {
         firstWord: "Baby",
         secondWord: "Cheetah",
         correctWord: "Baby",
-        firstOnset: 3.1,
-        secondOnset: 4.43,
       },
       {
         firstWord: "Binip",
         secondWord: "Topin",
         correctWord: "Topin",
-        firstOnset: 3,
-        secondOnset: 4.36,
       },
       {
         firstWord: "Daevl",
         secondWord: "Nedig",
         correctWord: "Nedig",
-        firstOnset: 3.21,
-        secondOnset: 4.71,
       },
       {
         firstWord: "Kinit",
         secondWord: "Topin",
         correctWord: "Kinit",
-        firstOnset: 3.14,
-        secondOnset: 4.46,
       },
       {
         firstWord: "Daevl",
         secondWord: "Kinit",
         correctWord: "Daevl",
-        firstOnset: 3.19,
-        secondOnset: 4.72,
       },
       {
         firstWord: "Nedig",
         secondWord: "Binip",
         correctWord: "Binip",
-        firstOnset: 2.93,
-        secondOnset: 4.33,
       },
     ]),
     gameTransition(1),
@@ -533,36 +418,26 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
         firstWord: "Topin",
         secondWord: "Daevl",
         correctWord: "Topin",
-        firstOnset: 3.14,
-        secondOnset: 4.62,
       },
       {
         firstWord: "Nedig",
         secondWord: "Kinit",
         correctWord: "Nedig",
-        firstOnset: 2.96,
-        secondOnset: 4.36,
       },
       {
         firstWord: "Binip",
         secondWord: "Kinit",
         correctWord: "Kinit",
-        firstOnset: 3.09,
-        secondOnset: 4.58,
       },
       {
         firstWord: "Daevl",
         secondWord: "Nedig",
         correctWord: "Daevl",
-        firstOnset: 3.21,
-        secondOnset: 4.71,
       },
       {
         firstWord: "Topin",
         secondWord: "Binip",
         correctWord: "Binip",
-        firstOnset: 3.02,
-        secondOnset: 4.41,
       },
     ]),
     gameTransition(3),
@@ -616,40 +491,20 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     ]),
     gameTransition(8),
     // 2-Dot Test (Re-test)
-    twoAlternativeForcedChoiceBeforeFeedback(
+    twoAlternativeForcedChoiceWithoutFeedbackBlock(
       stimuliDirectory,
       stimulusExtension,
-      "Topin",
-      "Nedig",
-      "Topin",
-    ),
-    twoAlternativeForcedChoiceBeforeFeedback(
-      stimuliDirectory,
-      stimulusExtension,
-      "Binip",
-      "Nedig",
-      "Nedig",
-    ),
-    twoAlternativeForcedChoiceBeforeFeedback(
-      stimuliDirectory,
-      stimulusExtension,
-      "Daevl",
-      "Kinit",
-      "Kinit",
-    ),
-    twoAlternativeForcedChoiceBeforeFeedback(
-      stimuliDirectory,
-      stimulusExtension,
-      "Daevl",
-      "Topin",
-      "Daevl",
-    ),
-    twoAlternativeForcedChoiceBeforeFeedback(
-      stimuliDirectory,
-      stimulusExtension,
-      "Kinit",
-      "Binip",
-      "Binip",
+      [
+        {
+          firstWord: "Topin",
+          secondWord: "Nedig",
+          correctWord: "Topin",
+        },
+        { firstWord: "Binip", secondWord: "Nedig", correctWord: "Nedig" },
+        { firstWord: "Daevl", secondWord: "Kinit", correctWord: "Kinit" },
+        { firstWord: "Daevl", secondWord: "Topin", correctWord: "Daevl" },
+        { firstWord: "Kinit", secondWord: "Binip", correctWord: "Binip" },
+      ],
     ),
     gameTransition(9),
     {
