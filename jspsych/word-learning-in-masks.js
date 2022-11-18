@@ -1,16 +1,14 @@
 import * as pluginClasses from "./plugin.js";
 
-const imageVideoButtonResponsePluginClass = pluginClasses
-  .imageVideoButtonResponse(jsPsychModule);
-const imageVideoNoResponsePluginClass = pluginClasses.imageVideoNoResponse(
-  jsPsychModule,
-);
-const visualRepetitionTrialPluginClass = pluginClasses.visualRepetitionTrial(
-  jsPsychModule,
-);
+const imageVideoButtonResponsePluginClass =
+  pluginClasses.imageVideoButtonResponse(jsPsychModule);
+const imageVideoNoResponsePluginClass =
+  pluginClasses.imageVideoNoResponse(jsPsychModule);
+const visualRepetitionTrialPluginClass =
+  pluginClasses.visualRepetitionTrial(jsPsychModule);
 const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
-const imageVideoPlaceholderButtonResponsePluginClass = pluginClasses
-  .imageVideoPlaceholderButtonResponse(jsPsychModule);
+const imageVideoPlaceholderButtonResponsePluginClass =
+  pluginClasses.imageVideoPlaceholderButtonResponse(jsPsychModule);
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
@@ -31,7 +29,7 @@ function repeatableStimulusWithImageTrial(
   pluginClass,
   stimuliDirectory,
   stimulusFileName,
-  imageFileName,
+  imageFileName
 ) {
   return {
     timeline: [
@@ -39,7 +37,7 @@ function repeatableStimulusWithImageTrial(
         type: pluginClass,
         stimulusUrl: resourcePathInDirectory(
           stimuliDirectory,
-          stimulusFileName,
+          stimulusFileName
         ),
         imageUrl: resourcePath(imageFileName),
       },
@@ -53,26 +51,26 @@ function repeatableStimulusWithImageTrial(
 function imageVideoButtonResponseTrial(
   stimuliDirectory,
   stimulusFileName,
-  imageFileName,
+  imageFileName
 ) {
   return repeatableStimulusWithImageTrial(
     imageVideoButtonResponsePluginClass,
     stimuliDirectory,
     stimulusFileName,
-    imageFileName,
+    imageFileName
   );
 }
 
 function visualRepetitionTrial(
   stimuliDirectory,
   stimulusFileName,
-  imageFileName,
+  imageFileName
 ) {
   return repeatableStimulusWithImageTrial(
     visualRepetitionTrialPluginClass,
     stimuliDirectory,
     stimulusFileName,
-    imageFileName,
+    imageFileName
   );
 }
 
@@ -98,7 +96,7 @@ function cuedRecallTrialAssumingCommonFilenames(
   stimuliDirectory,
   stimulusExtension,
   stimulusCue,
-  imageFileName,
+  imageFileName
 ) {
   return {
     timeline: [
@@ -106,7 +104,7 @@ function cuedRecallTrialAssumingCommonFilenames(
       imageVideoButtonResponseTrial(
         stimuliDirectory,
         `CuedRecall_${stimulusCue.toUpperCase()}.${stimulusExtension}`,
-        imageFileName,
+        imageFileName
       ),
     ],
   };
@@ -119,7 +117,7 @@ function freeRecallTrial(stimuliDirectory, stimulusExtension, imageFileName) {
       imageVideoButtonResponseTrial(
         stimuliDirectory,
         `What is this one called-.${stimulusExtension}`,
-        imageFileName,
+        imageFileName
       ),
     ],
   };
@@ -128,7 +126,7 @@ function freeRecallTrial(stimuliDirectory, stimulusExtension, imageFileName) {
 function twoAlternativeStimulusFileName(
   stimulusExtension,
   firstWord,
-  secondWord,
+  secondWord
 ) {
   return `TwoDot_${firstWord.toUpperCase()}_${secondWord.toUpperCase()}.${stimulusExtension}`;
 }
@@ -142,7 +140,7 @@ function twoAlternativeForcedChoiceBeforeFeedback(
   stimulusExtension,
   firstWord,
   secondWord,
-  correctWord,
+  correctWord
 ) {
   return {
     timeline: [
@@ -152,9 +150,9 @@ function twoAlternativeForcedChoiceBeforeFeedback(
         twoAlternativeStimulusFileName(
           stimulusExtension,
           firstWord,
-          secondWord,
+          secondWord
         ),
-        imageFileNameFromWord(correctWord),
+        imageFileNameFromWord(correctWord)
       ),
     ],
   };
@@ -165,7 +163,7 @@ function twoAlternativeForcedChoiceTrial(
   stimulusExtension,
   firstWord,
   secondWord,
-  correctWord,
+  correctWord
 ) {
   return {
     timeline: [
@@ -174,13 +172,13 @@ function twoAlternativeForcedChoiceTrial(
         stimulusExtension,
         firstWord,
         secondWord,
-        correctWord,
+        correctWord
       ),
       {
         type: imageVideoNoResponsePluginClass,
         stimulusUrl: resourcePathInDirectory(
           stimuliDirectory,
-          `TwoDotResponse_${correctWord.toUpperCase()}.${stimulusExtension}`,
+          `TwoDotResponse_${correctWord.toUpperCase()}.${stimulusExtension}`
         ),
         imageUrl: resourcePath(imageFileNameFromWord(correctWord)),
       },
@@ -206,12 +204,12 @@ function gameTransition(n) {
 function repetitionTrialAssumingCommonFileNames(
   stimuliDirectory,
   stimulusExtension,
-  word,
+  word
 ) {
   return repetitionTrial(
     stimuliDirectory,
     `Repetition_${word.toUpperCase()}.${stimulusExtension}`,
-    imageFileNameFromWord(word),
+    imageFileNameFromWord(word)
   );
 }
 
@@ -237,7 +235,7 @@ function repetitionBlock(stimuliDirectory, stimulusExtension, words) {
       repetitionTrialAssumingCommonFileNames(
         stimuliDirectory,
         stimulusExtension,
-        word,
+        word
       )
     ),
   };
@@ -249,7 +247,7 @@ function freeRecallBlock(stimuliDirectory, stimulusExtension, words) {
       freeRecallTrial(
         stimuliDirectory,
         stimulusExtension,
-        imageFileNameFromWord(word),
+        imageFileNameFromWord(word)
       )
     ),
   };
@@ -262,7 +260,7 @@ function cuedRecallBlock(stimuliDirectory, stimulusExtension, wordsWithCue) {
         stimuliDirectory,
         stimulusExtension,
         wordWithCue.cue,
-        imageFileNameFromWord(wordWithCue.word),
+        imageFileNameFromWord(wordWithCue.word)
       )
     ),
   };
@@ -271,7 +269,7 @@ function cuedRecallBlock(stimuliDirectory, stimulusExtension, wordsWithCue) {
 function twoAlternativeForcedChoiceBlock(
   stimuliDirectory,
   stimulusExtension,
-  twoDotParameters,
+  twoDotParameters
 ) {
   return {
     timeline: twoDotParameters.map((parameters) =>
@@ -280,7 +278,7 @@ function twoAlternativeForcedChoiceBlock(
         stimulusExtension,
         parameters.firstWord,
         parameters.secondWord,
-        parameters.correctWord,
+        parameters.correctWord
       )
     ),
   };
@@ -289,7 +287,7 @@ function twoAlternativeForcedChoiceBlock(
 function twoAlternativeForcedChoiceWithoutFeedbackBlock(
   stimuliDirectory,
   stimulusExtension,
-  twoDotParameters,
+  twoDotParameters
 ) {
   return {
     timeline: twoDotParameters.map((parameters) =>
@@ -298,7 +296,7 @@ function twoAlternativeForcedChoiceWithoutFeedbackBlock(
         stimulusExtension,
         parameters.firstWord,
         parameters.secondWord,
-        parameters.correctWord,
+        parameters.correctWord
       )
     ),
   };
@@ -315,7 +313,7 @@ const clearMaskAuditoryOnlyDirectory = "Clear Mask AO";
 function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
   document.body.removeChild(page);
   const condition = conditionSelect.options.item(
-    conditionSelect.selectedIndex,
+    conditionSelect.selectedIndex
   ).textContent;
   const videoExtension = "mp4";
   const audioExtension = "wav";
@@ -367,14 +365,14 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
     // Training Block 2
     twoAlternativeForcedChoiceBlock(stimuliDirectory, stimulusExtension, [
       {
-        firstWord: "Pizza",
-        secondWord: "Rooster",
-        correctWord: "Rooster",
-      },
-      {
         firstWord: "Baby",
         secondWord: "Cheetah",
         correctWord: "Baby",
+      },
+      {
+        firstWord: "Pizza",
+        secondWord: "Rooster",
+        correctWord: "Rooster",
       },
       {
         firstWord: "Binip",
@@ -504,7 +502,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
         { firstWord: "Daevl", secondWord: "Kinit", correctWord: "Kinit" },
         { firstWord: "Daevl", secondWord: "Topin", correctWord: "Daevl" },
         { firstWord: "Kinit", secondWord: "Binip", correctWord: "Binip" },
-      ],
+      ]
     ),
     gameTransition(9),
     {
@@ -526,7 +524,7 @@ export function selectConditionBeforeRunning(jsPsych) {
   const page = createChildElement(document.body, "div");
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
-    "label",
+    "label"
   );
   conditionLabel.textContent = "Condition";
   const conditionSelect = createChildElement(conditionLabel, "select");
