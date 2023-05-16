@@ -11,6 +11,8 @@ import {
 } from "../lib/TaskPresenter.js";
 import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
 
+import { ParameterType } from "jspsych";
+
 function addEventListener(element, event, f) {
   element.addEventListener(event, f);
 }
@@ -515,10 +517,10 @@ class WebVideoPlayer {
   }
 }
 
-function imageParameter(jspsych) {
+function imageParameter() {
   return {
     imageUrl: {
-      type: jspsych.ParameterType.IMAGE,
+      type: ParameterType.IMAGE,
       pretty_name: "Image URL",
       default: "",
       description: "The image",
@@ -526,47 +528,47 @@ function imageParameter(jspsych) {
   };
 }
 
-function twoDotCommonParameters(jspsych) {
+function twoDotCommonParameters() {
   return {
-    ...imageParameter(jspsych),
+    ...imageParameter(),
     firstChoiceOnsetTimeSeconds: {
-      type: jspsych.ParameterType.FLOAT,
+      type: ParameterType.FLOAT,
       pretty_name: "First choice onset time",
       default: 0,
       description: "The first choice onset time in seconds",
     },
     firstChoiceOffsetTimeSeconds: {
-      type: jspsych.ParameterType.FLOAT,
+      type: ParameterType.FLOAT,
       pretty_name: "First choice offset time",
       default: 0,
       description: "The first choice offset time in seconds",
     },
     secondChoiceOnsetTimeSeconds: {
-      type: jspsych.ParameterType.FLOAT,
+      type: ParameterType.FLOAT,
       pretty_name: "Second choice onset time",
       default: 0,
       description: "The second choice onset time in seconds",
     },
     secondChoiceOffsetTimeSeconds: {
-      type: jspsych.ParameterType.FLOAT,
+      type: ParameterType.FLOAT,
       pretty_name: "Second choice offset time",
       default: 0,
       description: "The second choice offset time in seconds",
     },
     firstWord: {
-      type: jspsych.ParameterType.STRING,
+      type: ParameterType.STRING,
       pretty_name: "First word",
       default: "",
       description: "The word represented by the first choice",
     },
     secondWord: {
-      type: jspsych.ParameterType.STRING,
+      type: ParameterType.STRING,
       pretty_name: "Second word",
       default: "",
       description: "The word represented by the second choice",
     },
     correctWord: {
-      type: jspsych.ParameterType.STRING,
+      type: ParameterType.STRING,
       pretty_name: "Correct word",
       default: "",
       description: "The correct word",
@@ -605,8 +607,7 @@ function startController(taskUI, model) {
   model.start();
 }
 
-// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
-export function twoDot(jspsych) {
+export function twoDot() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -642,33 +643,33 @@ export function twoDot(jspsych) {
     description: "",
     parameters: {
       stimulusUrl: {
-        type: jspsych.ParameterType.AUDIO,
+        type: ParameterType.AUDIO,
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
       },
       feedbackUrl: {
-        type: jspsych.ParameterType.AUDIO,
+        type: ParameterType.AUDIO,
         pretty_name: "Feedback URL",
         default: "",
         description: "The feedback audio",
       },
       imageHeight: {
-        type: jspsych.ParameterType.INT,
+        type: ParameterType.INT,
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
       },
-      ...twoDotCommonParameters(jspsych),
+      ...twoDotCommonParameters(),
     },
   };
   return Plugin;
 }
 
-function videoStimulusParameter(jspsych) {
+function videoStimulusParameter() {
   return {
     stimulusUrl: {
-      type: jspsych.ParameterType.VIDEO,
+      type: ParameterType.VIDEO,
       pretty_name: "Stimulus URL",
       default: "",
       description: "The stimulus video",
@@ -676,7 +677,7 @@ function videoStimulusParameter(jspsych) {
   };
 }
 
-export function twoDotWithVideo(jspsych) {
+export function twoDotWithVideo() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -714,21 +715,21 @@ export function twoDotWithVideo(jspsych) {
     name: "two-dot-with-video",
     description: "",
     parameters: {
-      ...videoStimulusParameter(jspsych),
+      ...videoStimulusParameter(),
       feedbackUrl: {
-        type: jspsych.ParameterType.VIDEO,
+        type: ParameterType.VIDEO,
         pretty_name: "Feedback URL",
         default: "",
         description: "The feedback video",
       },
-      ...twoDotCommonParameters(jspsych),
+      ...twoDotCommonParameters(),
     },
   };
   return Plugin;
 }
 
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
-export function twoDotWithoutFeedback(jspsych) {
+export function twoDotWithoutFeedback() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -760,25 +761,24 @@ export function twoDotWithoutFeedback(jspsych) {
     description: "",
     parameters: {
       stimulusUrl: {
-        type: jspsych.ParameterType.AUDIO,
+        type: ParameterType.AUDIO,
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
       },
       imageHeight: {
-        type: jspsych.ParameterType.INT,
+        type: ParameterType.INT,
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
       },
-      ...twoDotCommonParameters(jspsych),
+      ...twoDotCommonParameters(),
     },
   };
   return Plugin;
 }
 
-// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
-export function twoDotWithVideoWithoutFeedback(jspsych) {
+export function twoDotWithVideoWithoutFeedback() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -810,8 +810,8 @@ export function twoDotWithVideoWithoutFeedback(jspsych) {
     name: "two-dot-with-video-without-feedback",
     description: "",
     parameters: {
-      ...videoStimulusParameter(jspsych),
-      ...twoDotCommonParameters(jspsych),
+      ...videoStimulusParameter(),
+      ...twoDotCommonParameters(),
     },
   };
   return Plugin;
@@ -842,7 +842,7 @@ function initializeRepeatableTrial(
 }
 
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
-export function imageAudioButtonResponse(jspsych) {
+export function imageAudioButtonResponse() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -877,14 +877,14 @@ export function imageAudioButtonResponse(jspsych) {
     name: "image-audio-button-response",
     parameters: {
       stimulusUrl: {
-        type: jspsych.ParameterType.AUDIO,
+        type: ParameterType.AUDIO,
         pretty_name: "Stimulus URL",
         default: "",
         description: "The stimulus audio",
       },
-      ...imageParameter(jspsych),
+      ...imageParameter(),
       imageHeight: {
-        type: jspsych.ParameterType.INT,
+        type: ParameterType.INT,
         pretty_name: "Image height",
         default: null,
         description: "The image height in pixels",
@@ -894,7 +894,7 @@ export function imageAudioButtonResponse(jspsych) {
   return Plugin;
 }
 
-export function imageVideoPlaceholderButtonResponse(jspsych) {
+export function imageVideoPlaceholderButtonResponse() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -919,7 +919,7 @@ export function imageVideoPlaceholderButtonResponse(jspsych) {
   Plugin.info = {
     name: "image-video-placeholder-button-response",
     parameters: {
-      ...imageParameter(jspsych),
+      ...imageParameter(),
     },
   };
   return Plugin;
@@ -939,7 +939,7 @@ function videoElementThatShowsButtons(
   return videoElement;
 }
 
-export function imageVideoButtonResponse(jspsych) {
+export function imageVideoButtonResponse() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -977,14 +977,14 @@ export function imageVideoButtonResponse(jspsych) {
   Plugin.info = {
     name: "image-video-button-response",
     parameters: {
-      ...videoStimulusParameter(jspsych),
-      ...imageParameter(jspsych),
+      ...videoStimulusParameter(),
+      ...imageParameter(),
     },
   };
   return Plugin;
 }
 
-export function imageVideoNoResponse(jspsych) {
+export function imageVideoNoResponse() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -1011,8 +1011,8 @@ export function imageVideoNoResponse(jspsych) {
   Plugin.info = {
     name: "image-video-no-response",
     parameters: {
-      ...videoStimulusParameter(jspsych),
-      ...imageParameter(jspsych),
+      ...videoStimulusParameter(),
+      ...imageParameter(),
     },
   };
   return Plugin;
@@ -1044,7 +1044,7 @@ class VisualRepetitionTrialAudioPlayer {
   }
 }
 
-export function visualRepetitionTrial(jspsych) {
+export function visualRepetitionTrial() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -1088,15 +1088,15 @@ export function visualRepetitionTrial(jspsych) {
   Plugin.info = {
     name: "visual-repetition-trial",
     parameters: {
-      ...videoStimulusParameter(jspsych),
-      ...imageParameter(jspsych),
+      ...videoStimulusParameter(),
+      ...imageParameter(),
     },
   };
   return Plugin;
 }
 
 // "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
-export function stopwatch(jspsych) {
+export function stopwatch() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
@@ -1171,13 +1171,13 @@ export function stopwatch(jspsych) {
     description: "",
     parameters: {
       text: {
-        type: jspsych.ParameterType.STRING,
+        type: ParameterType.STRING,
         pretty_name: "Displayed Text",
         default: "",
         description: "The text that is displayed",
       },
       alarmTimeSeconds: {
-        type: jspsych.ParameterType.INT,
+        type: ParameterType.INT,
         pretty_name: "Alarm time seconds",
         default: "",
         description: "The alarm time in seconds",
