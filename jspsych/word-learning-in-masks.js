@@ -1,14 +1,18 @@
 import * as pluginClasses from "./plugin.js";
 
+import jsPsychHtmlButtonResponse from "@jspsych/plugin-html-button-response";
+import jsPsychImageButtonResponse from "@jspsych/plugin-image-button-response";
+import jsPsychPreload from "@jspsych/plugin-preload";
+
+import "jspsych/css/jspsych.css";
+
 const imageVideoButtonResponsePluginClass =
-  pluginClasses.imageVideoButtonResponse(jsPsychModule);
-const imageVideoNoResponsePluginClass =
-  pluginClasses.imageVideoNoResponse(jsPsychModule);
-const visualRepetitionTrialPluginClass =
-  pluginClasses.visualRepetitionTrial(jsPsychModule);
-const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
+  pluginClasses.imageVideoButtonResponse();
+const imageVideoNoResponsePluginClass = pluginClasses.imageVideoNoResponse();
+const visualRepetitionTrialPluginClass = pluginClasses.visualRepetitionTrial();
+const stopwatchPluginClass = pluginClasses.stopwatch();
 const imageVideoPlaceholderButtonResponsePluginClass =
-  pluginClasses.imageVideoPlaceholderButtonResponse(jsPsychModule);
+  pluginClasses.imageVideoPlaceholderButtonResponse();
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
