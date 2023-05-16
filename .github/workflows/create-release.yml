@@ -8,13 +8,17 @@ jobs:
     name: create release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+      - name: webpack
+        run: |
+          npm install
+          npx webpack
       - name: create GitHub release
         run: |
-          zip -r two-dot-task-js-v${{ steps.get_version.outputs.VERSION }}.zip lib/ jspsych/
-          gh release create v${{ steps.get_version.outputs.VERSION }} two-dot-task-js-v${{ steps.get_version.outputs.VERSION }}.zip
+          zip word-learning-in-noise dist/*
+          gh release create v${{ steps.get_version.outputs.VERSION }} word-learning-in-noise.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
