@@ -3,6 +3,17 @@
   "version": "0.0.1",
   "type": "module",
   "devDependencies": {
-    "jasmine": "^3.6.4"
+    "css-loader": "^6.7.3",
+    "html-webpack-plugin": "^5.5.1",
+    "jasmine": "^3.6.4",
+    "style-loader": "^3.3.2",
+    "webpack": "^5.82.1",
+    "webpack-cli": "^5.1.1"
+  },
+  "dependencies": {
+    "@jspsych/plugin-html-button-response": "^1.1.2",
+    "@jspsych/plugin-image-button-response": "^1.1.2",
+    "@jspsych/plugin-preload": "^1.1.2",
+    "jspsych": "^7.3.2"
   }
 }
