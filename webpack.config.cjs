@@ -1,10 +1,12 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./jspsych/jatos/word-learning-in-masks-main.js",
+  entry: { withMasks: "./jspsych/jatos/word-learning-in-masks-main.js" },
   plugins: [
     new HtmlWebpackPlugin({
+      filename: "with-masks.html",
       template: "jatos-template.html",
+      chunks: ["withMasks"],
     }),
   ],
   module: {

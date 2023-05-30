@@ -1,5 +1,11 @@
 import * as pluginClasses from "./plugin.js";
 
+import jsPsychHtmlButtonResponse from "@jspsych/plugin-html-button-response";
+import jsPsychImageButtonResponse from "@jspsych/plugin-image-button-response";
+import jsPsychPreload from "@jspsych/plugin-preload";
+
+import "jspsych/css/jspsych.css";
+
 const twoDotPluginClass = pluginClasses.twoDot(jsPsychModule);
 const twoDotWithoutFeedbackPluginClass =
   pluginClasses.twoDotWithoutFeedback(jsPsychModule);
