@@ -275,7 +275,7 @@ function parseTrialOrderFileLine(
   }
 }
 
-function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
+function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
   document.body.removeChild(page);
 
   fetch(resourcePath("set-a.csv"))
@@ -303,7 +303,6 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
               .textContent
           );
       pushTwoConsecutiveGameTrials(trials, parsingState.taskCount);
-      const jsPsych = initJsPsych();
       jsPsych.run([
         {
           type: jsPsychPreload,
@@ -326,7 +325,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect) {
     });
 }
 
-function main() {
+export function selectConditionBeforeRunning(jsPsych) {
   const page = createChildElement(document.body, "div");
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
@@ -339,8 +338,6 @@ function main() {
   const confirmButton = createChildElement(page, "button");
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
-    notifyThatConfirmButtonHasBeenClicked(page, conditionSelect);
+    notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych);
   });
 }
-
-main();
