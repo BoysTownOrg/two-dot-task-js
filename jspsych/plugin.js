@@ -728,7 +728,6 @@ export function twoDotWithVideo() {
   return Plugin;
 }
 
-// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function twoDotWithoutFeedback() {
   class Plugin {
     constructor(jsPsych) {
@@ -841,7 +840,6 @@ function initializeRepeatableTrial(
   );
 }
 
-// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function imageAudioButtonResponse() {
   class Plugin {
     constructor(jsPsych) {
@@ -1095,7 +1093,6 @@ export function visualRepetitionTrial() {
   return Plugin;
 }
 
-// "jspsych" is "jsPsychModule", NOT the "jsPsych" instance
 export function stopwatch() {
   class Plugin {
     constructor(jsPsych) {

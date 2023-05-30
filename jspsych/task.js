@@ -6,12 +6,11 @@ import jsPsychPreload from "@jspsych/plugin-preload";
 
 import "jspsych/css/jspsych.css";
 
-const twoDotPluginClass = pluginClasses.twoDot(jsPsychModule);
-const twoDotWithoutFeedbackPluginClass =
-  pluginClasses.twoDotWithoutFeedback(jsPsychModule);
+const twoDotPluginClass = pluginClasses.twoDot();
+const twoDotWithoutFeedbackPluginClass = pluginClasses.twoDotWithoutFeedback();
 const imageAudioButtonResponsePluginClass =
-  pluginClasses.imageAudioButtonResponse(jsPsychModule);
-const stopwatchPluginClass = pluginClasses.stopwatch(jsPsychModule);
+  pluginClasses.imageAudioButtonResponse();
+const stopwatchPluginClass = pluginClasses.stopwatch();
 
 function concatenatePaths(a, b) {
   return `${a}/${b}`;
