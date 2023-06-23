@@ -17,6 +17,7 @@
     "@jspsych/plugin-html-button-response": "^1.1.2",
     "@jspsych/plugin-image-button-response": "^1.1.2",
     "@jspsych/plugin-preload": "^1.1.2",
-    "jspsych": "^7.3.2"
+    "jspsych": "^7.3.2",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz"
   }
 }

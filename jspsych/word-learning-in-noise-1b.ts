@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+
 import "jspsych/css/jspsych.css";
 
 function importAll(r) {
@@ -12,11 +14,19 @@ function createChildElement(parent, tag) {
   return child;
 }
 
-export function selectConditionBeforeRunning(jsPsych) {
+async function run() {
   const images = importAll(
-    require.context("../assets/images/", true, /\.png$/)
+    require.context("../assets/images/", false, /\.png$/)
   );
-  const audio = importAll(require.context("../assets/audio/", true, /\.wav$/));
+  const audio = importAll(require.context("../assets/audio/", false, /\.wav$/));
+  const orders = importAll(require.context("../assets/", false, /\.xlsx$/));
+  let response = await fetch(orders["./order.xlsx"]);
+  let buffer = await response.arrayBuffer();
+  const f = XLSX.read(buffer);
+  console.log(f);
+}
+
+export function selectConditionBeforeRunning(jsPsych) {
   const page = createChildElement(document.body, "div");
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
@@ -26,5 +36,7 @@ export function selectConditionBeforeRunning(jsPsych) {
   const conditionSelect = createChildElement(conditionLabel, "select");
   const confirmButton = createChildElement(page, "button");
   confirmButton.textContent = "Confirm";
-  confirmButton.addEventListener("click", () => {});
+  confirmButton.addEventListener("click", () => {
+    run();
+  });
 }

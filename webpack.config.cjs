@@ -42,6 +42,10 @@ module.exports = {
         test: /\.wav$/i,
         type: "asset/resource",
       },
+      {
+        test: /\.xlsx$/i,
+        type: "asset/resource",
+      },
     ],
   },
 };
