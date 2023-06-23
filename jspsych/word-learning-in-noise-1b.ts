@@ -38,7 +38,9 @@ async function run(jsPsych: JsPsych) {
     const audioFileName: string = trial["WAV filename audio - 0SNR"];
     const imageFileName: string = trial["image files"];
     if (
-      task.trim() == "Cued Recall" &&
+      (task.trim() == "Cued Recall" ||
+        task.trim() == "Repetition" ||
+        task.trim() == "Free Recall") &&
       !audioFileName.startsWith("No audio file")
     ) {
       trials.push({
