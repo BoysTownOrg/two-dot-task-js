@@ -34,18 +34,36 @@ async function run(jsPsych: JsPsych) {
   const trials = [];
   for (const trial of order) {
     console.log(trial);
-    console.log(trial["Task"]);
-    console.log(trial["WAV filename audio - 0SNR"]);
-    console.log(trial["image files"]);
-    const imageFileName = trial["image files"];
-    trials.push({
-      type: jsPsychImageButtonResponse,
-      stimulus: imagePaths[assetKey(imageFileName)],
-      stimulus_height: standardImageHeightPixels,
-      choices: ["Continue"],
-      prompt: "",
-      button_html: bottomRightButtonHTML,
-    });
+    const task: string = trial["Task"];
+    const audioFileName: string = trial["WAV filename audio - 0SNR"];
+    const imageFileName: string = trial["image files"];
+    if (
+      task.trim() == "Cued Recall" &&
+      !audioFileName.startsWith("No audio file")
+    ) {
+      trials.push({
+        timeline: [
+          {
+            type: plugins.imageAudioButtonResponse(),
+            stimulusUrl: audioPaths[assetKey(audioFileName)],
+            imageUrl: imagePaths[assetKey(imageFileName)],
+            imageHeight: standardImageHeightPixels,
+          },
+        ],
+        loop_function(data) {
+          return data.values()[0].repeat;
+        },
+      });
+    } else {
+      trials.push({
+        type: jsPsychImageButtonResponse,
+        stimulus: imagePaths[assetKey(imageFileName)],
+        stimulus_height: standardImageHeightPixels,
+        choices: ["Continue"],
+        prompt: "",
+        button_html: bottomRightButtonHTML,
+      });
+    }
   }
   jsPsych.run([
     {
