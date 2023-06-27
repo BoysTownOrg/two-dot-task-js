@@ -17,6 +17,11 @@ function assetKey(filename: string): string {
   return `./${filename}`;
 }
 
+function firstAndThirdWord(text: string): [string, string] {
+  const [first, , third] = text.split(" ");
+  return [first, third];
+}
+
 async function run(jsPsych: JsPsych) {
   const imagePaths = importAll(
     require.context("../assets/images/", false, /\.png$/)
@@ -32,11 +37,15 @@ async function run(jsPsych: JsPsych) {
   const bottomRightButtonHTML =
     '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
   const trials = [];
+  let lastAudioFileName = "";
+  let lastFirstWord = "";
+  let lastSecondWord = "";
   for (const trial of order) {
     console.log(trial);
     const task: string = trial["Task"];
     const audioFileName: string = trial["WAV filename audio - 0SNR"];
     const imageFileName: string = trial["image files"];
+    const targetWord: string = trial["TargetWord"];
     if (
       (task.trim() == "Cued Recall" ||
         task.trim() == "Repetition" ||
@@ -50,6 +59,31 @@ async function run(jsPsych: JsPsych) {
             stimulusUrl: audioPaths[assetKey(audioFileName)],
             imageUrl: imagePaths[assetKey(imageFileName)],
             imageHeight: standardImageHeightPixels,
+          },
+        ],
+        loop_function(data) {
+          return data.values()[0].repeat;
+        },
+      });
+    } else if (task.trim() == "2 dot task") {
+      lastAudioFileName = audioFileName;
+      [lastFirstWord, lastSecondWord] = firstAndThirdWord(targetWord);
+    } else if (task.trim() == "Feedback") {
+      trials.push({
+        timeline: [
+          {
+            type: plugins.twoDot(),
+            stimulusUrl: audioPaths[assetKey(lastAudioFileName)],
+            feedbackUrl: audioPaths[assetKey(audioFileName)],
+            imageUrl: imagePaths[assetKey(imageFileName)],
+            imageHeight: standardImageHeightPixels,
+            firstChoiceOnsetTimeSeconds: 2.5,
+            firstChoiceOffsetTimeSeconds: 3.25,
+            secondChoiceOnsetTimeSeconds: 4.75,
+            secondChoiceOffsetTimeSeconds: 5.5,
+            firstWord: lastFirstWord,
+            secondWord: lastSecondWord,
+            correctWord: targetWord,
           },
         ],
         loop_function(data) {
