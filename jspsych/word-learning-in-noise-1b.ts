@@ -32,21 +32,61 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const orderPath = importAll(require.context("../assets/", false, /\.xlsx$/));
   let response = await fetch(orderPath["./order.xlsx"]);
   let buffer = await response.arrayBuffer();
-  const order = XLSX.utils.sheet_to_json(XLSX.read(buffer).Sheets[sheet]);
+  const order = XLSX.utils.sheet_to_json(XLSX.read(buffer).Sheets[sheet], {
+    blankrows: true,
+  });
+  let beyondLastTrialIndex = order.length;
+  for (; beyondLastTrialIndex > 0; beyondLastTrialIndex -= 1)
+    if (order[beyondLastTrialIndex - 1]["Task"] !== undefined) break;
+
   const standardImageHeightPixels = 400;
   const bottomRightButtonHTML =
     '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
   const trials = [];
+  trials.push({
+    type: jsPsychImageButtonResponse,
+    stimulus: imagePaths[assetKey(`Game_${sheet}-1.png`)],
+    stimulus_height: standardImageHeightPixels,
+    choices: ["Continue"],
+    prompt: "",
+    button_html: bottomRightButtonHTML,
+  });
+
   let lastAudioFileName = "";
   let lastFirstWord = "";
   let lastSecondWord = "";
-  for (const trial of order) {
+  let currentMotivationalGameIndex = 1;
+  for (const trial of order.slice(0, beyondLastTrialIndex)) {
     console.log(trial);
     const task: string = trial["Task"];
     const audioFileName: string = trial[`WAV filename audio - ${condition}`];
     const imageFileName: string = trial["image files"];
     const targetWord: string = trial["TargetWord"];
-    if (
+    if (task === undefined) {
+      trials.push({
+        type: jsPsychImageButtonResponse,
+        stimulus:
+          imagePaths[
+            assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)
+          ],
+        stimulus_height: standardImageHeightPixels,
+        choices: ["Continue"],
+        prompt: "",
+        button_html: bottomRightButtonHTML,
+      });
+      currentMotivationalGameIndex += 1;
+      trials.push({
+        type: jsPsychImageButtonResponse,
+        stimulus:
+          imagePaths[
+            assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)
+          ],
+        stimulus_height: standardImageHeightPixels,
+        choices: ["Continue"],
+        prompt: "",
+        button_html: bottomRightButtonHTML,
+      });
+    } else if (
       (task.trim().startsWith("Cued") ||
         task.trim().startsWith("Repetition") ||
         task.trim().startsWith("Free")) &&
@@ -101,6 +141,26 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       });
     }
   }
+  trials.push({
+    type: jsPsychImageButtonResponse,
+    stimulus:
+      imagePaths[assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)],
+    stimulus_height: standardImageHeightPixels,
+    choices: ["Continue"],
+    prompt: "",
+    button_html: bottomRightButtonHTML,
+  });
+  currentMotivationalGameIndex += 1;
+  trials.push({
+    type: jsPsychImageButtonResponse,
+    stimulus:
+      imagePaths[assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)],
+    stimulus_height: standardImageHeightPixels,
+    choices: ["Continue"],
+    prompt: "",
+    button_html: bottomRightButtonHTML,
+  });
+
   jsPsych.run([
     {
       type: jsPsychPreload,
