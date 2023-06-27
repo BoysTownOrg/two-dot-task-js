@@ -22,6 +22,16 @@ function firstAndThirdWord(text: string): [string, string] {
   return [first, third];
 }
 
+function pushGreenCircleTrial(trials: any[]) {
+  trials.push({
+    type: jsPsychHtmlButtonResponse,
+    stimulus: "",
+    choices: [""],
+    button_html:
+      '<div style="height: 200px; width: 200px; border-radius: 100px; background-color: green"></div>',
+  });
+}
+
 async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const imagePaths = importAll(
     require.context("../assets/images/", false, /\.png$/)
@@ -65,6 +75,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         task.trim().startsWith("Free")) &&
       !audioFileName.startsWith("No audio file")
     ) {
+      pushBlankTrial(trials);
       trials.push({
         timeline: [
           {
@@ -82,6 +93,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       lastAudioFileName = audioFileName;
       [lastFirstWord, lastSecondWord] = firstAndThirdWord(targetWord);
     } else if (task.trim().startsWith("Feedback")) {
+      pushGreenCircleTrial(trials);
       trials.push({
         timeline: [
           {
@@ -104,6 +116,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         },
       });
     } else {
+      pushBlankTrial(trials);
       trials.push({
         type: jsPsychImageButtonResponse,
         stimulus: imagePaths[assetKey(imageFileName)],
@@ -145,6 +158,15 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       stimulus_height: standardImageHeightPixels,
       choices: ["Continue"],
       prompt: "",
+      button_html: bottomRightButtonHTML,
+    });
+  }
+
+  function pushBlankTrial(trials: any[]) {
+    trials.push({
+      type: jsPsychHtmlButtonResponse,
+      stimulus: "",
+      choices: ["Continue"],
       button_html: bottomRightButtonHTML,
     });
   }
