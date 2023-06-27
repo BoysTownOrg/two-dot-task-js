@@ -43,14 +43,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const bottomRightButtonHTML =
     '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
   const trials = [];
-  trials.push({
-    type: jsPsychImageButtonResponse,
-    stimulus: imagePaths[assetKey(`Game_${sheet}-1.png`)],
-    stimulus_height: standardImageHeightPixels,
-    choices: ["Continue"],
-    prompt: "",
-    button_html: bottomRightButtonHTML,
-  });
+  pushGameTrial(trials, sheet, 1);
 
   let lastAudioFileName = "";
   let lastFirstWord = "";
@@ -63,29 +56,9 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
     const imageFileName: string = trial["image files"];
     const targetWord: string = trial["TargetWord"];
     if (task === undefined) {
-      trials.push({
-        type: jsPsychImageButtonResponse,
-        stimulus:
-          imagePaths[
-            assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)
-          ],
-        stimulus_height: standardImageHeightPixels,
-        choices: ["Continue"],
-        prompt: "",
-        button_html: bottomRightButtonHTML,
-      });
+      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
       currentMotivationalGameIndex += 1;
-      trials.push({
-        type: jsPsychImageButtonResponse,
-        stimulus:
-          imagePaths[
-            assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)
-          ],
-        stimulus_height: standardImageHeightPixels,
-        choices: ["Continue"],
-        prompt: "",
-        button_html: bottomRightButtonHTML,
-      });
+      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
     } else if (
       (task.trim().startsWith("Cued") ||
         task.trim().startsWith("Repetition") ||
@@ -141,25 +114,9 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       });
     }
   }
-  trials.push({
-    type: jsPsychImageButtonResponse,
-    stimulus:
-      imagePaths[assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)],
-    stimulus_height: standardImageHeightPixels,
-    choices: ["Continue"],
-    prompt: "",
-    button_html: bottomRightButtonHTML,
-  });
+  pushGameTrial(trials, sheet, currentMotivationalGameIndex);
   currentMotivationalGameIndex += 1;
-  trials.push({
-    type: jsPsychImageButtonResponse,
-    stimulus:
-      imagePaths[assetKey(`Game_${sheet}-${currentMotivationalGameIndex}.png`)],
-    stimulus_height: standardImageHeightPixels,
-    choices: ["Continue"],
-    prompt: "",
-    button_html: bottomRightButtonHTML,
-  });
+  pushGameTrial(trials, sheet, currentMotivationalGameIndex);
 
   jsPsych.run([
     {
@@ -180,6 +137,17 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       button_html: bottomRightButtonHTML,
     },
   ]);
+
+  function pushGameTrial(trials: any[], sheet: string, index: number) {
+    trials.push({
+      type: jsPsychImageButtonResponse,
+      stimulus: imagePaths[assetKey(`Game_${sheet}-${index}.png`)],
+      stimulus_height: standardImageHeightPixels,
+      choices: ["Continue"],
+      prompt: "",
+      button_html: bottomRightButtonHTML,
+    });
+  }
 }
 
 export function selectConditionBeforeRunning(jsPsych: JsPsych) {
