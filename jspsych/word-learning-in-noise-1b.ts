@@ -22,7 +22,7 @@ function firstAndThirdWord(text: string): [string, string] {
   return [first, third];
 }
 
-async function run(jsPsych: JsPsych) {
+async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const imagePaths = importAll(
     require.context("../assets/images/", false, /\.png$/)
   );
@@ -32,7 +32,7 @@ async function run(jsPsych: JsPsych) {
   const orderPath = importAll(require.context("../assets/", false, /\.xlsx$/));
   let response = await fetch(orderPath["./order.xlsx"]);
   let buffer = await response.arrayBuffer();
-  const order = XLSX.utils.sheet_to_json(XLSX.read(buffer).Sheets["Day 1"]);
+  const order = XLSX.utils.sheet_to_json(XLSX.read(buffer).Sheets[sheet]);
   const standardImageHeightPixels = 400;
   const bottomRightButtonHTML =
     '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
@@ -43,13 +43,13 @@ async function run(jsPsych: JsPsych) {
   for (const trial of order) {
     console.log(trial);
     const task: string = trial["Task"];
-    const audioFileName: string = trial["WAV filename audio - 0SNR"];
+    const audioFileName: string = trial[`WAV filename audio - ${condition}`];
     const imageFileName: string = trial["image files"];
     const targetWord: string = trial["TargetWord"];
     if (
-      (task.trim() == "Cued Recall" ||
-        task.trim() == "Repetition" ||
-        task.trim() == "Free Recall") &&
+      (task.trim().startsWith("Cued") ||
+        task.trim().startsWith("Repetition") ||
+        task.trim().startsWith("Free")) &&
       !audioFileName.startsWith("No audio file")
     ) {
       trials.push({
@@ -65,10 +65,10 @@ async function run(jsPsych: JsPsych) {
           return data.values()[0].repeat;
         },
       });
-    } else if (task.trim() == "2 dot task") {
+    } else if (task.trim().startsWith("2 dot")) {
       lastAudioFileName = audioFileName;
       [lastFirstWord, lastSecondWord] = firstAndThirdWord(targetWord);
-    } else if (task.trim() == "Feedback") {
+    } else if (task.trim().startsWith("Feedback")) {
       trials.push({
         timeline: [
           {
@@ -135,11 +135,32 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
   const zeroSNR = document.createElement("option");
   conditionSelect.append(zeroSNR);
   zeroSNR.textContent = "0SNR";
+  const dayLabel = document.createElement("label");
+  topOfPage.append(dayLabel);
+  dayLabel.textContent = "Day";
+  const daySelect = document.createElement("select");
+  dayLabel.append(daySelect);
+  const day1 = document.createElement("option");
+  daySelect.append(day1);
+  day1.textContent = "Day 1";
+  const day2 = document.createElement("option");
+  daySelect.append(day2);
+  day2.textContent = "Day 2";
+  const day3 = document.createElement("option");
+  daySelect.append(day3);
+  day3.textContent = "Day 3";
   const confirmButton = document.createElement("button");
   page.append(confirmButton);
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
     document.body.removeChild(page);
-    run(jsPsych);
+    const selectedDay = daySelect.options.item(
+      daySelect.selectedIndex
+    ).textContent;
+    const selectedCondition = conditionSelect.options.item(
+      conditionSelect.selectedIndex
+    ).textContent;
+
+    run(jsPsych, selectedDay, selectedCondition);
   });
 }
