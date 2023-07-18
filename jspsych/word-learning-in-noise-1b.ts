@@ -40,11 +40,13 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
     require.context("../assets/audio/", false, /\.wav$/),
   );
   const orderPath = importAll(require.context("../assets/", false, /\.xlsx$/));
+
   let response = await fetch(orderPath["./order.xlsx"]);
   let buffer = await response.arrayBuffer();
   const order = XLSX.utils.sheet_to_json(XLSX.read(buffer).Sheets[sheet], {
     blankrows: true,
   });
+
   let beyondLastTrialIndex = order.length;
   for (; beyondLastTrialIndex > 0; beyondLastTrialIndex -= 1)
     if (order[beyondLastTrialIndex - 1]["Task"] !== undefined) break;
@@ -52,13 +54,13 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const standardImageHeightPixels = 400;
   const bottomRightButtonHTML =
     '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
-  const trials = [];
-  pushGameTrial(trials, sheet, 1);
 
+  const trials = [];
   let currentMotivationalGameIndex = 1;
+  pushGameTrial(trials, sheet, currentMotivationalGameIndex);
+
   for (let trialIndex = 0; trialIndex < beyondLastTrialIndex; trialIndex += 1) {
     const trial = order[trialIndex];
-    console.log(trial);
     const task: string = trial["Task"];
     const audioFileName: string = trial[`WAV filename audio - ${condition}`];
     const imageFileName: string = trial["image files"];
