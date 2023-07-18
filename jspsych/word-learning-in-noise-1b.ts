@@ -34,10 +34,10 @@ function pushGreenCircleTrial(trials: any[]) {
 
 async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const imagePaths = importAll(
-    require.context("../assets/images/", false, /\.png$/)
+    require.context("../assets/images/", false, /\.png$/),
   );
   const audioPaths = importAll(
-    require.context("../assets/audio/", false, /\.wav$/)
+    require.context("../assets/audio/", false, /\.wav$/),
   );
   const orderPath = importAll(require.context("../assets/", false, /\.xlsx$/));
   let response = await fetch(orderPath["./order.xlsx"]);
@@ -55,11 +55,9 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const trials = [];
   pushGameTrial(trials, sheet, 1);
 
-  let lastAudioFileName = "";
-  let lastFirstWord = "";
-  let lastSecondWord = "";
   let currentMotivationalGameIndex = 1;
-  for (const trial of order.slice(0, beyondLastTrialIndex)) {
+  for (let trialIndex = 0; trialIndex < beyondLastTrialIndex; trialIndex += 1) {
+    const trial = order[trialIndex];
     console.log(trial);
     const task: string = trial["Task"];
     const audioFileName: string = trial[`WAV filename audio - ${condition}`];
@@ -90,30 +88,66 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         },
       });
     } else if (task.trim().startsWith("2 dot")) {
-      lastAudioFileName = audioFileName;
-      [lastFirstWord, lastSecondWord] = firstAndThirdWord(targetWord);
-    } else if (task.trim().startsWith("Feedback")) {
       pushGreenCircleTrial(trials);
-      trials.push({
-        timeline: [
-          {
-            type: plugins.twoDot(),
-            stimulusUrl: audioPaths[assetKey(lastAudioFileName)],
-            feedbackUrl: audioPaths[assetKey(audioFileName)],
-            imageUrl: imagePaths[assetKey(imageFileName)],
-            imageHeight: standardImageHeightPixels,
-            firstChoiceOnsetTimeSeconds: 2.5,
-            firstChoiceOffsetTimeSeconds: 3.25,
-            secondChoiceOnsetTimeSeconds: 4.75,
-            secondChoiceOffsetTimeSeconds: 5.5,
-            firstWord: lastFirstWord,
-            secondWord: lastSecondWord,
-            correctWord: targetWord,
+      const [firstWord, secondWord] = firstAndThirdWord(targetWord);
+      if (
+        trialIndex + 1 < beyondLastTrialIndex &&
+        order[trialIndex + 1]["Task"].trim().startsWith("Feedback")
+      ) {
+        trials.push({
+          timeline: [
+            {
+              type: plugins.twoDot(),
+              stimulusUrl: audioPaths[assetKey(audioFileName)],
+              feedbackUrl:
+                audioPaths[
+                  assetKey(
+                    order[trialIndex + 1][`WAV filename audio - ${condition}`],
+                  )
+                ],
+              imageUrl: imagePaths[assetKey(imageFileName)],
+              imageHeight: standardImageHeightPixels,
+              firstChoiceOnsetTimeSeconds: 2.5,
+              firstChoiceOffsetTimeSeconds: 3.25,
+              secondChoiceOnsetTimeSeconds: 4.75,
+              secondChoiceOffsetTimeSeconds: 5.5,
+              firstWord,
+              secondWord,
+              correctWord: targetWord,
+            },
+          ],
+          loop_function(data) {
+            return data.values()[0].repeat;
           },
-        ],
-        loop_function(data) {
-          return data.values()[0].repeat;
-        },
+        });
+        trialIndex += 1;
+      } else {
+        trials.push({
+          timeline: [
+            {
+              type: plugins.twoDotWithoutFeedback(),
+              stimulusUrl: audioPaths[assetKey(audioFileName)],
+              imageUrl: imagePaths[assetKey(imageFileName)],
+              imageHeight: standardImageHeightPixels,
+              firstChoiceOnsetTimeSeconds: 2.5,
+              firstChoiceOffsetTimeSeconds: 3.25,
+              secondChoiceOnsetTimeSeconds: 4.75,
+              secondChoiceOffsetTimeSeconds: 5.5,
+              firstWord,
+              secondWord,
+              correctWord: imageFileName.replace(".png", ""),
+            },
+          ],
+          loop_function(data) {
+            return data.values()[0].repeat;
+          },
+        });
+      }
+    } else if (task.trim().startsWith("5-Minute")) {
+      trials.push({
+        type: plugins.stopwatch(),
+        text: 'Take a 5 minute break. Press "Continue" when finished.',
+        alarmTimeSeconds: 300,
       });
     } else {
       pushBlankTrial(trials);
@@ -205,10 +239,10 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
   confirmButton.addEventListener("click", () => {
     document.body.removeChild(page);
     const selectedDay = daySelect.options.item(
-      daySelect.selectedIndex
+      daySelect.selectedIndex,
     ).textContent;
     const selectedCondition = conditionSelect.options.item(
-      conditionSelect.selectedIndex
+      conditionSelect.selectedIndex,
     ).textContent;
 
     run(jsPsych, selectedDay, selectedCondition);
