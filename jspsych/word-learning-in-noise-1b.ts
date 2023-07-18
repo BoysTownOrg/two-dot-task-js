@@ -149,6 +149,9 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         text: 'Take a 5 minute break. Press "Continue" when finished.',
         alarmTimeSeconds: 300,
       });
+      currentMotivationalGameIndex += 1;
+      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
+      trialIndex += 1;
     } else {
       pushBlankTrial(trials);
       trials.push({
