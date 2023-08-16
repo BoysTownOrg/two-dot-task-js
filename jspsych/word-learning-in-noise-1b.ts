@@ -101,7 +101,10 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
           return data.values()[0].repeat;
         },
       });
-    } else if (task.trim().startsWith("2 dot")) {
+    } else if (
+      task.trim().startsWith("2 dot") &&
+      !audioFileName.startsWith("No audio file")
+    ) {
       pushGreenCircleTrial(trials);
       const [firstWord, secondWord] = firstAndThirdWord(targetWord);
       if (
