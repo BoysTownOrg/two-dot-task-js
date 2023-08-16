@@ -32,6 +32,15 @@ function pushGreenCircleTrial(trials: any[]) {
   });
 }
 
+declare const jatos: any;
+
+function checkedImportsAccess(imports, key) {
+  if (!imports.hasOwnProperty(key)) {
+    jatos.endStudy(false, `ERROR: key not found: ${key}`);
+  }
+  return imports[key];
+}
+
 async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   const imagePaths = importAll(
     require.context("../assets/images/", false, /\.png$/),
@@ -80,8 +89,11 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         timeline: [
           {
             type: plugins.imageAudioButtonResponse(),
-            stimulusUrl: audioPaths[assetKey(audioFileName)],
-            imageUrl: imagePaths[assetKey(imageFileName)],
+            stimulusUrl: checkedImportsAccess(
+              audioPaths,
+              assetKey(audioFileName),
+            ),
+            imageUrl: checkedImportsAccess(imagePaths, assetKey(imageFileName)),
             imageHeight: standardImageHeightPixels,
           },
         ],
@@ -100,14 +112,20 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
           timeline: [
             {
               type: plugins.twoDot(),
-              stimulusUrl: audioPaths[assetKey(audioFileName)],
+              stimulusUrl: checkedImportsAccess(
+                audioPaths,
+                assetKey(audioFileName),
+              ),
               feedbackUrl:
                 audioPaths[
                   assetKey(
                     order[trialIndex + 1][`WAV filename audio - ${condition}`],
                   )
                 ],
-              imageUrl: imagePaths[assetKey(imageFileName)],
+              imageUrl: checkedImportsAccess(
+                imagePaths,
+                assetKey(imageFileName),
+              ),
               imageHeight: standardImageHeightPixels,
               firstChoiceOnsetTimeSeconds: 2.5,
               firstChoiceOffsetTimeSeconds: 3.25,
@@ -128,8 +146,14 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
           timeline: [
             {
               type: plugins.twoDotWithoutFeedback(),
-              stimulusUrl: audioPaths[assetKey(audioFileName)],
-              imageUrl: imagePaths[assetKey(imageFileName)],
+              stimulusUrl: checkedImportsAccess(
+                audioPaths,
+                assetKey(audioFileName),
+              ),
+              imageUrl: checkedImportsAccess(
+                imagePaths,
+                assetKey(imageFileName),
+              ),
               imageHeight: standardImageHeightPixels,
               firstChoiceOnsetTimeSeconds: 2.5,
               firstChoiceOffsetTimeSeconds: 3.25,
@@ -158,7 +182,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       pushBlankTrial(trials);
       trials.push({
         type: jsPsychImageButtonResponse,
-        stimulus: imagePaths[assetKey(imageFileName)],
+        stimulus: checkedImportsAccess(imagePaths, assetKey(imageFileName)),
         stimulus_height: standardImageHeightPixels,
         choices: ["Continue"],
         prompt: "",
@@ -193,7 +217,10 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
   function pushGameTrial(trials: any[], sheet: string, index: number) {
     trials.push({
       type: jsPsychImageButtonResponse,
-      stimulus: imagePaths[assetKey(`Game_${sheet}-${index}.png`)],
+      stimulus: checkedImportsAccess(
+        imagePaths,
+        assetKey(`Game_${sheet}-${index}.png`),
+      ),
       stimulus_height: standardImageHeightPixels,
       choices: ["Continue"],
       prompt: "",
