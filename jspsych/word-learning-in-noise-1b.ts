@@ -114,7 +114,10 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         trials.push({
           timeline: [
             {
-              type: plugins.twoDot(),
+              type:
+                trial["Known/Novel"].trim() == "Known"
+                  ? plugins.twoDotPractice()
+                  : plugins.twoDot(),
               stimulusUrl: checkedImportsAccess(
                 audioPaths,
                 assetKey(audioFileName),
@@ -176,7 +179,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       // practice two dot
       pushGreenCircleTrial(trials);
       trials.push({
-        type: plugins.twoDotPractice(),
+        type: plugins.twoDotLive(),
         imageUrl: checkedImportsAccess(imagePaths, assetKey(imageFileName)),
         imageHeight: standardImageHeightPixels,
       });

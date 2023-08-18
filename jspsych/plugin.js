@@ -7,6 +7,7 @@ import {
 import { TaskController } from "../lib/TaskController.js";
 import {
   createTaskPresenter,
+  createTaskPresenterWithDeferredFinish,
   createTaskPresenterWithDelayedFinish,
 } from "../lib/TaskPresenter.js";
 import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
@@ -162,9 +163,6 @@ class TaskUI {
     adopt(continueButtonContainer, this.continueButton);
     this.continueButton.textContent = "Continue";
     this.continueButton.style.visibility = "hidden";
-    addClickEventListener(this.continueButton, () => {
-      this.observer.notifyThatContinueButtonHasBeenTouched();
-    });
     const repeatButtonContainer = buttonContainerElement();
     this.repeatButton = buttonElement();
     adopt(repeatButtonContainer, this.repeatButton);
@@ -172,9 +170,6 @@ class TaskUI {
     this.repeatButton.style.visibility = "hidden";
     adopt(belowTwoDots, repeatButtonContainer);
     adopt(belowTwoDots, continueButtonContainer);
-    addClickEventListener(this.repeatButton, () => {
-      jsPsych.finishTrial({ repeat: true });
-    });
   }
 
   hideCursor() {
@@ -211,6 +206,17 @@ class TaskUI {
 
   finish(result) {
     finish(this, result);
+  }
+
+  deferFinish(result) {
+    this.continueButton.style.visibility = "visible";
+    this.repeatButton.style.visibility = "visible";
+    addClickEventListener(this.continueButton, () => {
+      this.jsPsych.finishTrial({ ...result, repeat: false });
+    });
+    addClickEventListener(this.repeatButton, () => {
+      this.jsPsych.finishTrial({ ...result, repeat: true });
+    });
   }
 
   attach(observer) {
@@ -637,6 +643,65 @@ export function twoDot() {
   return Plugin;
 }
 
+export function twoDotPractice() {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(display_element, trial) {
+      clear(display_element);
+      const taskUI = new TaskUI(
+        this.jsPsych,
+        display_element,
+        trial.imageUrl,
+        trial.imageHeight,
+      );
+      startController(
+        taskUI,
+        createTaskModel(
+          new WebAudioPlayer(
+            this.jsPsych,
+            trial.stimulusUrl,
+            trial.feedbackUrl,
+          ),
+          createTaskPresenterWithDeferredFinish(taskUI),
+          choiceTimesSeconds(trial),
+          words(trial),
+          trial.correctWord,
+        ),
+      );
+    }
+  }
+
+  Plugin.info = {
+    name: "two-dot",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      feedbackUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Feedback URL",
+        default: "",
+        description: "The feedback audio",
+      },
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      ...twoDotCommonParameters(),
+    },
+  };
+  return Plugin;
+}
+
 function createTwoDotsInside(parent) {
   const twoDotGrid = divElement();
   twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
@@ -663,7 +728,7 @@ function createContinueButtonInside(parent) {
   return continueButton;
 }
 
-export function twoDotPractice() {
+export function twoDotLive() {
   class Plugin {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
