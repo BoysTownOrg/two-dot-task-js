@@ -172,6 +172,15 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
           },
         });
       }
+    } else if (task.trim().startsWith("2 dot")) {
+      // practice two dot
+      pushGreenCircleTrial(trials);
+      trials.push({
+        type: plugins.twoDotPractice(),
+        imageUrl: checkedImportsAccess(imagePaths, assetKey(imageFileName)),
+        imageHeight: standardImageHeightPixels,
+      });
+      trialIndex += 1;
     } else if (task.trim().startsWith("5-Minute")) {
       trials.push({
         type: plugins.stopwatch(),
