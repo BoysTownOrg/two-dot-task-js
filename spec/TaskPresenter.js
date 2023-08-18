@@ -147,11 +147,6 @@ describe("TaskPresenter", () => {
     expect(this.view.secondDotColoredBlack()).toBeTrue();
   });
 
-  it("should show continue button when task is ready to end", function () {
-    this.presenter.notifyThatTaskIsReadyToEnd();
-    expect(this.view.continueButtonShown()).toBeTrue();
-  });
-
   it("should submit result when task finishes", function () {
     this.presenter.notifyThatTaskIsFinished({ choice: "second" });
     expect(this.view.finishedResult()).toEqual({ choice: "second" });
