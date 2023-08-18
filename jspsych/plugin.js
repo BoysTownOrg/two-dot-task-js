@@ -148,15 +148,6 @@ class TaskUI {
   constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const twoDotGrid = divElement();
-    twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
-      250,
-    )} ${pixelsString(250)} 1fr`;
-    twoDotGrid.style.gridGap = `${pixelsString(120)}`;
-    this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridColumn = 2;
-    this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridColumn = 3;
     const image = new Image();
     image.src = imageUrl;
     image.style.height = pixelsString(imageHeight);
@@ -676,6 +667,15 @@ function createTwoDotsInside(parent) {
   return [firstDot, secondDot];
 }
 
+function createContinueButtonInside(parent) {
+  const continueButtonContainer = buttonContainerElement();
+  const continueButton = buttonElement();
+  adopt(continueButtonContainer, continueButton);
+  continueButton.textContent = "Continue";
+  adopt(parent, continueButtonContainer);
+  return continueButton;
+}
+
 export function twoDotPractice() {
   class Plugin {
     constructor(jsPsych) {
@@ -690,14 +690,10 @@ export function twoDotPractice() {
       createTwoDotsInside(parent);
       const belowTwoDots = buttonGroupElement();
       adopt(parent, belowTwoDots);
-      const continueButtonContainer = buttonContainerElement();
-      const continueButton = buttonElement();
-      adopt(continueButtonContainer, continueButton);
-      continueButton.textContent = "Continue";
+      const continueButton = createContinueButtonInside(belowTwoDots);
       addClickEventListener(continueButton, () => {
         this.jsPsych.finishTrial();
       });
-      adopt(belowTwoDots, continueButtonContainer);
     }
   }
 
