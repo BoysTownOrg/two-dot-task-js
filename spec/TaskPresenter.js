@@ -1,6 +1,7 @@
 import {
   createTaskPresenter,
   createTaskPresenterWithDelayedFinish,
+  createTaskPresenterWithDeferredFinish,
 } from "../lib/TaskPresenter.js";
 
 class TaskViewStub {
@@ -14,6 +15,11 @@ class TaskViewStub {
     this.continueButtonShown_ = false;
     this.cursorShown_ = false;
     this.cursorHidden_ = false;
+    this.finishDeferred_ = false;
+  }
+
+  finishDeferred() {
+    return this.finishDeferred_;
   }
 
   hideCursor() {
@@ -96,6 +102,11 @@ class TaskViewStub {
     this.finishedResult_ = result;
   }
 
+  deferFinish(result) {
+    this.finishedResult_ = result;
+    this.finishDeferred_ = true;
+  }
+
   finishWithDelaySeconds(result, t) {
     this.finishedResult_ = result;
     this.finishDelaySeconds_ = t;
@@ -176,5 +187,16 @@ describe("TaskPresenterWithDelayedFinish", () => {
     presenter.notifyThatTaskIsFinished({ choice: "second" });
     expect(view.finishedResult()).toEqual({ choice: "second" });
     expect(view.finishDelaySeconds()).toEqual(1);
+  });
+});
+
+describe("TaskPresenterWithDeferredFinish", () => {
+  it("defers finish", () => {
+    const view = new TaskViewStub();
+    const delaySeconds = 1;
+    const presenter = createTaskPresenterWithDeferredFinish(view, delaySeconds);
+    presenter.notifyThatTaskIsFinished({ choice: "second" });
+    expect(view.finishedResult()).toEqual({ choice: "second" });
+    expect(view.finishDeferred()).toBeTrue();
   });
 });
