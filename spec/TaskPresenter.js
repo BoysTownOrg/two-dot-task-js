@@ -90,10 +90,6 @@ class TaskViewStub {
     return this.continueButtonShown_;
   }
 
-  showContinueButton() {
-    this.continueButtonShown_ = true;
-  }
-
   finishedResult() {
     return this.finishedResult_;
   }

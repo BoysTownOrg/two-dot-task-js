@@ -123,11 +123,6 @@ function colorSecondDotBlack(ui) {
   ui.secondDot.style.backgroundColor = "black";
 }
 
-function showContinueButton(ui) {
-  ui.continueButton.style.visibility = "visible";
-  ui.repeatButton.style.visibility = "visible";
-}
-
 function finish(ui, result) {
   ui.jsPsych.finishTrial({ ...result, repeat: false });
 }
@@ -212,10 +207,6 @@ class TaskUI {
 
   colorSecondDotBlack() {
     colorSecondDotBlack(this);
-  }
-
-  showContinueButton() {
-    showContinueButton(this);
   }
 
   finish(result) {
@@ -370,10 +361,6 @@ class TaskWithVideoUI {
 
   colorSecondDotBlack() {
     colorSecondDotBlack(this);
-  }
-
-  showContinueButton() {
-    showContinueButton(this);
   }
 
   finish(result) {
