@@ -34,11 +34,18 @@ function pushGreenCircleTrial(trials: any[]) {
 
 declare const jatos: any;
 
-function checkedImportsAccess(imports, key) {
+function checkedImportsAccess(
+  imports: { [id: string]: string },
+  key: string,
+): string {
   if (!imports.hasOwnProperty(key)) {
     jatos.endStudy(false, `ERROR: key not found: ${key}`);
   }
   return imports[key];
+}
+
+function trimmedStringCell(row, key: string): string {
+  return row[key].trim();
 }
 
 async function run(jsPsych: JsPsych, sheet: string, condition: string) {
@@ -70,18 +77,21 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
 
   for (let trialIndex = 0; trialIndex < beyondLastTrialIndex; trialIndex += 1) {
     const trial = order[trialIndex];
-    const task: string = trial["Task"];
-    const audioFileName: string = trial[`WAV filename audio - ${condition}`];
-    const imageFileName: string = trial["image files"];
-    const targetWord: string = trial["TargetWord"];
+    const task = trimmedStringCell(trial, "Task");
+    const audioFileName = trimmedStringCell(
+      trial,
+      `WAV filename audio - ${condition}`,
+    );
+    const imageFileName = trimmedStringCell(trial, "image files");
+    const targetWord = trimmedStringCell(trial, "TargetWord");
     if (task === undefined) {
       pushGameTrial(trials, sheet, currentMotivationalGameIndex);
       currentMotivationalGameIndex += 1;
       pushGameTrial(trials, sheet, currentMotivationalGameIndex);
     } else if (
-      (task.trim().startsWith("Cued") ||
-        task.trim().startsWith("Repetition") ||
-        task.trim().startsWith("Free")) &&
+      (task.startsWith("Cued") ||
+        task.startsWith("Repetition") ||
+        task.startsWith("Free")) &&
       !audioFileName.startsWith("No audio file")
     ) {
       pushBlankTrial(trials);
@@ -102,20 +112,20 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         },
       });
     } else if (
-      task.trim().startsWith("2 dot") &&
+      task.startsWith("2 dot") &&
       !audioFileName.startsWith("No audio file")
     ) {
       pushGreenCircleTrial(trials);
       const [firstWord, secondWord] = firstAndThirdWord(targetWord);
       if (
         trialIndex + 1 < beyondLastTrialIndex &&
-        order[trialIndex + 1]["Task"].trim().startsWith("Feedback")
+        trimmedStringCell(order[trialIndex + 1], "Task").startsWith("Feedback")
       ) {
         trials.push({
           timeline: [
             {
               type:
-                trial["Known/Novel"].trim() == "Known"
+                trimmedStringCell(trial, "Known/Novel") == "Known"
                   ? plugins.twoDotPractice()
                   : plugins.twoDot(),
               stimulusUrl: checkedImportsAccess(
@@ -175,7 +185,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
           },
         });
       }
-    } else if (task.trim().startsWith("2 dot")) {
+    } else if (task.startsWith("2 dot")) {
       // practice two dot
       pushGreenCircleTrial(trials);
       trials.push({
@@ -184,7 +194,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         imageHeight: standardImageHeightPixels,
       });
       trialIndex += 1;
-    } else if (task.trim().startsWith("5-Minute")) {
+    } else if (task.startsWith("5-Minute")) {
       trials.push({
         type: plugins.stopwatch(),
         text: 'Take a 5 minute break. Press "Continue" when finished.',
