@@ -144,40 +144,6 @@ function imageFromUrlAndHeight(imageUrl, imageHeight) {
   return image;
 }
 
-function addTwoDotUI(ui, jsPsych, parent, twoDotGrid, image) {
-  adopt(parent, image);
-  twoDotGrid.style.display = "grid";
-  adopt(twoDotGrid, ui.firstDot);
-  addClickEventListener(ui.firstDot, () => {
-    ui.observer.notifyThatFirstDotHasBeenTouched();
-  });
-  addClickEventListener(ui.secondDot, () => {
-    ui.observer.notifyThatSecondDotHasBeenTouched();
-  });
-  adopt(twoDotGrid, ui.secondDot);
-  adopt(parent, twoDotGrid);
-  const belowTwoDots = buttonGroupElement();
-  adopt(parent, belowTwoDots);
-  const continueButtonContainer = buttonContainerElement();
-  ui.continueButton = buttonElement();
-  adopt(continueButtonContainer, ui.continueButton);
-  ui.continueButton.textContent = "Continue";
-  ui.continueButton.style.visibility = "hidden";
-  addClickEventListener(ui.continueButton, () => {
-    ui.observer.notifyThatContinueButtonHasBeenTouched();
-  });
-  const repeatButtonContainer = buttonContainerElement();
-  ui.repeatButton = buttonElement();
-  adopt(repeatButtonContainer, ui.repeatButton);
-  ui.repeatButton.textContent = "Repeat";
-  ui.repeatButton.style.visibility = "hidden";
-  adopt(belowTwoDots, repeatButtonContainer);
-  adopt(belowTwoDots, continueButtonContainer);
-  addClickEventListener(ui.repeatButton, () => {
-    jsPsych.finishTrial({ repeat: true });
-  });
-}
-
 class TaskUI {
   constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
@@ -195,7 +161,34 @@ class TaskUI {
     image.src = imageUrl;
     image.style.height = pixelsString(imageHeight);
     image.style.width = "auto";
-    addTwoDotUI(this, jsPsych, parent, twoDotGrid, image);
+    adopt(parent, image);
+    [this.firstDot, this.secondDot] = createTwoDotsInside(parent);
+    addClickEventListener(this.firstDot, () => {
+      this.observer.notifyThatFirstDotHasBeenTouched();
+    });
+    addClickEventListener(this.secondDot, () => {
+      this.observer.notifyThatSecondDotHasBeenTouched();
+    });
+    const belowTwoDots = buttonGroupElement();
+    adopt(parent, belowTwoDots);
+    const continueButtonContainer = buttonContainerElement();
+    this.continueButton = buttonElement();
+    adopt(continueButtonContainer, this.continueButton);
+    this.continueButton.textContent = "Continue";
+    this.continueButton.style.visibility = "hidden";
+    addClickEventListener(this.continueButton, () => {
+      this.observer.notifyThatContinueButtonHasBeenTouched();
+    });
+    const repeatButtonContainer = buttonContainerElement();
+    this.repeatButton = buttonElement();
+    adopt(repeatButtonContainer, this.repeatButton);
+    this.repeatButton.textContent = "Repeat";
+    this.repeatButton.style.visibility = "hidden";
+    adopt(belowTwoDots, repeatButtonContainer);
+    adopt(belowTwoDots, continueButtonContainer);
+    addClickEventListener(this.repeatButton, () => {
+      jsPsych.finishTrial({ repeat: true });
+    });
   }
 
   hideCursor() {
@@ -666,6 +659,23 @@ export function twoDot() {
   return Plugin;
 }
 
+function createTwoDotsInside(parent) {
+  const twoDotGrid = divElement();
+  twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
+    250,
+  )} ${pixelsString(250)} 1fr`;
+  twoDotGrid.style.gridGap = `${pixelsString(120)}`;
+  const firstDot = circleElementWithColor("black");
+  firstDot.style.gridColumn = 2;
+  const secondDot = circleElementWithColor("black");
+  secondDot.style.gridColumn = 3;
+  twoDotGrid.style.display = "grid";
+  adopt(twoDotGrid, firstDot);
+  adopt(twoDotGrid, secondDot);
+  adopt(parent, twoDotGrid);
+  return [firstDot, secondDot];
+}
+
 export function twoDotPractice() {
   class Plugin {
     constructor(jsPsych) {
@@ -673,23 +683,11 @@ export function twoDotPractice() {
     }
 
     trial(display_element, trial) {
-      clear(display_element);
-      const twoDotGrid = divElement();
-      twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
-        250,
-      )} ${pixelsString(250)} 1fr`;
-      twoDotGrid.style.gridGap = `${pixelsString(120)}`;
-      const firstDot = circleElementWithColor("black");
-      firstDot.style.gridColumn = 2;
-      const secondDot = circleElementWithColor("black");
-      secondDot.style.gridColumn = 3;
-      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       const parent = display_element;
+      clear(parent);
+      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       adopt(parent, image);
-      twoDotGrid.style.display = "grid";
-      adopt(twoDotGrid, firstDot);
-      adopt(twoDotGrid, secondDot);
-      adopt(parent, twoDotGrid);
+      createTwoDotsInside(parent);
       const belowTwoDots = buttonGroupElement();
       adopt(parent, belowTwoDots);
       const continueButtonContainer = buttonContainerElement();
