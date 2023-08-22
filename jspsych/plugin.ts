@@ -988,10 +988,10 @@ export function twoDotWithVideoWithoutFeedback() {
 }
 
 function initializeRepeatableTrial(
-  jsPsych,
-  buttonGroup,
-  continueButton,
-  repeatButton,
+  jsPsych: JsPsych,
+  buttonGroup: HTMLElement,
+  continueButton: HTMLButtonElement,
+  repeatButton: HTMLButtonElement,
 ) {
   const continueButtonContainer = buttonContainerElement();
   adopt(continueButtonContainer, continueButton);
@@ -1040,7 +1040,7 @@ export function imageAudioButtonResponse() {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
       const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       adopt(displayElement, image);
@@ -1086,7 +1086,7 @@ export function imageVideoPlaceholderButtonResponse() {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1107,9 +1107,9 @@ export function imageVideoPlaceholderButtonResponse() {
 }
 
 function videoElementThatShowsButtons(
-  displayElement,
-  continueButton,
-  repeatButton,
+  displayElement: HTMLElement,
+  continueButton: HTMLButtonElement,
+  repeatButton: HTMLButtonElement,
 ) {
   const videoElement = document.createElement("video");
   addVideoWithBackground(displayElement, videoElement);
@@ -1138,7 +1138,7 @@ export function imageVideoButtonResponse() {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1189,7 +1189,7 @@ export function imageVideoNoResponse() {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1214,7 +1214,7 @@ export function imageVideoNoResponse() {
 class VisualRepetitionTrialImagePresenter {
   private imageElement: HTMLImageElement;
 
-  constructor(imageElement) {
+  constructor(imageElement: HTMLImageElement) {
     this.imageElement = imageElement;
   }
 
@@ -1226,7 +1226,7 @@ class VisualRepetitionTrialImagePresenter {
 class VisualRepetitionTrialAudioPlayer {
   private videoElement: HTMLVideoElement;
 
-  constructor(videoElement) {
+  constructor(videoElement: HTMLVideoElement) {
     this.videoElement = videoElement;
   }
 
@@ -1234,7 +1234,7 @@ class VisualRepetitionTrialAudioPlayer {
     return this.videoElement.currentTime;
   }
 
-  attachTimeUpdateHandler(handler) {
+  attachTimeUpdateHandler(handler: () => void) {
     this.videoElement.ontimeupdate = () => {
       handler();
     };
@@ -1259,7 +1259,7 @@ export function visualRepetitionTrial() {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1327,7 +1327,7 @@ export function stopwatch() {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
       const text = divElement();
       text.textContent = trial.text;
