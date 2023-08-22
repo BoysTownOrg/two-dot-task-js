@@ -14,20 +14,15 @@ import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
 
 import { JsPsych, JsPsychPlugin, ParameterType } from "jspsych";
 
-function addEventListener(element, event, f) {
-  element.addEventListener(event, f);
-}
-
-function addClickEventListener(element, f) {
-  addEventListener(element, "click", f);
-}
-
-function createElement(what) {
-  return document.createElement(what);
+function addClickEventListener(
+  element: HTMLElement,
+  f: (this: HTMLElement, ev: MouseEvent) => any,
+) {
+  element.addEventListener("click", f);
 }
 
 function divElement() {
-  return createElement("div");
+  return document.createElement("div");
 }
 
 function pixelsString(a) {
@@ -62,7 +57,7 @@ function buttonContainerElement() {
 }
 
 function buttonElement() {
-  const button = createElement("button");
+  const button = document.createElement("button");
   button.className = "jspsych-btn";
   return button;
 }
@@ -747,9 +742,9 @@ function createTwoDotsInside(parent) {
   )} ${pixelsString(250)} 1fr`;
   twoDotGrid.style.gridGap = `${pixelsString(120)}`;
   const firstDot = circleElementWithColor("black");
-  firstDot.style.gridColumn = 2;
+  firstDot.style.gridColumn = "2";
   const secondDot = circleElementWithColor("black");
-  secondDot.style.gridColumn = 3;
+  secondDot.style.gridColumn = "3";
   twoDotGrid.style.display = "grid";
   adopt(twoDotGrid, firstDot);
   adopt(twoDotGrid, secondDot);

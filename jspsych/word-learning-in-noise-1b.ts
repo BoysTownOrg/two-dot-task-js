@@ -77,6 +77,12 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
 
   for (let trialIndex = 0; trialIndex < beyondLastTrialIndex; trialIndex += 1) {
     const trial = order[trialIndex];
+    if (!trial.hasOwnProperty("Task")) {
+      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
+      currentMotivationalGameIndex += 1;
+      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
+      continue;
+    }
     const task = trimmedStringCell(trial, "Task");
     const audioFileName = trimmedStringCell(
       trial,
@@ -84,11 +90,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
     );
     const imageFileName = trimmedStringCell(trial, "image files");
     const targetWord = trimmedStringCell(trial, "TargetWord");
-    if (task === undefined) {
-      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
-      currentMotivationalGameIndex += 1;
-      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
-    } else if (
+    if (
       (task.startsWith("Cued") ||
         task.startsWith("Repetition") ||
         task.startsWith("Free")) &&
