@@ -7,6 +7,7 @@ import {
 import { TaskController } from "../lib/TaskController.js";
 import {
   createTaskPresenter,
+  createTaskPresenterWithDeferredFinish,
   createTaskPresenterWithDelayedFinish,
 } from "../lib/TaskPresenter.js";
 import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
@@ -73,7 +74,7 @@ function circleElementWithColor(color) {
   circle.style.width = pixelsString(diameterPixels);
   const borderWidthPixels = 2;
   circle.style.borderRadius = pixelsString(
-    diameterPixels / 2 + borderWidthPixels
+    diameterPixels / 2 + borderWidthPixels,
   );
   circle.style.border = `${pixelsString(borderWidthPixels)} solid black`;
   circle.style.margin = "auto";
@@ -123,11 +124,6 @@ function colorSecondDotBlack(ui) {
   ui.secondDot.style.backgroundColor = "black";
 }
 
-function showContinueButton(ui) {
-  ui.continueButton.style.visibility = "visible";
-  ui.repeatButton.style.visibility = "visible";
-}
-
 function finish(ui, result) {
   ui.jsPsych.finishTrial({ ...result, repeat: false });
 }
@@ -144,58 +140,36 @@ function imageFromUrlAndHeight(imageUrl, imageHeight) {
   return image;
 }
 
-function addTwoDotUI(ui, jsPsych, parent, twoDotGrid, image) {
-  adopt(parent, image);
-  twoDotGrid.style.display = "grid";
-  adopt(twoDotGrid, ui.firstDot);
-  addClickEventListener(ui.firstDot, () => {
-    ui.observer.notifyThatFirstDotHasBeenTouched();
-  });
-  addClickEventListener(ui.secondDot, () => {
-    ui.observer.notifyThatSecondDotHasBeenTouched();
-  });
-  adopt(twoDotGrid, ui.secondDot);
-  adopt(parent, twoDotGrid);
-  const belowTwoDots = buttonGroupElement();
-  adopt(parent, belowTwoDots);
-  const continueButtonContainer = buttonContainerElement();
-  ui.continueButton = buttonElement();
-  adopt(continueButtonContainer, ui.continueButton);
-  ui.continueButton.textContent = "Continue";
-  ui.continueButton.style.visibility = "hidden";
-  addClickEventListener(ui.continueButton, () => {
-    ui.observer.notifyThatContinueButtonHasBeenTouched();
-  });
-  const repeatButtonContainer = buttonContainerElement();
-  ui.repeatButton = buttonElement();
-  adopt(repeatButtonContainer, ui.repeatButton);
-  ui.repeatButton.textContent = "Repeat";
-  ui.repeatButton.style.visibility = "hidden";
-  adopt(belowTwoDots, repeatButtonContainer);
-  adopt(belowTwoDots, continueButtonContainer);
-  addClickEventListener(ui.repeatButton, () => {
-    jsPsych.finishTrial({ repeat: true });
-  });
-}
-
 class TaskUI {
   constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
-    const twoDotGrid = divElement();
-    twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
-      250
-    )} ${pixelsString(250)} 1fr`;
-    twoDotGrid.style.gridGap = `${pixelsString(120)}`;
-    this.firstDot = circleElementWithColor("black");
-    this.firstDot.style.gridColumn = 2;
-    this.secondDot = circleElementWithColor("black");
-    this.secondDot.style.gridColumn = 3;
     const image = new Image();
     image.src = imageUrl;
     image.style.height = pixelsString(imageHeight);
     image.style.width = "auto";
-    addTwoDotUI(this, jsPsych, parent, twoDotGrid, image);
+    adopt(parent, image);
+    [this.firstDot, this.secondDot] = createTwoDotsInside(parent);
+    addClickEventListener(this.firstDot, () => {
+      this.observer.notifyThatFirstDotHasBeenTouched();
+    });
+    addClickEventListener(this.secondDot, () => {
+      this.observer.notifyThatSecondDotHasBeenTouched();
+    });
+    const belowTwoDots = buttonGroupElement();
+    adopt(parent, belowTwoDots);
+    const continueButtonContainer = buttonContainerElement();
+    this.continueButton = buttonElement();
+    adopt(continueButtonContainer, this.continueButton);
+    this.continueButton.textContent = "Continue";
+    this.continueButton.style.visibility = "hidden";
+    const repeatButtonContainer = buttonContainerElement();
+    this.repeatButton = buttonElement();
+    adopt(repeatButtonContainer, this.repeatButton);
+    this.repeatButton.textContent = "Repeat";
+    this.repeatButton.style.visibility = "hidden";
+    adopt(belowTwoDots, repeatButtonContainer);
+    adopt(belowTwoDots, continueButtonContainer);
   }
 
   hideCursor() {
@@ -230,12 +204,19 @@ class TaskUI {
     colorSecondDotBlack(this);
   }
 
-  showContinueButton() {
-    showContinueButton(this);
-  }
-
   finish(result) {
     finish(this, result);
+  }
+
+  deferFinish(result) {
+    this.continueButton.style.visibility = "visible";
+    this.repeatButton.style.visibility = "visible";
+    addClickEventListener(this.continueButton, () => {
+      this.jsPsych.finishTrial({ ...result, repeat: false });
+    });
+    addClickEventListener(this.repeatButton, () => {
+      this.jsPsych.finishTrial({ ...result, repeat: true });
+    });
   }
 
   attach(observer) {
@@ -311,7 +292,7 @@ class TaskWithVideoUI {
     centerElementAtPercentage(
       this.firstDot,
       dotBottomPercent,
-      50 - dotHorizontalMarginPercent
+      50 - dotHorizontalMarginPercent,
     );
     adopt(parent, this.firstDot);
 
@@ -320,7 +301,7 @@ class TaskWithVideoUI {
     centerElementAtPercentage(
       this.secondDot,
       dotBottomPercent,
-      dotHorizontalMarginPercent
+      dotHorizontalMarginPercent,
     );
     adopt(parent, this.secondDot);
 
@@ -388,10 +369,6 @@ class TaskWithVideoUI {
     colorSecondDotBlack(this);
   }
 
-  showContinueButton() {
-    showContinueButton(this);
-  }
-
   finish(result) {
     finish(this, result);
   }
@@ -432,7 +409,7 @@ class WebAudioPlayer {
       const timerID = setInterval(
         notifyThatPlaybackTimeHasUpdated,
         100,
-        this.observer
+        this.observer,
       );
       stimulusSource.onended = () => {
         clearInterval(timerID);
@@ -474,7 +451,7 @@ class WebVideoPlayer {
 
   playFeedback() {
     this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
-      this.feedbackUrl
+      this.feedbackUrl,
     );
     onVideoEnd(this.videoElement, () => {
       this.observer.notifyThatFeedbackHasEnded();
@@ -486,7 +463,7 @@ class WebVideoPlayer {
     const milliseconds = t * 1000;
     this.jsPsych.pluginAPI.setTimeout(() => {
       this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
-        this.feedbackUrl
+        this.feedbackUrl,
       );
       onVideoEnd(this.videoElement, () => {
         this.observer.notifyThatFeedbackHasEnded();
@@ -497,7 +474,7 @@ class WebVideoPlayer {
 
   playStimulus() {
     this.videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
-      this.stimulusUrl
+      this.stimulusUrl,
     );
     this.videoElement.ontimeupdate = () => {
       notifyThatPlaybackTimeHasUpdated(this.observer);
@@ -619,7 +596,7 @@ export function twoDot() {
         this.jsPsych,
         display_element,
         trial.imageUrl,
-        trial.imageHeight
+        trial.imageHeight,
       );
       startController(
         taskUI,
@@ -627,13 +604,13 @@ export function twoDot() {
           new WebAudioPlayer(
             this.jsPsych,
             trial.stimulusUrl,
-            trial.feedbackUrl
+            trial.feedbackUrl,
           ),
           createTaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
-          trial.correctWord
-        )
+          trial.correctWord,
+        ),
       );
     }
   }
@@ -666,6 +643,128 @@ export function twoDot() {
   return Plugin;
 }
 
+export function twoDotPractice() {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(display_element, trial) {
+      clear(display_element);
+      const taskUI = new TaskUI(
+        this.jsPsych,
+        display_element,
+        trial.imageUrl,
+        trial.imageHeight,
+      );
+      startController(
+        taskUI,
+        createTaskModel(
+          new WebAudioPlayer(
+            this.jsPsych,
+            trial.stimulusUrl,
+            trial.feedbackUrl,
+          ),
+          createTaskPresenterWithDeferredFinish(taskUI),
+          choiceTimesSeconds(trial),
+          words(trial),
+          trial.correctWord,
+        ),
+      );
+    }
+  }
+
+  Plugin.info = {
+    name: "two-dot",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      feedbackUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Feedback URL",
+        default: "",
+        description: "The feedback audio",
+      },
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      ...twoDotCommonParameters(),
+    },
+  };
+  return Plugin;
+}
+
+function createTwoDotsInside(parent) {
+  const twoDotGrid = divElement();
+  twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
+    250,
+  )} ${pixelsString(250)} 1fr`;
+  twoDotGrid.style.gridGap = `${pixelsString(120)}`;
+  const firstDot = circleElementWithColor("black");
+  firstDot.style.gridColumn = 2;
+  const secondDot = circleElementWithColor("black");
+  secondDot.style.gridColumn = 3;
+  twoDotGrid.style.display = "grid";
+  adopt(twoDotGrid, firstDot);
+  adopt(twoDotGrid, secondDot);
+  adopt(parent, twoDotGrid);
+  return [firstDot, secondDot];
+}
+
+function createContinueButtonInside(parent) {
+  const continueButtonContainer = buttonContainerElement();
+  const continueButton = buttonElement();
+  adopt(continueButtonContainer, continueButton);
+  continueButton.textContent = "Continue";
+  adopt(parent, continueButtonContainer);
+  return continueButton;
+}
+
+export function twoDotLive() {
+  class Plugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(display_element, trial) {
+      const parent = display_element;
+      clear(parent);
+      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
+      adopt(parent, image);
+      createTwoDotsInside(parent);
+      const belowTwoDots = buttonGroupElement();
+      adopt(parent, belowTwoDots);
+      const continueButton = createContinueButtonInside(belowTwoDots);
+      addClickEventListener(continueButton, () => {
+        this.jsPsych.finishTrial();
+      });
+    }
+  }
+
+  Plugin.info = {
+    name: "two-dot-practice",
+    description: "",
+    parameters: {
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      ...imageParameter(),
+    },
+  };
+  return Plugin;
+}
+
 function videoStimulusParameter() {
   return {
     stimulusUrl: {
@@ -690,7 +789,7 @@ export function twoDotWithVideo() {
         this.jsPsych,
         display_element,
         videoElement,
-        trial.imageUrl
+        trial.imageUrl,
       );
       startController(
         taskUI,
@@ -699,14 +798,14 @@ export function twoDotWithVideo() {
             this.jsPsych,
             videoElement,
             trial.stimulusUrl,
-            trial.feedbackUrl
+            trial.feedbackUrl,
           ),
           createTaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord,
-          1
-        )
+          1,
+        ),
       );
     }
   }
@@ -740,7 +839,7 @@ export function twoDotWithoutFeedback() {
         this.jsPsych,
         display_element,
         trial.imageUrl,
-        trial.imageHeight
+        trial.imageHeight,
       );
       startController(
         taskUI,
@@ -749,8 +848,8 @@ export function twoDotWithoutFeedback() {
           createTaskPresenter(taskUI),
           choiceTimesSeconds(trial),
           words(trial),
-          trial.correctWord
-        )
+          trial.correctWord,
+        ),
       );
     }
   }
@@ -790,7 +889,7 @@ export function twoDotWithVideoWithoutFeedback() {
         this.jsPsych,
         display_element,
         videoElement,
-        trial.imageUrl
+        trial.imageUrl,
       );
       startController(
         taskUI,
@@ -799,8 +898,8 @@ export function twoDotWithVideoWithoutFeedback() {
           createTaskPresenterWithDelayedFinish(taskUI, 1),
           choiceTimesSeconds(trial),
           words(trial),
-          trial.correctWord
-        )
+          trial.correctWord,
+        ),
       );
     }
   }
@@ -820,7 +919,7 @@ function initializeRepeatableTrial(
   jsPsych,
   buttonGroup,
   continueButton,
-  repeatButton
+  repeatButton,
 ) {
   const continueButtonContainer = buttonContainerElement();
   adopt(continueButtonContainer, continueButton);
@@ -833,10 +932,10 @@ function initializeRepeatableTrial(
   adopt(buttonGroup, repeatButtonContainer);
   adopt(buttonGroup, continueButtonContainer);
   addClickEventListener(continueButton, () =>
-    jsPsych.finishTrial({ repeat: false })
+    jsPsych.finishTrial({ repeat: false }),
   );
   addClickEventListener(repeatButton, () =>
-    jsPsych.finishTrial({ repeat: true })
+    jsPsych.finishTrial({ repeat: true }),
   );
 }
 
@@ -858,7 +957,7 @@ export function imageAudioButtonResponse() {
         this.jsPsych,
         buttonGroup,
         continueButton,
-        repeatButton
+        repeatButton,
       );
       audioBufferSource(this.jsPsych, trial.stimulusUrl).then(
         (stimulusSource) => {
@@ -867,7 +966,7 @@ export function imageAudioButtonResponse() {
             repeatButton.style.visibility = "visible";
           };
           stimulusSource.start();
-        }
+        },
       );
     }
   }
@@ -926,7 +1025,7 @@ export function imageVideoPlaceholderButtonResponse() {
 function videoElementThatShowsButtons(
   displayElement,
   continueButton,
-  repeatButton
+  repeatButton,
 ) {
   const videoElement = document.createElement("video");
   addVideoWithBackground(displayElement, videoElement);
@@ -957,17 +1056,17 @@ export function imageVideoButtonResponse() {
         this.jsPsych,
         buttonGroup,
         continueButton,
-        repeatButton
+        repeatButton,
       );
 
       const videoElement = videoElementThatShowsButtons(
         displayElement,
         continueButton,
-        repeatButton
+        repeatButton,
       );
 
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
-        trial.stimulusUrl
+        trial.stimulusUrl,
       );
       playVideo(videoElement);
     }
@@ -1001,7 +1100,7 @@ export function imageVideoNoResponse() {
       });
 
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
-        trial.stimulusUrl
+        trial.stimulusUrl,
       );
       playVideo(videoElement);
     }
@@ -1063,17 +1162,17 @@ export function visualRepetitionTrial() {
         this.jsPsych,
         buttonGroup,
         continueButton,
-        repeatButton
+        repeatButton,
       );
 
       const videoElement = videoElementThatShowsButtons(
         displayElement,
         continueButton,
-        repeatButton
+        repeatButton,
       );
 
       videoElement.src = this.jsPsych.pluginAPI.getVideoBuffer(
-        trial.stimulusUrl
+        trial.stimulusUrl,
       );
 
       const player = new VisualRepetitionTrialAudioPlayer(videoElement);

@@ -153,11 +153,6 @@ class TaskModelObserverStub {
     return this.timesNotifiedThatTaskIsReadyToEnd_;
   }
 
-  notifyThatTaskIsReadyToEnd() {
-    this.timesNotifiedThatTaskIsReadyToEnd_ += 1;
-    this.notifiedThatTaskIsReadyToEnd_ = true;
-  }
-
   result() {
     return this.result_;
   }
@@ -178,7 +173,7 @@ describe("TaskModel", () => {
         [Choice.first, "foo"],
         [Choice.second, "bar"],
       ]),
-      "bar"
+      "bar",
     );
   });
 
@@ -215,7 +210,7 @@ describe("TaskModel", () => {
     this.audioPlayer.setCurrentTimeSeconds(0.11);
     this.audioPlayer.updateTime();
     expect(
-      this.observer.notifiedThatFirstChoiceHasStartedPlaying()
+      this.observer.notifiedThatFirstChoiceHasStartedPlaying(),
     ).toBeFalse();
   });
 
@@ -229,7 +224,7 @@ describe("TaskModel", () => {
     this.audioPlayer.setCurrentTimeSeconds(0.33);
     this.audioPlayer.updateTime();
     expect(
-      this.observer.notifiedThatFirstChoiceHasStoppedPlaying()
+      this.observer.notifiedThatFirstChoiceHasStoppedPlaying(),
     ).toBeFalse();
   });
 
@@ -238,7 +233,7 @@ describe("TaskModel", () => {
     this.audioPlayer.updateTime();
     this.audioPlayer.updateTime();
     expect(
-      this.observer.timesNotifiedThatFirstChoiceHasStartedPlaying()
+      this.observer.timesNotifiedThatFirstChoiceHasStartedPlaying(),
     ).toEqual(1);
   });
 
@@ -246,7 +241,7 @@ describe("TaskModel", () => {
     this.audioPlayer.setCurrentTimeSeconds(0.57);
     this.audioPlayer.updateTime();
     expect(
-      this.observer.notifiedThatSecondChoiceHasStartedPlaying()
+      this.observer.notifiedThatSecondChoiceHasStartedPlaying(),
     ).toBeTrue();
   });
 
@@ -254,7 +249,7 @@ describe("TaskModel", () => {
     this.audioPlayer.setCurrentTimeSeconds(0.55);
     this.audioPlayer.updateTime();
     expect(
-      this.observer.notifiedThatSecondChoiceHasStartedPlaying()
+      this.observer.notifiedThatSecondChoiceHasStartedPlaying(),
     ).toBeFalse();
   });
 
@@ -262,7 +257,7 @@ describe("TaskModel", () => {
     this.audioPlayer.setCurrentTimeSeconds(0.78);
     this.audioPlayer.updateTime();
     expect(
-      this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
+      this.observer.notifiedThatSecondChoiceHasStoppedPlaying(),
     ).toBeTrue();
   });
 
@@ -270,7 +265,7 @@ describe("TaskModel", () => {
     this.audioPlayer.setCurrentTimeSeconds(0.77);
     this.audioPlayer.updateTime();
     expect(
-      this.observer.notifiedThatSecondChoiceHasStoppedPlaying()
+      this.observer.notifiedThatSecondChoiceHasStoppedPlaying(),
     ).toBeFalse();
   });
 
@@ -340,7 +335,7 @@ describe("TaskModelWithoutFeedback", () => {
         [Choice.first, "foo"],
         [Choice.second, "bar"],
       ]),
-      "bar"
+      "bar",
     );
   });
 
@@ -372,7 +367,7 @@ describe("TaskModelWithDelayedFeedback", () => {
         [Choice.second, "bar"],
       ]),
       "bar",
-      feedbackDelaySeconds
+      feedbackDelaySeconds,
     );
     audioPlayer.endStimulusPlayback();
     model.submit({ choice: Choice.first });

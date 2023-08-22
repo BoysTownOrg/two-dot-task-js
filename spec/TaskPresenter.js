@@ -1,6 +1,7 @@
 import {
   createTaskPresenter,
   createTaskPresenterWithDelayedFinish,
+  createTaskPresenterWithDeferredFinish,
 } from "../lib/TaskPresenter.js";
 
 class TaskViewStub {
@@ -14,6 +15,11 @@ class TaskViewStub {
     this.continueButtonShown_ = false;
     this.cursorShown_ = false;
     this.cursorHidden_ = false;
+    this.finishDeferred_ = false;
+  }
+
+  finishDeferred() {
+    return this.finishDeferred_;
   }
 
   hideCursor() {
@@ -84,16 +90,17 @@ class TaskViewStub {
     return this.continueButtonShown_;
   }
 
-  showContinueButton() {
-    this.continueButtonShown_ = true;
-  }
-
   finishedResult() {
     return this.finishedResult_;
   }
 
   finish(result) {
     this.finishedResult_ = result;
+  }
+
+  deferFinish(result) {
+    this.finishedResult_ = result;
+    this.finishDeferred_ = true;
   }
 
   finishWithDelaySeconds(result, t) {
@@ -136,11 +143,6 @@ describe("TaskPresenter", () => {
     expect(this.view.secondDotColoredBlack()).toBeTrue();
   });
 
-  it("should show continue button when task is ready to end", function () {
-    this.presenter.notifyThatTaskIsReadyToEnd();
-    expect(this.view.continueButtonShown()).toBeTrue();
-  });
-
   it("should submit result when task finishes", function () {
     this.presenter.notifyThatTaskIsFinished({ choice: "second" });
     expect(this.view.finishedResult()).toEqual({ choice: "second" });
@@ -176,5 +178,16 @@ describe("TaskPresenterWithDelayedFinish", () => {
     presenter.notifyThatTaskIsFinished({ choice: "second" });
     expect(view.finishedResult()).toEqual({ choice: "second" });
     expect(view.finishDelaySeconds()).toEqual(1);
+  });
+});
+
+describe("TaskPresenterWithDeferredFinish", () => {
+  it("defers finish", () => {
+    const view = new TaskViewStub();
+    const delaySeconds = 1;
+    const presenter = createTaskPresenterWithDeferredFinish(view, delaySeconds);
+    presenter.notifyThatTaskIsFinished({ choice: "second" });
+    expect(view.finishedResult()).toEqual({ choice: "second" });
+    expect(view.finishDeferred()).toBeTrue();
   });
 });
