@@ -12,7 +12,7 @@ import {
 } from "../lib/TaskPresenter.js";
 import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
 
-import { JsPsych, JsPsychPlugin, ParameterType } from "jspsych";
+import { JsPsych, JsPsychPlugin, ParameterType, TrialType } from "jspsych";
 
 function addClickEventListener(
   element: HTMLElement,
@@ -25,15 +25,15 @@ function divElement() {
   return document.createElement("div");
 }
 
-function pixelsString(a) {
+function pixelsString(a: number) {
   return `${a}px`;
 }
 
-function adopt(parent, child) {
+function adopt(parent: HTMLElement, child: HTMLElement) {
   parent.append(child);
 }
 
-function clear(parent) {
+function clear(parent: HTMLElement) {
   // https://stackoverflow.com/a/3955238
   while (parent.firstChild) {
     parent.removeChild(parent.lastChild);
@@ -62,7 +62,7 @@ function buttonElement() {
   return button;
 }
 
-function circleElementWithColor(color) {
+function circleElementWithColor(color: string) {
   const circle = divElement();
   const diameterPixels = 100;
   circle.style.height = pixelsString(diameterPixels);
@@ -77,7 +77,7 @@ function circleElementWithColor(color) {
   return circle;
 }
 
-function audioBufferSource(jsPsych, url) {
+function audioBufferSource(jsPsych: JsPsych, url: string) {
   const audioContext = jsPsych.pluginAPI.audioContext();
   return jsPsych.pluginAPI.getAudioBuffer(url).then((buffer) => {
     const bufferSource = audioContext.createBufferSource();
@@ -127,7 +127,7 @@ function attach(ui, observer) {
   ui.observer = observer;
 }
 
-function imageFromUrlAndHeight(imageUrl, imageHeight) {
+function imageFromUrlAndHeight(imageUrl: string, imageHeight: number) {
   const image = new Image();
   image.src = imageUrl;
   image.style.height = pixelsString(imageHeight);
@@ -144,7 +144,12 @@ class TaskUI {
   private continueButton: HTMLButtonElement;
   private repeatButton: HTMLButtonElement;
 
-  constructor(jsPsych, parent, imageUrl, imageHeight) {
+  constructor(
+    jsPsych: JsPsych,
+    parent: HTMLElement,
+    imageUrl: string,
+    imageHeight: number,
+  ) {
     this.parent = parent;
     this.jsPsych = jsPsych;
     const image = new Image();
@@ -227,7 +232,7 @@ class TaskUI {
   }
 }
 
-function resizableCircleElementWithColor(color) {
+function resizableCircleElementWithColor(color: string) {
   const circle = document.createElement("div");
   const circleDiameter = "17.5vh";
   circle.style.height = circleDiameter;
@@ -239,13 +244,16 @@ function resizableCircleElementWithColor(color) {
   return circle;
 }
 
-function centerElementAtPercentage(element, x, y) {
+function centerElementAtPercentage(element: HTMLElement, x: number, y: number) {
   element.style.bottom = `${x}%`;
   element.style.right = `${y}%`;
   element.style.transform = "translate(50%, 50%)";
 }
 
-function addVideoWithBackground(parent, videoElement) {
+function addVideoWithBackground(
+  parent: HTMLElement,
+  videoElement: HTMLVideoElement,
+) {
   const videoBackground = document.createElement("div");
   videoBackground.style.position = "fixed";
   videoBackground.style.top = "50%";
@@ -267,7 +275,7 @@ function addVideoWithBackground(parent, videoElement) {
   adopt(videoBackground, videoElement);
 }
 
-function centerRightImageFromUrl(url) {
+function centerRightImageFromUrl(url: string) {
   const image = new Image();
   image.decoding = "sync";
   image.src = url;
@@ -293,7 +301,12 @@ class TaskWithVideoUI {
   private continueButton: HTMLButtonElement;
   private repeatButton: HTMLButtonElement;
 
-  constructor(jsPsych, parent, videoElement, imageUrl) {
+  constructor(
+    jsPsych: JsPsych,
+    parent: HTMLElement,
+    videoElement: HTMLVideoElement,
+    imageUrl: string,
+  ) {
     this.parent = parent;
     this.jsPsych = jsPsych;
     const dotBottomPercent = 20;
@@ -406,7 +419,7 @@ class WebAudioPlayer {
   private observer;
   private startTime;
 
-  constructor(jsPsych: JsPsych, stimulusUrl, feedbackUrl) {
+  constructor(jsPsych: JsPsych, stimulusUrl: string, feedbackUrl: string) {
     this.jsPsych = jsPsych;
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
@@ -447,12 +460,12 @@ class WebAudioPlayer {
   }
 }
 
-function playVideo(videoElement) {
+function playVideo(videoElement: HTMLVideoElement) {
   videoElement.style.visibility = "visible";
   videoElement.play();
 }
 
-function onVideoEnd(videoElement, f) {
+function onVideoEnd(videoElement: HTMLVideoElement, f: () => any) {
   videoElement.onended = () => {
     videoElement.style.visibility = "hidden";
     f();
@@ -466,7 +479,12 @@ class WebVideoPlayer {
   private videoElement: HTMLVideoElement;
   private observer;
 
-  constructor(jsPsych, videoElement, stimulusUrl, feedbackUrl) {
+  constructor(
+    jsPsych: JsPsych,
+    videoElement: HTMLVideoElement,
+    stimulusUrl: string,
+    feedbackUrl: string,
+  ) {
     this.jsPsych = jsPsych;
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
@@ -609,7 +627,7 @@ function startController(taskUI, model) {
 }
 
 export function twoDot() {
-  const info = {
+  const info = <const>{
     name: "two-dot",
     description: "",
     parameters: {
@@ -634,15 +652,17 @@ export function twoDot() {
       ...twoDotCommonParameters(),
     },
   };
+  type Info = typeof info;
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
-    constructor(jsPsych) {
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const taskUI = new TaskUI(
         this.jsPsych,
@@ -667,7 +687,6 @@ export function twoDot() {
     }
   }
 
-  Plugin.info = info;
   return Plugin;
 }
 
