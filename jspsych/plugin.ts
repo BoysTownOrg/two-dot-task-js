@@ -717,15 +717,16 @@ export function twoDotPractice() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const taskUI = new TaskUI(
         this.jsPsych,
@@ -750,11 +751,10 @@ export function twoDotPractice() {
     }
   }
 
-  Plugin.info = info;
   return Plugin;
 }
 
-function createTwoDotsInside(parent) {
+function createTwoDotsInside(parent: HTMLElement) {
   const twoDotGrid = divElement();
   twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
     250,
@@ -771,7 +771,7 @@ function createTwoDotsInside(parent) {
   return [firstDot, secondDot];
 }
 
-function createContinueButtonInside(parent) {
+function createContinueButtonInside(parent: HTMLElement) {
   const continueButtonContainer = buttonContainerElement();
   const continueButton = buttonElement();
   adopt(continueButtonContainer, continueButton);
@@ -795,15 +795,16 @@ export function twoDotLive() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       const parent = display_element;
       clear(parent);
       const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
@@ -818,7 +819,6 @@ export function twoDotLive() {
     }
   }
 
-  Plugin.info = info;
   return Plugin;
 }
 
@@ -849,15 +849,16 @@ export function twoDotWithVideo() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const videoElement = document.createElement("video");
       const taskUI = new TaskWithVideoUI(
@@ -885,7 +886,6 @@ export function twoDotWithVideo() {
     }
   }
 
-  Plugin.info = info;
   return Plugin;
 }
 
@@ -910,15 +910,16 @@ export function twoDotWithoutFeedback() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const taskUI = new TaskUI(
         this.jsPsych,
@@ -939,7 +940,6 @@ export function twoDotWithoutFeedback() {
     }
   }
 
-  Plugin.info = info;
   return Plugin;
 }
 
@@ -953,15 +953,16 @@ export function twoDotWithVideoWithoutFeedback() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const videoElement = document.createElement("video");
       const taskUI = new TaskWithVideoUI(
@@ -983,7 +984,6 @@ export function twoDotWithVideoWithoutFeedback() {
     }
   }
 
-  Plugin.info = info;
   return Plugin;
 }
 
@@ -1031,11 +1031,12 @@ export function imageAudioButtonResponse() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
@@ -1064,7 +1065,7 @@ export function imageAudioButtonResponse() {
       );
     }
   }
-  Plugin.info = info;
+
   return Plugin;
 }
 
@@ -1076,11 +1077,12 @@ export function imageVideoPlaceholderButtonResponse() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
@@ -1100,7 +1102,7 @@ export function imageVideoPlaceholderButtonResponse() {
       addClickEventListener(continueButton, () => this.jsPsych.finishTrial());
     }
   }
-  Plugin.info = info;
+
   return Plugin;
 }
 
@@ -1127,11 +1129,12 @@ export function imageVideoButtonResponse() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
@@ -1164,7 +1167,7 @@ export function imageVideoButtonResponse() {
       playVideo(videoElement);
     }
   }
-  Plugin.info = info;
+
   return Plugin;
 }
 
@@ -1177,11 +1180,12 @@ export function imageVideoNoResponse() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
@@ -1203,7 +1207,7 @@ export function imageVideoNoResponse() {
       playVideo(videoElement);
     }
   }
-  Plugin.info = info;
+
   return Plugin;
 }
 
@@ -1246,11 +1250,12 @@ export function visualRepetitionTrial() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
@@ -1289,7 +1294,7 @@ export function visualRepetitionTrial() {
       playVideo(videoElement);
     }
   }
-  Plugin.info = info;
+
   return Plugin;
 }
 
@@ -1313,11 +1318,12 @@ export function stopwatch() {
     },
   };
 
-  class Plugin implements JsPsychPlugin<typeof info> {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
     private jsPsych: JsPsych;
-    static info;
+    static info = info;
 
-    constructor(jsPsych) {
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
@@ -1385,6 +1391,6 @@ export function stopwatch() {
       });
     }
   }
-  Plugin.info = info;
+
   return Plugin;
 }
