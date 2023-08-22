@@ -12,7 +12,7 @@ import {
 } from "../lib/TaskPresenter.js";
 import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
 
-import { ParameterType } from "jspsych";
+import { JsPsych, ParameterType } from "jspsych";
 
 function addEventListener(element, event, f) {
   element.addEventListener(event, f);
@@ -141,6 +141,14 @@ function imageFromUrlAndHeight(imageUrl, imageHeight) {
 }
 
 class TaskUI {
+  private parent;
+  private jsPsych: JsPsych;
+  private firstDot: HTMLElement;
+  private secondDot: HTMLElement;
+  private observer;
+  private continueButton: HTMLButtonElement;
+  private repeatButton: HTMLButtonElement;
+
   constructor(jsPsych, parent, imageUrl, imageHeight) {
     this.parent = parent;
     this.jsPsych = jsPsych;
@@ -282,6 +290,13 @@ function centerRightImage(trial) {
 }
 
 class TaskWithVideoUI {
+  private parent: HTMLElement;
+  private jsPsych: JsPsych;
+  private firstDot: HTMLElement;
+  private secondDot: HTMLElement;
+  private observer;
+  private continueButton: HTMLButtonElement;
+
   constructor(jsPsych, parent, videoElement, imageUrl) {
     this.parent = parent;
     this.jsPsych = jsPsych;

@@ -5,7 +5,7 @@ import jsPsychImageButtonResponse from "@jspsych/plugin-image-button-response";
 import jsPsychPreload from "@jspsych/plugin-preload";
 import { JsPsych } from "jspsych";
 
-import * as plugins from "./plugin.js";
+import * as plugins from "./plugin";
 
 function importAll(r): { [id: string]: string } {
   const imports: { [id: string]: string } = {};

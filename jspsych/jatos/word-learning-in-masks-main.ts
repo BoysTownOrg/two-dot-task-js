@@ -1,6 +1,8 @@
-import { selectConditionBeforeRunning } from "../word-learning-in-masks.js";
+import { selectConditionBeforeRunning } from "../word-learning-in-masks";
 
 import { initJsPsych } from "jspsych";
+
+declare const jatos: any;
 
 jatos.onLoad(() => {
   const jsPsych = initJsPsych({
