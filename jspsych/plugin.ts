@@ -759,7 +759,7 @@ function createTwoDotsInside(parent: HTMLElement) {
   twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
     250,
   )} ${pixelsString(250)} 1fr`;
-  twoDotGrid.style.gridGap = `${pixelsString(120)}`;
+  twoDotGrid.style.gap = `${pixelsString(120)}`;
   const firstDot = circleElementWithColor("black");
   firstDot.style.gridColumn = "2";
   const secondDot = circleElementWithColor("black");
