@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 rm assets/audio/*
 find ../WLN_Day 1_Experiment 1b_Seth/Audio Files/ -name "*.wav" -a -not -path "*OLD*" -exec cp {} assets/audio/ \;
 for file in assets/audio/*.wav.wav; do mv "$file" "$(dirname "$file")/$(basename "$file" .wav)"; done
