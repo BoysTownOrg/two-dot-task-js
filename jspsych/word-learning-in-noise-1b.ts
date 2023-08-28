@@ -281,6 +281,15 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
   const zeroSNR = document.createElement("option");
   conditionSelect.append(zeroSNR);
   zeroSNR.textContent = "0SNR";
+  const fiveSNR = document.createElement("option");
+  conditionSelect.append(fiveSNR);
+  fiveSNR.textContent = "5SNR";
+  const tenSNR = document.createElement("option");
+  conditionSelect.append(tenSNR);
+  tenSNR.textContent = "10SNR";
+  const quiet = document.createElement("option");
+  conditionSelect.append(quiet);
+  quiet.textContent = "QUIET";
   const dayLabel = document.createElement("label");
   topOfPage.append(dayLabel);
   dayLabel.textContent = "Day";
