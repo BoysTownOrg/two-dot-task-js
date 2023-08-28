@@ -275,6 +275,7 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
   conditionLabel.textContent = "Condition";
   const conditionSelect = document.createElement("select");
   conditionLabel.append(conditionSelect);
+  conditionSelect.append(document.createElement("option"));
   const zeroSNR = document.createElement("option");
   conditionSelect.append(zeroSNR);
   zeroSNR.textContent = "0SNR";
@@ -283,6 +284,7 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
   dayLabel.textContent = "Day";
   const daySelect = document.createElement("select");
   dayLabel.append(daySelect);
+  daySelect.append(document.createElement("option"));
   const day1 = document.createElement("option");
   daySelect.append(day1);
   day1.textContent = "Day 1";
@@ -296,14 +298,15 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
   page.append(confirmButton);
   confirmButton.textContent = "Confirm";
   confirmButton.addEventListener("click", () => {
-    document.body.removeChild(page);
     const selectedDay = daySelect.options.item(
       daySelect.selectedIndex,
     ).textContent;
     const selectedCondition = conditionSelect.options.item(
       conditionSelect.selectedIndex,
     ).textContent;
+    if (selectedDay.length == 0 || selectedCondition.length == 0) return;
 
+    document.body.removeChild(page);
     run(jsPsych, selectedDay, selectedCondition);
   });
 }
