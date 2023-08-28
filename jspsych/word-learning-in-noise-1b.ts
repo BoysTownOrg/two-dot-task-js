@@ -84,6 +84,17 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
       continue;
     }
     const task = trimmedStringCell(trial, "Task");
+    if (task.startsWith("5-Minute")) {
+      trials.push({
+        type: plugins.stopwatch(),
+        text: 'Take a 5 minute break. Press "Continue" when finished.',
+        alarmTimeSeconds: 300,
+      });
+      currentMotivationalGameIndex += 1;
+      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
+      trialIndex += 1;
+      continue;
+    }
     const audioFileName = trimmedStringCell(
       trial,
       `WAV filename audio - ${condition}`,
@@ -163,7 +174,7 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         trials.push({
           timeline: [
             {
-              type: plugins.twoDotWithoutFeedback(),
+              type: plugins.twoDotWithoutFeedbackButDelayed(),
               stimulusUrl: checkedImportsAccess(
                 audioPaths,
                 assetKey(audioFileName),
@@ -195,15 +206,6 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         imageUrl: checkedImportsAccess(imagePaths, assetKey(imageFileName)),
         imageHeight: standardImageHeightPixels,
       });
-      trialIndex += 1;
-    } else if (task.startsWith("5-Minute")) {
-      trials.push({
-        type: plugins.stopwatch(),
-        text: 'Take a 5 minute break. Press "Continue" when finished.',
-        alarmTimeSeconds: 300,
-      });
-      currentMotivationalGameIndex += 1;
-      pushGameTrial(trials, sheet, currentMotivationalGameIndex);
       trialIndex += 1;
     } else {
       pushBlankTrial(trials);

@@ -216,6 +216,11 @@ class TaskUI {
     finish(this, result);
   }
 
+  finishWithDelaySeconds(result, t) {
+    const milliseconds = t * 1000;
+    this.jsPsych.pluginAPI.setTimeout(() => finish(this, result), milliseconds);
+  }
+
   deferFinish(result) {
     this.continueButton.style.visibility = "visible";
     this.repeatButton.style.visibility = "visible";
@@ -932,6 +937,60 @@ export function twoDotWithoutFeedback() {
         createTaskModelWithoutFeedback(
           new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
           createTaskPresenter(taskUI),
+          choiceTimesSeconds(trial),
+          words(trial),
+          trial.correctWord,
+        ),
+      );
+    }
+  }
+
+  return Plugin;
+}
+
+export function twoDotWithoutFeedbackButDelayed() {
+  const info = {
+    name: "two-dot-without-feedback-but-delayed",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      ...twoDotCommonParameters(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
+      this.jsPsych = jsPsych;
+    }
+
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
+      clear(display_element);
+      const taskUI = new TaskUI(
+        this.jsPsych,
+        display_element,
+        trial.imageUrl,
+        trial.imageHeight,
+      );
+      startController(
+        taskUI,
+        createTaskModelWithoutFeedback(
+          new WebAudioPlayer(this.jsPsych, trial.stimulusUrl, ""),
+          createTaskPresenterWithDelayedFinish(taskUI, 2),
           choiceTimesSeconds(trial),
           words(trial),
           trial.correctWord,
