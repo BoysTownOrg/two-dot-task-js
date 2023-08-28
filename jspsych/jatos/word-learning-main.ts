@@ -1,6 +1,8 @@
-import { selectConditionBeforeRunning } from "../task.js";
+import { selectConditionBeforeRunning } from "../task";
 
 import { initJsPsych } from "jspsych";
+
+declare const jatos: any;
 
 jatos.onLoad(() => {
   const jsPsych = initJsPsych({

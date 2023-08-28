@@ -1,4 +1,4 @@
-import * as pluginClasses from "./plugin.js";
+import * as pluginClasses from "./plugin";
 
 import jsPsychHtmlButtonResponse from "@jspsych/plugin-html-button-response";
 import jsPsychImageButtonResponse from "@jspsych/plugin-image-button-response";
@@ -20,6 +20,8 @@ const standardImageHeightPixels = 400;
 const noiseText = "Noise";
 const bottomRightButtonHTML =
   '<button class="jspsych-btn" style="position: absolute; bottom: 5%; right: 5%">%choice%</button>';
+
+declare const wordLearningInNoiseResourcePath: string;
 
 function resourcePath(fileName) {
   return concatenatePaths(wordLearningInNoiseResourcePath, fileName);
@@ -66,7 +68,7 @@ function twoDotTrialProperties(
   imageUrl,
   firstWord,
   secondWord,
-  correctWord
+  correctWord,
 ) {
   return {
     type,
@@ -90,7 +92,7 @@ function pushTwoDotTrial(
   imageUrl,
   firstWord,
   secondWord,
-  correctWord
+  correctWord,
 ) {
   trials.push({
     timeline: [
@@ -102,7 +104,7 @@ function pushTwoDotTrial(
           imageUrl,
           firstWord,
           secondWord,
-          correctWord
+          correctWord,
         ),
       },
     ],
@@ -118,7 +120,7 @@ function pushTwoDotWithoutFeedbackTrial(
   imageUrl,
   firstWord,
   secondWord,
-  correctWord
+  correctWord,
 ) {
   trials.push({
     timeline: [
@@ -128,7 +130,7 @@ function pushTwoDotWithoutFeedbackTrial(
         imageUrl,
         firstWord,
         secondWord,
-        correctWord
+        correctWord,
       ),
     ],
     loop_function(data) {
@@ -156,7 +158,7 @@ function parseTrialOrderFileLine(
   trials,
   line,
   parsingState,
-  selectedConditionText
+  selectedConditionText,
 ) {
   const csvEntries = line.split(",");
   const taskName = trimmedEntry(csvEntries, 0).toLowerCase();
@@ -225,7 +227,7 @@ function parseTrialOrderFileLine(
       case "2 dot test":
         if (parsingState.postBreak) {
           const [firstTargetWord, secondTargetWord] = firstAndThirdWord(
-            trimmedEntry(csvEntries, 2)
+            trimmedEntry(csvEntries, 2),
           );
           pushGreenCircleTrial(trials);
           pushTwoDotWithoutFeedbackTrial(
@@ -234,7 +236,7 @@ function parseTrialOrderFileLine(
             resourcePath(imageFileName),
             firstTargetWord,
             secondTargetWord,
-            trimmedEntry(csvEntries, 5)
+            trimmedEntry(csvEntries, 5),
           );
         } else if (!parsingState.readyForSecondLineOfPreBreakTwoDotTrial) {
           [
@@ -252,7 +254,7 @@ function parseTrialOrderFileLine(
             resourcePath(imageFileName),
             parsingState.preBreakTwoDotFirstTargetWord,
             parsingState.preBreakTwoDotSecondTargetWord,
-            trimmedEntry(csvEntries, 2)
+            trimmedEntry(csvEntries, 2),
           );
           parsingState.readyForSecondLineOfPreBreakTwoDotTrial = false;
         }
@@ -299,7 +301,7 @@ function notifyThatConfirmButtonHasBeenClicked(page, conditionSelect, jsPsych) {
             line,
             parsingState,
             conditionSelect.options.item(conditionSelect.selectedIndex)
-              .textContent
+              .textContent,
           );
       pushTwoConsecutiveGameTrials(trials, parsingState.taskCount);
       jsPsych.run([
@@ -328,7 +330,7 @@ export function selectConditionBeforeRunning(jsPsych) {
   const page = createChildElement(document.body, "div");
   const conditionLabel = createChildElement(
     createChildElement(page, "div"),
-    "label"
+    "label",
   );
   conditionLabel.textContent = "Condition";
   const conditionSelect = createChildElement(conditionLabel, "select");

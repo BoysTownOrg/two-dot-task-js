@@ -12,33 +12,28 @@ import {
 } from "../lib/TaskPresenter.js";
 import { runVisualRepetitionTrial } from "../lib/visual-repetition-trial.js";
 
-import { ParameterType } from "jspsych";
+import { JsPsych, JsPsychPlugin, ParameterType, TrialType } from "jspsych";
 
-function addEventListener(element, event, f) {
-  element.addEventListener(event, f);
-}
-
-function addClickEventListener(element, f) {
-  addEventListener(element, "click", f);
-}
-
-function createElement(what) {
-  return document.createElement(what);
+function addClickEventListener(
+  element: HTMLElement,
+  f: (this: HTMLElement, ev: MouseEvent) => any,
+) {
+  element.addEventListener("click", f);
 }
 
 function divElement() {
-  return createElement("div");
+  return document.createElement("div");
 }
 
-function pixelsString(a) {
+function pixelsString(a: number) {
   return `${a}px`;
 }
 
-function adopt(parent, child) {
+function adopt(parent: HTMLElement, child: HTMLElement) {
   parent.append(child);
 }
 
-function clear(parent) {
+function clear(parent: HTMLElement) {
   // https://stackoverflow.com/a/3955238
   while (parent.firstChild) {
     parent.removeChild(parent.lastChild);
@@ -62,12 +57,12 @@ function buttonContainerElement() {
 }
 
 function buttonElement() {
-  const button = createElement("button");
+  const button = document.createElement("button");
   button.className = "jspsych-btn";
   return button;
 }
 
-function circleElementWithColor(color) {
+function circleElementWithColor(color: string) {
   const circle = divElement();
   const diameterPixels = 100;
   circle.style.height = pixelsString(diameterPixels);
@@ -82,7 +77,7 @@ function circleElementWithColor(color) {
   return circle;
 }
 
-function audioBufferSource(jsPsych, url) {
+function audioBufferSource(jsPsych: JsPsych, url: string) {
   const audioContext = jsPsych.pluginAPI.audioContext();
   return jsPsych.pluginAPI.getAudioBuffer(url).then((buffer) => {
     const bufferSource = audioContext.createBufferSource();
@@ -132,7 +127,7 @@ function attach(ui, observer) {
   ui.observer = observer;
 }
 
-function imageFromUrlAndHeight(imageUrl, imageHeight) {
+function imageFromUrlAndHeight(imageUrl: string, imageHeight: number) {
   const image = new Image();
   image.src = imageUrl;
   image.style.height = pixelsString(imageHeight);
@@ -141,7 +136,20 @@ function imageFromUrlAndHeight(imageUrl, imageHeight) {
 }
 
 class TaskUI {
-  constructor(jsPsych, parent, imageUrl, imageHeight) {
+  private parent;
+  private jsPsych: JsPsych;
+  private firstDot: HTMLElement;
+  private secondDot: HTMLElement;
+  private observer;
+  private continueButton: HTMLButtonElement;
+  private repeatButton: HTMLButtonElement;
+
+  constructor(
+    jsPsych: JsPsych,
+    parent: HTMLElement,
+    imageUrl: string,
+    imageHeight: number,
+  ) {
     this.parent = parent;
     this.jsPsych = jsPsych;
     const image = new Image();
@@ -224,7 +232,7 @@ class TaskUI {
   }
 }
 
-function resizableCircleElementWithColor(color) {
+function resizableCircleElementWithColor(color: string) {
   const circle = document.createElement("div");
   const circleDiameter = "17.5vh";
   circle.style.height = circleDiameter;
@@ -236,13 +244,16 @@ function resizableCircleElementWithColor(color) {
   return circle;
 }
 
-function centerElementAtPercentage(element, x, y) {
+function centerElementAtPercentage(element: HTMLElement, x: number, y: number) {
   element.style.bottom = `${x}%`;
   element.style.right = `${y}%`;
   element.style.transform = "translate(50%, 50%)";
 }
 
-function addVideoWithBackground(parent, videoElement) {
+function addVideoWithBackground(
+  parent: HTMLElement,
+  videoElement: HTMLVideoElement,
+) {
   const videoBackground = document.createElement("div");
   videoBackground.style.position = "fixed";
   videoBackground.style.top = "50%";
@@ -264,7 +275,7 @@ function addVideoWithBackground(parent, videoElement) {
   adopt(videoBackground, videoElement);
 }
 
-function centerRightImageFromUrl(url) {
+function centerRightImageFromUrl(url: string) {
   const image = new Image();
   image.decoding = "sync";
   image.src = url;
@@ -282,7 +293,20 @@ function centerRightImage(trial) {
 }
 
 class TaskWithVideoUI {
-  constructor(jsPsych, parent, videoElement, imageUrl) {
+  private parent: HTMLElement;
+  private jsPsych: JsPsych;
+  private firstDot: HTMLElement;
+  private secondDot: HTMLElement;
+  private observer;
+  private continueButton: HTMLButtonElement;
+  private repeatButton: HTMLButtonElement;
+
+  constructor(
+    jsPsych: JsPsych,
+    parent: HTMLElement,
+    videoElement: HTMLVideoElement,
+    imageUrl: string,
+  ) {
     this.parent = parent;
     this.jsPsych = jsPsych;
     const dotBottomPercent = 20;
@@ -388,7 +412,14 @@ function notifyThatPlaybackTimeHasUpdated(observer) {
 }
 
 class WebAudioPlayer {
-  constructor(jsPsych, stimulusUrl, feedbackUrl) {
+  private jsPsych: JsPsych;
+  private stimulusUrl: string;
+  private feedbackUrl: string;
+  private audioContext;
+  private observer;
+  private startTime;
+
+  constructor(jsPsych: JsPsych, stimulusUrl: string, feedbackUrl: string) {
     this.jsPsych = jsPsych;
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
@@ -429,12 +460,12 @@ class WebAudioPlayer {
   }
 }
 
-function playVideo(videoElement) {
+function playVideo(videoElement: HTMLVideoElement) {
   videoElement.style.visibility = "visible";
   videoElement.play();
 }
 
-function onVideoEnd(videoElement, f) {
+function onVideoEnd(videoElement: HTMLVideoElement, f: () => any) {
   videoElement.onended = () => {
     videoElement.style.visibility = "hidden";
     f();
@@ -442,7 +473,18 @@ function onVideoEnd(videoElement, f) {
 }
 
 class WebVideoPlayer {
-  constructor(jsPsych, videoElement, stimulusUrl, feedbackUrl) {
+  private jsPsych: JsPsych;
+  private stimulusUrl: string;
+  private feedbackUrl: string;
+  private videoElement: HTMLVideoElement;
+  private observer;
+
+  constructor(
+    jsPsych: JsPsych,
+    videoElement: HTMLVideoElement,
+    stimulusUrl: string,
+    feedbackUrl: string,
+  ) {
     this.jsPsych = jsPsych;
     this.stimulusUrl = stimulusUrl;
     this.feedbackUrl = feedbackUrl;
@@ -585,12 +627,42 @@ function startController(taskUI, model) {
 }
 
 export function twoDot() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = <const>{
+    name: "two-dot",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      feedbackUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Feedback URL",
+        default: "",
+        description: "The feedback audio",
+      },
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      ...twoDotCommonParameters(),
+    },
+  };
+  type Info = typeof info;
+
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const taskUI = new TaskUI(
         this.jsPsych,
@@ -615,7 +687,11 @@ export function twoDot() {
     }
   }
 
-  Plugin.info = {
+  return Plugin;
+}
+
+export function twoDotPractice() {
+  const info = {
     name: "two-dot",
     description: "",
     parameters: {
@@ -640,16 +716,17 @@ export function twoDot() {
       ...twoDotCommonParameters(),
     },
   };
-  return Plugin;
-}
 
-export function twoDotPractice() {
-  class Plugin {
-    constructor(jsPsych) {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const taskUI = new TaskUI(
         this.jsPsych,
@@ -674,44 +751,19 @@ export function twoDotPractice() {
     }
   }
 
-  Plugin.info = {
-    name: "two-dot",
-    description: "",
-    parameters: {
-      stimulusUrl: {
-        type: ParameterType.AUDIO,
-        pretty_name: "Stimulus URL",
-        default: "",
-        description: "The stimulus audio",
-      },
-      feedbackUrl: {
-        type: ParameterType.AUDIO,
-        pretty_name: "Feedback URL",
-        default: "",
-        description: "The feedback audio",
-      },
-      imageHeight: {
-        type: ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
-      },
-      ...twoDotCommonParameters(),
-    },
-  };
   return Plugin;
 }
 
-function createTwoDotsInside(parent) {
+function createTwoDotsInside(parent: HTMLElement) {
   const twoDotGrid = divElement();
   twoDotGrid.style.gridTemplateColumns = `1fr ${pixelsString(
     250,
   )} ${pixelsString(250)} 1fr`;
-  twoDotGrid.style.gridGap = `${pixelsString(120)}`;
+  twoDotGrid.style.gap = `${pixelsString(120)}`;
   const firstDot = circleElementWithColor("black");
-  firstDot.style.gridColumn = 2;
+  firstDot.style.gridColumn = "2";
   const secondDot = circleElementWithColor("black");
-  secondDot.style.gridColumn = 3;
+  secondDot.style.gridColumn = "3";
   twoDotGrid.style.display = "grid";
   adopt(twoDotGrid, firstDot);
   adopt(twoDotGrid, secondDot);
@@ -719,7 +771,7 @@ function createTwoDotsInside(parent) {
   return [firstDot, secondDot];
 }
 
-function createContinueButtonInside(parent) {
+function createContinueButtonInside(parent: HTMLElement) {
   const continueButtonContainer = buttonContainerElement();
   const continueButton = buttonElement();
   adopt(continueButtonContainer, continueButton);
@@ -729,12 +781,30 @@ function createContinueButtonInside(parent) {
 }
 
 export function twoDotLive() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "two-dot-practice",
+    description: "",
+    parameters: {
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      ...imageParameter(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       const parent = display_element;
       clear(parent);
       const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
@@ -749,19 +819,6 @@ export function twoDotLive() {
     }
   }
 
-  Plugin.info = {
-    name: "two-dot-practice",
-    description: "",
-    parameters: {
-      imageHeight: {
-        type: ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
-      },
-      ...imageParameter(),
-    },
-  };
   return Plugin;
 }
 
@@ -777,12 +834,31 @@ function videoStimulusParameter() {
 }
 
 export function twoDotWithVideo() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "two-dot-with-video",
+    description: "",
+    parameters: {
+      ...videoStimulusParameter(),
+      feedbackUrl: {
+        type: ParameterType.VIDEO,
+        pretty_name: "Feedback URL",
+        default: "",
+        description: "The feedback video",
+      },
+      ...twoDotCommonParameters(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const videoElement = document.createElement("video");
       const taskUI = new TaskWithVideoUI(
@@ -810,30 +886,40 @@ export function twoDotWithVideo() {
     }
   }
 
-  Plugin.info = {
-    name: "two-dot-with-video",
-    description: "",
-    parameters: {
-      ...videoStimulusParameter(),
-      feedbackUrl: {
-        type: ParameterType.VIDEO,
-        pretty_name: "Feedback URL",
-        default: "",
-        description: "The feedback video",
-      },
-      ...twoDotCommonParameters(),
-    },
-  };
   return Plugin;
 }
 
 export function twoDotWithoutFeedback() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "two-dot-without-feedback",
+    description: "",
+    parameters: {
+      stimulusUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+      ...twoDotCommonParameters(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const taskUI = new TaskUI(
         this.jsPsych,
@@ -854,35 +940,29 @@ export function twoDotWithoutFeedback() {
     }
   }
 
-  Plugin.info = {
-    name: "two-dot-without-feedback",
-    description: "",
-    parameters: {
-      stimulusUrl: {
-        type: ParameterType.AUDIO,
-        pretty_name: "Stimulus URL",
-        default: "",
-        description: "The stimulus audio",
-      },
-      imageHeight: {
-        type: ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
-      },
-      ...twoDotCommonParameters(),
-    },
-  };
   return Plugin;
 }
 
 export function twoDotWithVideoWithoutFeedback() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "two-dot-with-video-without-feedback",
+    description: "",
+    parameters: {
+      ...videoStimulusParameter(),
+      ...twoDotCommonParameters(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element, trial) {
+    trial(display_element: HTMLElement, trial: TrialType<Info>) {
       clear(display_element);
       const videoElement = document.createElement("video");
       const taskUI = new TaskWithVideoUI(
@@ -904,22 +984,14 @@ export function twoDotWithVideoWithoutFeedback() {
     }
   }
 
-  Plugin.info = {
-    name: "two-dot-with-video-without-feedback",
-    description: "",
-    parameters: {
-      ...videoStimulusParameter(),
-      ...twoDotCommonParameters(),
-    },
-  };
   return Plugin;
 }
 
 function initializeRepeatableTrial(
-  jsPsych,
-  buttonGroup,
-  continueButton,
-  repeatButton,
+  jsPsych: JsPsych,
+  buttonGroup: HTMLElement,
+  continueButton: HTMLButtonElement,
+  repeatButton: HTMLButtonElement,
 ) {
   const continueButtonContainer = buttonContainerElement();
   adopt(continueButtonContainer, continueButton);
@@ -940,12 +1012,35 @@ function initializeRepeatableTrial(
 }
 
 export function imageAudioButtonResponse() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "image-audio-button-response",
+    parameters: {
+      stimulusUrl: {
+        type: ParameterType.AUDIO,
+        pretty_name: "Stimulus URL",
+        default: "",
+        description: "The stimulus audio",
+      },
+      ...imageParameter(),
+      imageHeight: {
+        type: ParameterType.INT,
+        pretty_name: "Image height",
+        default: null,
+        description: "The image height in pixels",
+      },
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
       const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
       adopt(displayElement, image);
@@ -970,34 +1065,28 @@ export function imageAudioButtonResponse() {
       );
     }
   }
-  Plugin.info = {
-    name: "image-audio-button-response",
-    parameters: {
-      stimulusUrl: {
-        type: ParameterType.AUDIO,
-        pretty_name: "Stimulus URL",
-        default: "",
-        description: "The stimulus audio",
-      },
-      ...imageParameter(),
-      imageHeight: {
-        type: ParameterType.INT,
-        pretty_name: "Image height",
-        default: null,
-        description: "The image height in pixels",
-      },
-    },
-  };
+
   return Plugin;
 }
 
 export function imageVideoPlaceholderButtonResponse() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "image-video-placeholder-button-response",
+    parameters: {
+      ...imageParameter(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1013,19 +1102,14 @@ export function imageVideoPlaceholderButtonResponse() {
       addClickEventListener(continueButton, () => this.jsPsych.finishTrial());
     }
   }
-  Plugin.info = {
-    name: "image-video-placeholder-button-response",
-    parameters: {
-      ...imageParameter(),
-    },
-  };
+
   return Plugin;
 }
 
 function videoElementThatShowsButtons(
-  displayElement,
-  continueButton,
-  repeatButton,
+  displayElement: HTMLElement,
+  continueButton: HTMLButtonElement,
+  repeatButton: HTMLButtonElement,
 ) {
   const videoElement = document.createElement("video");
   addVideoWithBackground(displayElement, videoElement);
@@ -1037,12 +1121,24 @@ function videoElementThatShowsButtons(
 }
 
 export function imageVideoButtonResponse() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "image-video-button-response",
+    parameters: {
+      ...videoStimulusParameter(),
+      ...imageParameter(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1071,23 +1167,29 @@ export function imageVideoButtonResponse() {
       playVideo(videoElement);
     }
   }
-  Plugin.info = {
-    name: "image-video-button-response",
+
+  return Plugin;
+}
+
+export function imageVideoNoResponse() {
+  const info = {
+    name: "image-video-no-response",
     parameters: {
       ...videoStimulusParameter(),
       ...imageParameter(),
     },
   };
-  return Plugin;
-}
 
-export function imageVideoNoResponse() {
-  class Plugin {
-    constructor(jsPsych) {
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1105,18 +1207,14 @@ export function imageVideoNoResponse() {
       playVideo(videoElement);
     }
   }
-  Plugin.info = {
-    name: "image-video-no-response",
-    parameters: {
-      ...videoStimulusParameter(),
-      ...imageParameter(),
-    },
-  };
+
   return Plugin;
 }
 
 class VisualRepetitionTrialImagePresenter {
-  constructor(imageElement) {
+  private imageElement: HTMLImageElement;
+
+  constructor(imageElement: HTMLImageElement) {
     this.imageElement = imageElement;
   }
 
@@ -1126,7 +1224,9 @@ class VisualRepetitionTrialImagePresenter {
 }
 
 class VisualRepetitionTrialAudioPlayer {
-  constructor(videoElement) {
+  private videoElement: HTMLVideoElement;
+
+  constructor(videoElement: HTMLVideoElement) {
     this.videoElement = videoElement;
   }
 
@@ -1134,7 +1234,7 @@ class VisualRepetitionTrialAudioPlayer {
     return this.videoElement.currentTime;
   }
 
-  attachTimeUpdateHandler(handler) {
+  attachTimeUpdateHandler(handler: () => void) {
     this.videoElement.ontimeupdate = () => {
       handler();
     };
@@ -1142,12 +1242,24 @@ class VisualRepetitionTrialAudioPlayer {
 }
 
 export function visualRepetitionTrial() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "visual-repetition-trial",
+    parameters: {
+      ...videoStimulusParameter(),
+      ...imageParameter(),
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
 
       const image = centerRightImage(trial);
@@ -1182,23 +1294,40 @@ export function visualRepetitionTrial() {
       playVideo(videoElement);
     }
   }
-  Plugin.info = {
-    name: "visual-repetition-trial",
-    parameters: {
-      ...videoStimulusParameter(),
-      ...imageParameter(),
-    },
-  };
+
   return Plugin;
 }
 
 export function stopwatch() {
-  class Plugin {
-    constructor(jsPsych) {
+  const info = {
+    name: "stopwatch",
+    description: "",
+    parameters: {
+      text: {
+        type: ParameterType.STRING,
+        pretty_name: "Displayed Text",
+        default: "",
+        description: "The text that is displayed",
+      },
+      alarmTimeSeconds: {
+        type: ParameterType.INT,
+        pretty_name: "Alarm time seconds",
+        default: "",
+        description: "The alarm time in seconds",
+      },
+    },
+  };
+
+  type Info = typeof info;
+  class Plugin implements JsPsychPlugin<Info> {
+    private jsPsych: JsPsych;
+    static info = info;
+
+    constructor(jsPsych: JsPsych) {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement, trial) {
+    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
       const text = divElement();
       text.textContent = trial.text;
@@ -1262,23 +1391,6 @@ export function stopwatch() {
       });
     }
   }
-  Plugin.info = {
-    name: "stopwatch",
-    description: "",
-    parameters: {
-      text: {
-        type: ParameterType.STRING,
-        pretty_name: "Displayed Text",
-        default: "",
-        description: "The text that is displayed",
-      },
-      alarmTimeSeconds: {
-        type: ParameterType.INT,
-        pretty_name: "Alarm time seconds",
-        default: "",
-        description: "The alarm time in seconds",
-      },
-    },
-  };
+
   return Plugin;
 }
