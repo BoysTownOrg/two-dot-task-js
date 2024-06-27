@@ -9,9 +9,9 @@ import * as plugins from "./plugin";
 // https://bun.sh/docs/bundler/loaders#text
 //
 // @ts-ignore
-import activeTrialOrder from "./wln-2-active.txt"
+import activeTrialOrder from "../wln-2-active.txt"
 // @ts-ignore
-import passiveTrialOrder from "./wln-2-passive.txt"
+import passiveTrialOrder from "../wln-2-passive.txt"
 
 declare const activeTrialOrder: string;
 declare const passiveTrialOrder: string;
@@ -26,18 +26,15 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
     .filter((s, i) => s.length > 0 && i > 0)
     .map((s) => s.split(",").map((s) => s.trim()))
     .map(([task, , , , quietAudioFileName, fiveSnrAudioFileName, , imageFileName]) => {
-      switch (task) {
-        case "Exposure":
-          break;
-        case "Feedback":
-          break;
-        case "2 dot test":
-          break;
-        case "Free Recall Test":
-          break;
-        case "Cued Recall Test":
-          break;
-      }
+      if (task.startsWith("Block"))
+        return {
+          type: jsPsychImageButtonResponse,
+          stimulus: "wln-2-game-1.png",
+          stimulus_height: standardImageHeightPixels,
+          choices: ["Continue"],
+          prompt: "",
+          button_html: bottomRightButtonHTML,
+        };
       if (quietAudioFileName.startsWith("No audio file"))
         return {
           type: jsPsychImageButtonResponse,
@@ -61,11 +58,17 @@ async function run(jsPsych: JsPsych, sheet: string, condition: string) {
         },
       };
     });
+  for (let i = 0; i < trials.length; ++i)
+    if (i > 0 && trials[i].timeline !== undefined && trials[i].timeline[0].imageUrl.length === 0)
+      trials[i].timeline[0].imageUrl = trials[i - 1].timeline[0].imageUrl;
+    else if (i > 0 && trials[i].stimulus !== undefined && trials[i].stimulus.length === 0)
+      trials[i].stimulus = trials[i - 1].stimulus;
 
   jsPsych.run([
     {
       type: jsPsychPreload,
       auto_preload: true,
+      show_detailed_errors: true
     },
     {
       type: jsPsychHtmlButtonResponse,
