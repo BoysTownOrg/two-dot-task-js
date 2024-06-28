@@ -127,9 +127,10 @@ function attach(ui, observer) {
   ui.observer = observer;
 }
 
-function imageFromUrlAndHeight(imageUrl: string, imageHeight: number) {
+async function imageFromUrlAndHeight(imageUrl: string, imageHeight: number) {
   const image = new Image();
   image.src = imageUrl;
+  await image.decode();
   image.style.height = pixelsString(imageHeight);
   image.style.width = "auto";
   return image;
@@ -809,10 +810,13 @@ export function twoDotLive() {
       this.jsPsych = jsPsych;
     }
 
-    trial(display_element: HTMLElement, trial: TrialType<Info>) {
+    async trial(display_element: HTMLElement, trial: TrialType<Info>) {
       const parent = display_element;
       clear(parent);
-      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
+      const image = await imageFromUrlAndHeight(
+        trial.imageUrl,
+        trial.imageHeight,
+      );
       adopt(parent, image);
       createTwoDotsInside(parent);
       const belowTwoDots = buttonGroupElement();
@@ -1099,9 +1103,12 @@ export function imageAudioButtonResponse() {
       this.jsPsych = jsPsych;
     }
 
-    trial(displayElement: HTMLElement, trial: TrialType<Info>) {
+    async trial(displayElement: HTMLElement, trial: TrialType<Info>) {
       clear(displayElement);
-      const image = imageFromUrlAndHeight(trial.imageUrl, trial.imageHeight);
+      const image = await imageFromUrlAndHeight(
+        trial.imageUrl,
+        trial.imageHeight,
+      );
       adopt(displayElement, image);
       const buttonGroup = buttonGroupElement();
       adopt(displayElement, buttonGroup);
