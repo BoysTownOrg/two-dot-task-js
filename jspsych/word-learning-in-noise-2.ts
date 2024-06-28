@@ -57,16 +57,16 @@ async function run(
             : fiveSnrAudioFileName;
         let audioDir =
           opts.condition === Condition.Active ? "active" : "passive";
-        if (task.startsWith("Block"))
-          return {
-            type: jsPsychImageButtonResponse,
-            stimulus: "game/0.png",
-            stimulus_height: standardImageHeightPixels,
-            choices: ["Continue"],
-            prompt: "",
-            button_html: bottomRightButtonHTML,
-          };
-        if (quietAudioFileName.startsWith("No audio file"))
+        if (task.startsWith("Block")) {
+          const [, blockNumber] = task.split(" ");
+          const n = parseInt(blockNumber);
+          if (n === 1) return gameTrial(1);
+          else
+            return {
+              timeline: [gameTrial(n - 1), gameTrial(n)],
+            };
+        }
+        if (audioFileName.startsWith("No audio file"))
           return {
             type: jsPsychImageButtonResponse,
             stimulus: imageFileName,
@@ -90,10 +90,15 @@ async function run(
         };
       },
     );
+  trials.push(gameTrial(5));
+  trials.push(gameTrial(6));
+
+  // Trials without stimuli are assumed to use the previous's
   for (let i = 0; i < trials.length; ++i)
     if (
       i > 0 &&
       trials[i].timeline !== undefined &&
+      trials[i].timeline[0].imageUrl !== undefined &&
       trials[i].timeline[0].imageUrl.length === 0
     )
       trials[i].timeline[0].imageUrl = trials[i - 1].timeline[0].imageUrl;
@@ -124,6 +129,17 @@ async function run(
       button_html: bottomRightButtonHTML,
     },
   ]);
+}
+
+function gameTrial(n: number) {
+  return {
+    type: jsPsychImageButtonResponse,
+    stimulus: `game/${n - 1}.png`,
+    stimulus_height: standardImageHeightPixels,
+    choices: ["Continue"],
+    prompt: "",
+    button_html: bottomRightButtonHTML,
+  };
 }
 
 export function selectConditionBeforeRunning(jsPsych: JsPsych) {
