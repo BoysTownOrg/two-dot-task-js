@@ -9,12 +9,24 @@ import * as plugins from "./plugin";
 // https://bun.sh/docs/bundler/loaders#text
 //
 // @ts-ignore
-import activeTrialOrder from "../wln2/day1-active.txt";
+import day1ActiveTrialOrder from "../wln2/day1-active.txt";
 // @ts-ignore
-import passiveTrialOrder from "../wln2/day1-passive.txt";
+import day1PassiveTrialOrder from "../wln2/day1-passive.txt";
+// @ts-ignore
+import day2ActiveTrialOrder from "../wln2/day2-active.txt";
+// @ts-ignore
+import day2PassiveTrialOrder from "../wln2/day2-passive.txt";
+// @ts-ignore
+import day3ActiveTrialOrder from "../wln2/day3-active.txt";
+// @ts-ignore
+import day3PassiveTrialOrder from "../wln2/day3-passive.txt";
 
-declare const activeTrialOrder: string;
-declare const passiveTrialOrder: string;
+declare const day1ActiveTrialOrder: string;
+declare const day1PassiveTrialOrder: string;
+declare const day2ActiveTrialOrder: string;
+declare const day2PassiveTrialOrder: string;
+declare const day3ActiveTrialOrder: string;
+declare const day3PassiveTrialOrder: string;
 
 const standardImageHeightPixels = 400;
 const bottomRightButtonHTML =
@@ -35,7 +47,9 @@ async function run(
   opts: { condition: Condition; level: Level },
 ) {
   const trialOrder =
-    opts.condition === Condition.Active ? activeTrialOrder : passiveTrialOrder;
+    opts.condition === Condition.Active
+      ? day1ActiveTrialOrder
+      : day1PassiveTrialOrder;
   const trials = trialOrder
     .split("\n")
     .filter((s, i) => s.length > 0 && i > 0)
