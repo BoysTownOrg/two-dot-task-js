@@ -42,14 +42,18 @@ enum Level {
   fiveSNR,
 }
 
+enum Day {
+  One,
+  Two,
+  Three,
+}
+
 async function run(
   jsPsych: JsPsych,
-  opts: { condition: Condition; level: Level },
+  opts: { condition: Condition; level: Level; day: Day },
 ) {
-  const trialOrder =
-    opts.condition === Condition.Active
-      ? day1ActiveTrialOrder
-      : day1PassiveTrialOrder;
+  const trialOrder = trialOrderFromDayAndCondition(opts.day, opts.condition);
+  let gameIndex = 0;
   const trials = trialOrder
     .split("\n")
     .filter((s, i) => s.length > 0 && i > 0)
@@ -67,18 +71,34 @@ async function run(
       ]) => {
         let audioFileName =
           opts.level === Level.Quiet
-            ? quietAudioFileName
-            : fiveSnrAudioFileName;
+            ? addWavExtensionIfMissing(quietAudioFileName)
+            : addWavExtensionIfMissing(fiveSnrAudioFileName);
         let audioDir =
           opts.condition === Condition.Active ? "active" : "passive";
         if (task.startsWith("Block")) {
-          const [, blockNumber] = task.split(" ");
-          const n = parseInt(blockNumber);
-          if (n === 1) return gameTrial(1);
+          gameIndex += 1;
+          if (gameIndex === 1) return gameTrial(opts.day, 1);
           else
             return {
-              timeline: [gameTrial(n - 1), gameTrial(n)],
+              timeline: [
+                gameTrial(opts.day, gameIndex - 1),
+                gameTrial(opts.day, gameIndex),
+              ],
             };
+        }
+        if (task.startsWith("5-Minute")) {
+          gameIndex += 1;
+          return {
+            timeline: [
+              gameTrial(opts.day, gameIndex - 1),
+              gameTrial(opts.day, gameIndex),
+              {
+                type: plugins.stopwatch(),
+                text: 'Take a 5 minute break. Press "Continue" when finished.',
+                alarmTimeSeconds: 300,
+              },
+            ],
+          };
         }
         if (audioFileName.startsWith("No audio file"))
           return {
@@ -104,8 +124,8 @@ async function run(
         };
       },
     );
-  trials.push(gameTrial(5));
-  trials.push(gameTrial(6));
+  trials.push(gameTrial(opts.day, gameIndex));
+  trials.push(gameTrial(opts.day, gameIndex + 1));
 
   // Trials without stimuli are assumed to use the previous's
   for (let i = 0; i < trials.length; ++i)
@@ -145,15 +165,26 @@ async function run(
   ]);
 }
 
-function gameTrial(n: number) {
+function gameTrial(day: Day, n: number) {
   return {
     type: jsPsychImageButtonResponse,
-    stimulus: `game/${n - 1}.png`,
+    stimulus: `game/${gameSubfolderFromDay(day)}/${n - 1}.png`,
     stimulus_height: standardImageHeightPixels,
     choices: ["Continue"],
     prompt: "",
     button_html: bottomRightButtonHTML,
   };
+}
+
+function gameSubfolderFromDay(day: Day): string {
+  switch (day) {
+    case Day.One:
+      return "day1";
+    case Day.Two:
+      return "day2";
+    case Day.Three:
+      return "day3";
+  }
 }
 
 export function selectConditionBeforeRunning(jsPsych: JsPsych) {
@@ -216,6 +247,42 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
       condition:
         selectedCondition === "Active" ? Condition.Active : Condition.Passive,
       level: selectedLevel === "Quiet" ? Level.Quiet : Level.fiveSNR,
+      day: dayFromName(selectedDay),
     });
   });
+}
+
+function dayFromName(name: string): Day {
+  switch (name) {
+    case "Day 1":
+      return Day.One;
+    case "Day 2":
+      return Day.Two;
+    default:
+      return Day.Three;
+  }
+}
+
+function trialOrderFromDayAndCondition(day: Day, condition: Condition): string {
+  switch (day) {
+    case Day.One:
+      return condition === Condition.Active
+        ? day1ActiveTrialOrder
+        : day1PassiveTrialOrder;
+    case Day.Two:
+      return condition === Condition.Active
+        ? day2ActiveTrialOrder
+        : day2PassiveTrialOrder;
+    case Day.Three:
+      return condition === Condition.Active
+        ? day3ActiveTrialOrder
+        : day3PassiveTrialOrder;
+  }
+}
+
+function addWavExtensionIfMissing(name: string): string {
+  if (name.endsWith(".wav")) {
+    return name;
+  }
+  return `${name}.wav`;
 }
