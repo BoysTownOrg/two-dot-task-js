@@ -54,6 +54,7 @@ async function run(
 ) {
   const trialOrder = trialOrderFromDayAndCondition(opts.day, opts.condition);
   let gameIndex = 0;
+  let lastImagePath = "";
   const trials = trialOrder
     .split("\n")
     .filter((s, i) => s.length > 0 && i > 0)
@@ -100,24 +101,41 @@ async function run(
             ],
           };
         }
-        if (audioFileName.startsWith("No audio file"))
-          return {
+        const timeline = [];
+        let imagePath = "";
+        if (task.startsWith("Feedback")) {
+          imagePath = lastImagePath;
+        } else {
+          imagePath = imageFileName;
+          lastImagePath = imagePath;
+          timeline.push({
+            type: jsPsychHtmlButtonResponse,
+            stimulus: "",
+            choices: ["Continue"],
+            button_html: bottomRightButtonHTML,
+          });
+        }
+        if (audioFileName.startsWith("No audio file")) {
+          timeline.push({
             type: jsPsychImageButtonResponse,
-            stimulus: imageFileName,
+            stimulus: imagePath,
             stimulus_height: standardImageHeightPixels,
             choices: ["Continue"],
             prompt: "",
             button_html: bottomRightButtonHTML,
+          });
+          return {
+            timeline,
           };
+        }
+        timeline.push({
+          type: plugins.imageAudioButtonResponse(),
+          stimulusUrl: `${audioDir}/${audioFileName}`,
+          imageUrl: imagePath,
+          imageHeight: standardImageHeightPixels,
+        });
         return {
-          timeline: [
-            {
-              type: plugins.imageAudioButtonResponse(),
-              stimulusUrl: `${audioDir}/${audioFileName}`,
-              imageUrl: imageFileName,
-              imageHeight: standardImageHeightPixels,
-            },
-          ],
+          timeline,
           loop_function(data) {
             return data.values()[0].repeat;
           },
@@ -126,22 +144,6 @@ async function run(
     );
   trials.push(gameTrial(opts.day, gameIndex));
   trials.push(gameTrial(opts.day, gameIndex + 1));
-
-  // Trials without stimuli are assumed to use the previous's
-  for (let i = 0; i < trials.length; ++i)
-    if (
-      i > 0 &&
-      trials[i].timeline !== undefined &&
-      trials[i].timeline[0].imageUrl !== undefined &&
-      trials[i].timeline[0].imageUrl.length === 0
-    )
-      trials[i].timeline[0].imageUrl = trials[i - 1].timeline[0].imageUrl;
-    else if (
-      i > 0 &&
-      trials[i].stimulus !== undefined &&
-      trials[i].stimulus.length === 0
-    )
-      trials[i].stimulus = trials[i - 1].stimulus;
 
   jsPsych.run([
     {
