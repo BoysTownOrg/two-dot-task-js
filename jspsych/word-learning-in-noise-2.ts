@@ -129,16 +129,20 @@ async function run(
           };
         }
         timeline.push({
-          type: plugins.imageAudioButtonResponse(),
-          stimulusUrl: `${audioDir}/${audioFileName}`,
-          imageUrl: imagePath,
-          imageHeight: standardImageHeightPixels,
-        });
-        return {
-          timeline,
+          timeline: [
+            {
+              type: plugins.imageAudioButtonResponse(),
+              stimulusUrl: `${audioDir}/${audioFileName}`,
+              imageUrl: imagePath,
+              imageHeight: standardImageHeightPixels,
+            },
+          ],
           loop_function(data) {
             return data.values()[0].repeat;
           },
+        });
+        return {
+          timeline,
         };
       },
     );
