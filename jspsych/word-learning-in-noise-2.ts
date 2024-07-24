@@ -55,6 +55,7 @@ async function run(
   const trialOrder = trialOrderFromDayAndCondition(opts.day, opts.condition);
   let gameIndex = 0;
   let lastImagePath = "";
+  let takeABreak = false;
   const trials = trialOrder
     .split("\n")
     .filter((s, i) => s.length > 0 && i > 0)
@@ -76,29 +77,28 @@ async function run(
             : addWavExtensionIfMissing(fiveSnrAudioFileName);
         let audioDir =
           opts.condition === Condition.Active ? "active" : "passive";
-        if (task.startsWith("Block")) {
-          gameIndex += 1;
-          if (gameIndex === 1) return gameTrial(opts.day, 1);
-          else
-            return {
-              timeline: [
-                gameTrial(opts.day, gameIndex - 1),
-                gameTrial(opts.day, gameIndex),
-              ],
-            };
-        }
-        if (task.startsWith("5-Minute")) {
+        if (takeABreak) {
+          takeABreak = false;
           gameIndex += 1;
           return {
             timeline: [
-              gameTrial(opts.day, gameIndex - 1),
-              gameTrial(opts.day, gameIndex),
               {
                 type: plugins.stopwatch(),
                 text: 'Take a 5 minute break. Press "Continue" when finished.',
-                alarmTimeSeconds: 300,
+                alarmTimeSeconds: 5 * 60,
               },
+              gameTrial(opts.day, gameIndex),
             ],
+          };
+        }
+        takeABreak = task.startsWith("5-Minute");
+        if (task.startsWith("Block") || takeABreak) {
+          gameIndex += 1;
+          const timeline = [];
+          if (gameIndex > 1) timeline.push(gameTrial(opts.day, gameIndex - 1));
+          timeline.push(gameTrial(opts.day, gameIndex));
+          return {
+            timeline,
           };
         }
         const timeline = [];
@@ -146,8 +146,12 @@ async function run(
         };
       },
     );
-  trials.push(gameTrial(opts.day, gameIndex));
-  trials.push(gameTrial(opts.day, gameIndex + 1));
+  trials.push({
+    timeline: [
+      gameTrial(opts.day, gameIndex),
+      gameTrial(opts.day, gameIndex + 1),
+    ],
+  });
 
   jsPsych.run([
     {
