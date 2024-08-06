@@ -37,9 +37,9 @@ enum Condition {
   Passive,
 }
 
-enum Level {
-  Quiet,
-  fiveSNR,
+enum Masker {
+  SSN,
+  TwoTalker,
 }
 
 enum Day {
@@ -50,7 +50,7 @@ enum Day {
 
 async function run(
   jsPsych: JsPsych,
-  opts: { condition: Condition; level: Level; day: Day },
+  opts: { condition: Condition; masker: Masker; day: Day },
 ) {
   const trialOrder = trialOrderFromDayAndCondition(opts.day, opts.condition);
   let gameIndex = 0;
@@ -66,15 +66,15 @@ async function run(
         ,
         ,
         ,
-        quietAudioFileName,
-        fiveSnrAudioFileName,
+        ssnAudioFileName,
+        twoTalkerAudioFileName,
         ,
         imageFileName,
       ]) => {
         let audioFileName =
-          opts.level === Level.Quiet
-            ? addWavExtensionIfMissing(quietAudioFileName)
-            : addWavExtensionIfMissing(fiveSnrAudioFileName);
+          opts.masker === Masker.SSN
+            ? addWavExtensionIfMissing(ssnAudioFileName)
+            : addWavExtensionIfMissing(twoTalkerAudioFileName);
         let audioDir =
           opts.condition === Condition.Active ? "active" : "passive";
         if (takeABreak) {
@@ -115,7 +115,10 @@ async function run(
             button_html: bottomRightButtonHTML,
           });
         }
-        if (audioFileName.startsWith("No audio file")) {
+        if (
+          audioFileName.length === 0 ||
+          audioFileName.startsWith("No audio file")
+        ) {
           timeline.push({
             type: jsPsychImageButtonResponse,
             stimulus: imagePath,
@@ -223,15 +226,15 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
   const day3 = document.createElement("option");
   daySelect.append(day3);
   day3.textContent = "Day 3";
-  const levelSelect = document.createElement("select");
-  topOfPage.append(levelSelect);
-  levelSelect.append(document.createElement("option"));
-  const quiet = document.createElement("option");
-  levelSelect.append(quiet);
-  quiet.textContent = "Quiet";
-  const fiveSNR = document.createElement("option");
-  levelSelect.append(fiveSNR);
-  fiveSNR.textContent = "5SNR";
+  const maskerSelect = document.createElement("select");
+  topOfPage.append(maskerSelect);
+  maskerSelect.append(document.createElement("option"));
+  const ssn = document.createElement("option");
+  maskerSelect.append(ssn);
+  ssn.textContent = "SSN";
+  const twoTalker = document.createElement("option");
+  maskerSelect.append(twoTalker);
+  twoTalker.textContent = "2Talker";
   const confirmButton = document.createElement("button");
   page.append(confirmButton);
   confirmButton.textContent = "Confirm";
@@ -242,13 +245,13 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
     const selectedDay = daySelect.options.item(
       daySelect.selectedIndex,
     ).textContent;
-    const selectedLevel = levelSelect.options.item(
-      levelSelect.selectedIndex,
+    const selectedMasker = maskerSelect.options.item(
+      maskerSelect.selectedIndex,
     ).textContent;
     if (
       selectedDay.length === 0 ||
       selectedCondition.length === 0 ||
-      selectedLevel.length === 0
+      selectedMasker.length === 0
     )
       return;
 
@@ -256,7 +259,7 @@ export function selectConditionBeforeRunning(jsPsych: JsPsych) {
     run(jsPsych, {
       condition:
         selectedCondition === "Active" ? Condition.Active : Condition.Passive,
-      level: selectedLevel === "Quiet" ? Level.Quiet : Level.fiveSNR,
+      masker: selectedMasker === "SSN" ? Masker.SSN : Masker.TwoTalker,
       day: dayFromName(selectedDay),
     });
   });
@@ -291,7 +294,7 @@ function trialOrderFromDayAndCondition(day: Day, condition: Condition): string {
 }
 
 function addWavExtensionIfMissing(name: string): string {
-  if (name.endsWith(".wav")) {
+  if (name.length === 0 || name.endsWith(".wav")) {
     return name;
   }
   return `${name}.wav`;
