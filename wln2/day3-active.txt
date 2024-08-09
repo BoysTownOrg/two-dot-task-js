@@ -36,37 +36,38 @@ Feedback,,Kinit,30,30_Day3_Feedback_KINIT_SSN_5SNR_Final,30_Day3_Feedback_KINIT_
 Feedback,,Nedig,32,32_Day3_Feedback_NEDIG_SSN_5SNR_Final,32_Day3_Feedback_NEDIG_2Talker_5SNR_Final,,
 Block 4,,,,,,,
 Free Recall Test,Known ,Rooster,33,33_Day3_FreeRecall_ROOSTER_Quiet_Final_60dB,33_Day3_FreeRecall_ROOSTER_Quiet_Final_60dB,Rooster,Rooster.png
-Free Recall Test,Known ,Baby,34,34_Day3_FreeRecall_BABY_SSN_5SNR_Final,34_Day3_FreeRecall_BABY_2Talker_5SNR_Final,Baby,Baby.png
-Free Recall Test,Novel,Daevl,35,35_Day3_FreeRecall_DAEVL_SSN_5SNR_Final,35_Day3_FreeRecall_DAEVL_2Talker_5SNR_Final,Daevl,Daevl.png
-Free Recall Test,Novel,Topin,36,36_Day3_FreeRecall_TOPIN_SSN_5SNR_Final,36_Day3_FreeRecall_TOPIN_2Talker_5SNR_Final,Topin,Topin.png
-Free Recall Test,Novel,Kinit,37,37_Day3_FreeRecall_KINIT_SSN_5SNR_Final,37_Day3_FreeRecall_KINIT_2Talker_5SNR_Final,Kinit,Kinit.png
-Free Recall Test,Novel,Nedig,38,38_Day3_FreeRecall_NEDIG_SSN_5SNR_Final,38_Day3_FreeRecall_NEDIG_2Talker_5SNR_Final,Nedig,Nedig.png
+Free Recall Test,Known ,Baby,34,34_Day3_FreeRecall_BABY_Quiet_Final_60dB,34_Day3_FreeRecall_BABY_Quiet_Final_60dB,Baby,Baby.png
+Free Recall Test,Novel,Daevl,35,35_Day3_FreeRecall_DAEVL_Quiet_Final_60dB,35_Day3_FreeRecall_DAEVL_Quiet_Final_60dB,Daevl,Daevl.png
+Free Recall Test,Novel,Topin,36,36_Day3_FreeRecall_TOPIN_Quiet_Final_60dB,36_Day3_FreeRecall_TOPIN_Quiet_Final_60dB,Topin,Topin.png
+Free Recall Test,Novel,Kinit,37,37_Day3_FreeRecall_KINIT_Quiet_Final_60dB,37_Day3_FreeRecall_KINIT_Quiet_Final_60dB,Kinit,Kinit.png
+Free Recall Test,Novel,Nedig,38,38_Day3_FreeRecall_NEDIG_Quiet_Final_60dB,38_Day3_FreeRecall_NEDIG_Quiet_Final_60dB,Nedig,Nedig.png
 Block 5,,,,,,,
-Cued Recall Test,Known,Roo,39,39_Day3_CuedRecall_ROO_Quiet_Final_60dB,39_Day3_CuedRecall_ROO_Quiet_Final_60dB,Rooster,Rooster.png
-Cued Recall Test,Known,Bay,40,40_Day3_CuedRecall_BAY_SSN_5SNR_Final,40_Day3_CuedRecall_BAY_2Talker_5SNR_Final,Baby,Baby.png
-Cued Recall Test,Novel,Dae ,41,41_Day3_CuedRecall_DAE_SSN_5SNR_Final,41_Day3_CuedRecall_DAE_2Talker_5SNR_Final,Daevl,Daevl.png
-Cued Recall Test,Novel,To,42,42_Day3_CuedRecall_TO_SSN_5SNR_Final,42_Day3_CuedRecall_TO_2Talker_5SNR_Final,Topin,Topin.png
-Cued Recall Test,Novel,Ki,43,43_Day3_CuedRecall_KI_SSN_5SNR_Final,43_Day3_CuedRecall_KI_2Talker_5SNR_Final,Kinit,Kinit.png
-Cued Recall Test,Novel,Ne,44,44_Day3_CuedRecall_NE_SSN_5SNR_Final,44_Day3_CuedRecall_NE_2Talker_5SNR_Final,Nedig,Nedig.png
+Cued Recall Test,Known,See,39,No audio file_LIVE INSTRUCTION,No audio file_LIVE INSTRUCTION,Seesaw,Seesaw.png
+Cued Recall Test,Known,Roo,40,40_Day3_CuedRecall_ROO_Quiet_Final_60dB,40_Day3_CuedRecall_ROO_Quiet_Final_60dB,Rooster,Rooster.png
+Cued Recall Test,Known,Bay,41,41_Day3_CuedRecall_BAY_Quiet_Final_60dB,41_Day3_CuedRecall_BAY_Quiet_Final_60dB,Baby,Baby.png
+Cued Recall Test,Novel,Dae ,42,42_Day3_CuedRecall_DAE_Quiet_Final_60dB,42_Day3_CuedRecall_DAE_Quiet_Final_60dB,Daevl,Daevl.png
+Cued Recall Test,Novel,To,43,43_Day3_CuedRecall_TO_Quiet_Final_60dB,43_Day3_CuedRecall_TO_Quiet_Final_60dB,Topin,Topin.png
+Cued Recall Test,Novel,Ki,44,44_Day3_CuedRecall_KI_Quiet_Final_60dB,44_Day3_CuedRecall_KI_Quiet_Final_60dB,Kinit,Kinit.png
+Cued Recall Test,Novel,Ne,45,45_Day3_CuedRecall_NE_Quiet_Final_60dB,45_Day3_CuedRecall_NE_Quiet_Final_60dB,Nedig,Nedig.png
 5-Minute Break,,,,,,,
 Block 6,,,,,,,
-Free Recall Test,Known ,Rooster,45,45_Day3_FreeRecall_ROOSTER_Quiet_Final_60dB,45_Day3_FreeRecall_ROOSTER_Quiet_Final_60dB,Rooster,Rooster.png
-Free Recall Test,Known ,Baby,46,46_Day3_FreeRecall_BABY_Quiet_Final_60dB,46_Day3_FreeRecall_BABY_Quiet_Final_60dB,Baby,Baby.png
-Free Recall Test,Novel,Daevl,47,47_Day3_FreeRecall_DAEVL_Quiet_Final_60dB,47_Day3_FreeRecall_DAEVL_Quiet_Final_60dB,Daevl,Daevl.png
-Free Recall Test,Novel,Topin,48,48_Day3_FreeRecall_TOPIN_Quiet_Final_60dB,48_Day3_FreeRecall_TOPIN_Quiet_Final_60dB,Topin,Topin.png
-Free Recall Test,Novel,Kinit,49,49_Day3_FreeRecall_KINIT_Quiet_Final_60dB,49_Day3_FreeRecall_KINIT_Quiet_Final_60dB,Kinit,Kinit.png
-Free Recall Test,Novel,Nedig,50,50_Day3_FreeRecall_NEDIG_Quiet_Final_60dB,50_Day3_FreeRecall_NEDIG_Quiet_Final_60dB,Nedig,Nedig.png
+Free Recall Test,Known ,Rooster,46,46_Day3_FreeRecall_ROOSTER_Quiet_Final_60dB,46_Day3_FreeRecall_ROOSTER_Quiet_Final_60dB,Rooster,Rooster.png
+Free Recall Test,Known ,Baby,47,47_Day3_FreeRecall_BABY_Quiet_Final_60dB,47_Day3_FreeRecall_BABY_Quiet_Final_60dB,Baby,Baby.png
+Free Recall Test,Novel,Daevl,48,48_Day3_FreeRecall_DAEVL_Quiet_Final_60dB,48_Day3_FreeRecall_DAEVL_Quiet_Final_60dB,Daevl,Daevl.png
+Free Recall Test,Novel,Topin,49,49_Day3_FreeRecall_TOPIN_Quiet_Final_60dB,49_Day3_FreeRecall_TOPIN_Quiet_Final_60dB,Topin,Topin.png
+Free Recall Test,Novel,Kinit,50,50_Day3_FreeRecall_KINIT_Quiet_Final_60dB,50_Day3_FreeRecall_KINIT_Quiet_Final_60dB,Kinit,Kinit.png
+Free Recall Test,Novel,Nedig,51,51_Day3_FreeRecall_NEDIG_Quiet_Final_60dB,51_Day3_FreeRecall_NEDIG_Quiet_Final_60dB,Nedig,Nedig.png
 Block 7,,,,,,,
-Cued Recall Test,Known,Roo,51,51_Day3_CuedRecall_ROO_Quiet_Final_60dB,51_Day3_CuedRecall_ROO_Quiet_Final_60dB,Rooster,Rooster.png
-Cued Recall Test,Known,Bay,52,52_Day3_CuedRecall_BAY_Quiet_Final_60dB,52_Day3_CuedRecall_BAY_Quiet_Final_60dB,Baby,Baby.png
-Cued Recall Test,Novel,Dae ,53,53_Day3_CuedRecall_DAE_Quiet_Final_60dB,53_Day3_CuedRecall_DAE_Quiet_Final_60dB,Daevl,Daevl.png
-Cued Recall Test,Novel,To,54,54_Day3_CuedRecall_TO_Quiet_Final_60dB,54_Day3_CuedRecall_TO_Quiet_Final_60dB,Topin,Topin.png
-Cued Recall Test,Novel,Ki,55,55_Day3_CuedRecall_KI_Quiet_Final_60dB,55_Day3_CuedRecall_KI_Quiet_Final_60dB,Kinit,Kinit.png
-Cued Recall Test,Novel,Ne,56,56_Day3_CuedRecall_NE_Quiet_Final_60dB,56_Day3_CuedRecall_NE_Quiet_Final_60dB,Nedig,Nedig.png
+Cued Recall Test,Known,Roo,52,52_Day3_CuedRecall_ROO_Quiet_Final_60dB,52_Day3_CuedRecall_ROO_Quiet_Final_60dB,Rooster,Rooster.png
+Cued Recall Test,Known,Bay,53,53_Day3_CuedRecall_BAY_Quiet_Final_60dB,53_Day3_CuedRecall_BAY_Quiet_Final_60dB,Baby,Baby.png
+Cued Recall Test,Novel,Dae ,54,54_Day3_CuedRecall_DAE_Quiet_Final_60dB,54_Day3_CuedRecall_DAE_Quiet_Final_60dB,Daevl,Daevl.png
+Cued Recall Test,Novel,To,55,55_Day3_CuedRecall_TO_Quiet_Final_60dB,55_Day3_CuedRecall_TO_Quiet_Final_60dB,Topin,Topin.png
+Cued Recall Test,Novel,Ki,56,56_Day3_CuedRecall_KI_Quiet_Final_60dB,56_Day3_CuedRecall_KI_Quiet_Final_60dB,Kinit,Kinit.png
+Cued Recall Test,Novel,Ne,57,57_Day3_CuedRecall_NE_Quiet_Final_60dB,57_Day3_CuedRecall_NE_Quiet_Final_60dB,Nedig,Nedig.png
 Block 8,,,,,,,
-2 AFC,Known,Pizza or Rooster,57,57_Day3_2AFC_PIZZA_ROOSTER_Quiet_Final_60dB,57_Day3_2AFC_PIZZA_ROOSTER_Quiet_Final_60dB,Rooster,Rooster.png
-2 AFC,Known,Baby or Cheetah,58,58_Day3_2AFC_BABY_CHEETAH_Quiet_Final_60dB,58_Day3_2AFC_BABY_CHEETAH_Quiet_Final_60dB,Baby,Baby.png
-2 AFC,Novel,Daevl or Nedig,59,59_Day3_2AFC_DAEVL_NEDIG_Quiet_Final_60dB,59_Day3_2AFC_DAEVL_NEDIG_Quiet_Final_60dB,Daevl,Daevl.png
-2 AFC,Novel,Kinit or Topin,60,60_Day3_2AFC_KINIT_TOPIN_Quiet_Final_60dB,60_Day3_2AFC_KINIT_TOPIN_Quiet_Final_60dB,Topin,Topin.png
-2 AFC,Novel,Kinit or Daevl,61,61_Day3_2AFC_KINIT_DAEVL_Quiet_Final_60dB,61_Day3_2AFC_KINIT_DAEVL_Quiet_Final_60dB,Kinit,Kinit.png
-2 AFC,Novel,Topin or Nedig,62,62_Day3_2AFC_TOPIN_NEDIG_Quiet_Final_60dB,62_Day3_2AFC_TOPIN_NEDIG_Quiet_Final_60dB,Nedig,Nedig.png
+2 AFC,Known,Pizza or Rooster,58,58_Day3_2AFC_PIZZA_ROOSTER_Quiet_Final_60dB,58_Day3_2AFC_PIZZA_ROOSTER_Quiet_Final_60dB,Rooster,Rooster.png
+2 AFC,Known,Baby or Cheetah,59,59_Day3_2AFC_BABY_CHEETAH_Quiet_Final_60dB,59_Day3_2AFC_BABY_CHEETAH_Quiet_Final_60dB,Baby,Baby.png
+2 AFC,Novel,Daevl or Nedig,60,60_Day3_2AFC_DAEVL_NEDIG_Quiet_Final_60dB,60_Day3_2AFC_DAEVL_NEDIG_Quiet_Final_60dB,Daevl,Daevl.png
+2 AFC,Novel,Kinit or Topin,61,61_Day3_2AFC_KINIT_TOPIN_Quiet_Final_60dB,61_Day3_2AFC_KINIT_TOPIN_Quiet_Final_60dB,Topin,Topin.png
+2 AFC,Novel,Kinit or Daevl,62,62_Day3_2AFC_KINIT_DAEVL_Quiet_Final_60dB,62_Day3_2AFC_KINIT_DAEVL_Quiet_Final_60dB,Kinit,Kinit.png
+2 AFC,Novel,Topin or Nedig,63,63_Day3_2AFC_TOPIN_NEDIG_Quiet_Final_60dB,63_Day3_2AFC_TOPIN_NEDIG_Quiet_Final_60dB,Nedig,Nedig.png
